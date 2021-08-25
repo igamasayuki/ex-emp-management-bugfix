@@ -1,7 +1,5 @@
 package jp.co.sample.emp_management.form;
 
-import javax.validation.constraints.NotBlank;
-
 /**
  * ログイン時に使用するフォーム.
  * 
