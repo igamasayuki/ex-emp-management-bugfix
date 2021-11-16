@@ -56,6 +56,9 @@
 										<label for="mailAddress">
 											メールアドレス:
 										</label>
+										<label th:text="${doubleEmail}" class="error-messages">
+											そのメールアドレスはすでに登録されています
+										</label>
 										<label th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}" class="error-messages">
 											メールアドレスを入力してください
 										</label>
