@@ -83,7 +83,7 @@ public class AdministratorController {
 		//メールアドレスが既に登録されていた場合、例外がサービスで発生するのでtry-catchを行う。
 		try {
 			administratorService.insert(administrator);
-			return "administrator/login";
+			return "redirect:/";
 		} catch (Exception e) {
 			model.addAttribute("doubleEmail", "そのメールアドレスは既に登録されています");
 			return "administrator/insert";
