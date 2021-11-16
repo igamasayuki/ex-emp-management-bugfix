@@ -12,17 +12,21 @@ import javax.validation.constraints.Pattern;
  */
 public class InsertAdministratorForm {
 	/** 名前 */
-	@NotBlank(message="氏名は必ず入力してください。")
+	@NotBlank(message = "氏名は必ず入力してください。")
 	private String name;
-	
+
 	/** メールアドレス */
-	@NotBlank(message="メールアドレスは必ず入力してください。")
-	@Email(message="メールアドレスの形式が不正です。")
+	@NotBlank(message = "メールアドレスは必ず入力してください。")
+	@Email(message = "メールアドレスの形式が不正です。")
 	private String mailAddress;
 
 	/** パスワード */
-	@Pattern(regexp="^([a-zA-Z0-9]{8,})$",message="パスワードは8文字以上の英数字で入力してください。")
+	@Pattern(regexp = "^([a-zA-Z0-9]{8,})$", message = "パスワードは8文字以上の英数字で入力してください。")
 	private String password;
+
+	/** 確認用パスワード */
+	@Pattern(regexp = "^([a-zA-Z0-9]{8,})$", message = "確認用パスワードは8文字以上の英数字で入力してください。")
+	private String comfirmPassword;
 
 	/**
 	 * @return the name
@@ -65,11 +69,19 @@ public class InsertAdministratorForm {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
+	public String getComfirmPassword() {
+		return comfirmPassword;
+	}
+
+	public void setComfirmPassword(String comfirmPassword) {
+		this.comfirmPassword = comfirmPassword;
+	}
+
 	@Override
 	public String toString() {
 		return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
-				+ "]";
+				+ ", comfirmPassword=" + comfirmPassword + "]";
 	}
-	
+
 }
