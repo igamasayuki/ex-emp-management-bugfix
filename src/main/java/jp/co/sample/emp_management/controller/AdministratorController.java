@@ -74,11 +74,15 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			return toInsert();
 		}
-		if(administratorService.findByMailAddress(form.getMailAddress()) != null) {
+		if (administratorService.findByMailAddress(form.getMailAddress()) != null) {
 			model.addAttribute("errorMessage", "このメールアドレスは既に登録されています。");
+			return toInsert();
+		}
+		if (form.getPassword() != form.getPassword2()) {
+			model.addAttribute("PasErrorMessage", "パスワードが一致しません。");
 			return toInsert();
 		}
 		Administrator administrator = new Administrator();
