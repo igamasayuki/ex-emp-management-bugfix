@@ -80,6 +80,22 @@
 									</div>
 								</div>
 							</div>
+							<!-- 確認用パスワード -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="password2">
+											確認用パスワード:
+										</label>
+										<label th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}" class="error-messages">
+											確認用パスワードを入力してください
+										</label>
+										<label th:if="${PasErrorMessage != null}" th:text="${PasErrorMessage}" class="error-messages"></label>
+										<input type="password" name="password2" id="password2" class="form-control" placeholder="password2"
+											 th:field="*{password2}" th:errorclass="error-input" value="xxxxxxxx">
+									</div>
+								</div>
+							</div>
 							<!-- 登録ボタン -->
 							<div class="form-group">
 								<div class="row">
