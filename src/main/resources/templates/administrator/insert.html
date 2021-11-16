@@ -34,6 +34,9 @@
 					<form method="post" action="login.html" th:action="@{/insert}" th:object="${insertAdministratorForm}">
 						<fieldset>
 							<legend>管理者登録<br>(システムにログインできる管理者を登録します)</legend>
+						<div class="alert alert-danger" th:if="${emailErrorMessage}!=null">
+                       		<p th:text="${emailErrorMessage}"></p>
+	                    </div>
 							<!-- 氏名 -->
 							<div class="form-group">
 								<div class="row">
@@ -53,7 +56,7 @@
 							<div class="form-group">
 								<div class="row">
 									<div class="col-sm-12">
-										<label for="mailAddress">
+					                    <label for="mailAddress">
 											メールアドレス:
 										</label>
 										<label th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}" class="error-messages">

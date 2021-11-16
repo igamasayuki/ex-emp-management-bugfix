@@ -24,9 +24,18 @@ public class AdministratorService {
 	 * 管理者情報を登録します.
 	 * 
 	 * @param administrator 管理者情報
+	 * @throws Exception メールアドレスの重複
 	 */
-	public void insert(Administrator administrator) {
-		administratorRepository.insert(administrator);
+	public void insert(Administrator administrator) throws Exception {
+		
+		// 
+		boolean isNotExistInDB = (administratorRepository.findByMailAddress(administrator.getMailAddress())==null); 
+		
+		if(isNotExistInDB) {
+			administratorRepository.insert(administrator);
+		} else {
+			throw new Exception("このメールアドレスは既に使用されています。");
+		}
 	}
 	
 	/**
