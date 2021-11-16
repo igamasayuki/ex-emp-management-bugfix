@@ -82,7 +82,7 @@ public class AdministratorController {
 		if(!(form.getPassword().equals(form.getConfirmationPassword()))) {
 			model.addAttribute("mismatchPassword", "mismatchPassword");
 			return toInsert();
-		}	
+		}
 		
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
