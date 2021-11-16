@@ -74,6 +74,12 @@ public class EmployeeRepository {
 
 		return development;
 	}
+	
+	public List<Employee> findByName(String name){
+		String sql = "SELECT * FROM employees WHERE name LIKE :name ORDER BY hire_date;";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
+		return template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+	}
 
 	/**
 	 * 従業員情報を変更します.

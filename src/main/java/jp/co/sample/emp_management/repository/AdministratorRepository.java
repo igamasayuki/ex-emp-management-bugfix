@@ -3,6 +3,8 @@ package jp.co.sample.emp_management.repository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -32,6 +34,8 @@ public class AdministratorRepository {
 		administrator.setPassword(rs.getString("password"));
 		return administrator;
 	};
+	
+	
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
