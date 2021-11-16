@@ -24,9 +24,15 @@ public class AdministratorService {
 	 * 管理者情報を登録します.
 	 * 
 	 * @param administrator 管理者情報
+	 * @throws Exception メールアドレスが既に登録されていたら例外を発生
 	 */
-	public void insert(Administrator administrator) {
-		administratorRepository.insert(administrator);
+	public void insert(Administrator administrator) throws Exception {
+		Administrator findAdministrator = administratorRepository.findByMailAddress(administrator.getMailAddress());
+		if(findAdministrator == null) {
+			administratorRepository.insert(administrator);
+		} else {
+			throw new Exception("そのメールアドレスは既に登録されています");
+		}
 	}
 	
 	/**
