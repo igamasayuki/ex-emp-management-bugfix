@@ -24,6 +24,9 @@ public class InsertAdministratorForm {
 	@Size(min=8, message="パスワードは{min}文字以上で入力してください")
 	@Pattern(regexp="[a-zA-Z0-9]*", message="パスワードは英数である必要があります")
 	private String password;
+	/** 確認用パスワード */
+	@NotBlank(message="入力は必須です")
+	private String confirmationPassword;
 
 	/**
 	 * @return the name
@@ -67,6 +70,14 @@ public class InsertAdministratorForm {
 		this.password = password;
 	}
 	
+	public String getConfirmationPassword() {
+		return confirmationPassword;
+	}
+
+	public void setConfirmationPassword(String confirmationPassword) {
+		this.confirmationPassword = confirmationPassword;
+	}
+
 	@Override
 	public String toString() {
 		return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress + ", password=" + password

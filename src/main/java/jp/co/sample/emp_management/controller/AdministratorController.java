@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -73,14 +74,24 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
+	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
 		if(result.hasErrors()) {
 			return toInsert();
 		}
+		if(!(form.getPassword().equals(form.getConfirmationPassword()))) {
+			model.addAttribute("mismatchPassword", "mismatchPassword");
+			return toInsert();
+		}	
+		
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		administratorService.insert(administrator);
+		try {
+			administratorService.insert(administrator);
+		} catch(DuplicateKeyException e) {
+			model.addAttribute("duplicateError", "duplicateError");
+			return toInsert();
+		}
 		return "redirect:/";
 	}
 
