@@ -84,6 +84,7 @@ public class EmployeeController {
 	@RequestMapping("/update")
 	public String update(@Validated UpdateEmployeeForm form, BindingResult result, Model model) {
 		if(result.hasErrors()) {
+			System.out.println(form);
 			return showDetail(form.getId(), model);
 		}
 		Employee employee = new Employee();
