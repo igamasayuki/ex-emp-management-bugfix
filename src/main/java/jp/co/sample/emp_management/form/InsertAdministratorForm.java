@@ -14,7 +14,6 @@ public class InsertAdministratorForm {
 	/** 名前 */
 	@NotBlank(message="名前が空欄です")
 	private String name;
-	
 	/** メールアドレス */
 	@NotBlank(message="メールアドレスが空欄です")
 	@Email(message="メールアドレスの形式が正しくありません")
@@ -22,6 +21,9 @@ public class InsertAdministratorForm {
 	/** パスワード */
 	@Pattern(regexp="^([a-zA-Z0-9]{8,})$", message="英数字を含む８文字以上で設定してください")
 	private String password;
+	/** 確認用パスワード */
+	@Pattern(regexp="^([a-zA-Z0-9]{8,})$", message="英数字を含む８文字以上で設定してください")
+	private String confirmationPassword;
 
 	/**
 	 * @return the name
@@ -64,11 +66,21 @@ public class InsertAdministratorForm {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
+	public String getConfirmationPassword() {
+		return confirmationPassword;
+	}
+
+	public void setConfirmationPassword(String confirmationPassword) {
+		this.confirmationPassword = confirmationPassword;
+	}
+
 	@Override
 	public String toString() {
 		return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
-				+ "]";
+				+ ", confirmationPassword=" + confirmationPassword + "]";
 	}
+	
+	
 	
 }
