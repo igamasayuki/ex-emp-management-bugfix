@@ -77,7 +77,7 @@ public class AdministratorController {
 		if(result.hasErrors()) {
 			return toInsert();
 		}
-		if(form.getMailAddress() != null) {
+		if(administratorService.findByMailAddress(form.getMailAddress()) != null) {
 			model.addAttribute("errorMessage", "このメールアドレスは既に登録されています。");
 			return toInsert();
 		}
