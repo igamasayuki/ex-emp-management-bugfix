@@ -2,6 +2,7 @@ package jp.co.sample.emp_management.controller;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,8 +10,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.sample.emp_management.domain.Employee;
+import jp.co.sample.emp_management.form.InsertEmployeeForm;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
 import jp.co.sample.emp_management.service.EmployeeService;
 
@@ -33,7 +36,17 @@ public class EmployeeController {
 	 * @return フォーム
 	 */
 	@ModelAttribute
-	public UpdateEmployeeForm setUpForm() {
+	public InsertEmployeeForm setUpInsertEmployeeForm() {
+		return new InsertEmployeeForm();
+	}
+	
+	/**
+	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
+	 * 
+	 * @return フォーム
+	 */
+	@ModelAttribute
+	public UpdateEmployeeForm setUpUpdateEmployeeForm() {
 		return new UpdateEmployeeForm();
 	}
 
@@ -115,4 +128,40 @@ public class EmployeeController {
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
 	}
+	
+	
+	
+	/////////////////////////////////////////////////////
+	// ユースケース：従業員を登録する
+	/////////////////////////////////////////////////////
+	/**
+	 * 従業員登録画面を出力します.
+	 * 
+	 * @return 従業員一覧画面
+	 */
+	@RequestMapping("/toInsert")
+	public String toInsert() {
+		return "employee/insert"; 
+	}
+	
+	/**
+	 * 従業員を登録します。
+	 * @param form　 従業員情報用フォーム
+	 * @param model モデル
+	 * @return 従業員一覧画面
+	 */
+	@RequestMapping("/insert")
+	public String Insert(InsertEmployeeForm form, RedirectAttributes redirectAttributes) {
+		Employee employee = new Employee();
+		BeanUtils.copyProperties(form, employee);
+
+		employeeService.insert(employee);
+		
+		redirectAttributes.addFlashAttribute("message", "従業員の登録が完了しました。");
+		return "redirect:/employee/showList";
+	}
+
+
+	
+	
 }
