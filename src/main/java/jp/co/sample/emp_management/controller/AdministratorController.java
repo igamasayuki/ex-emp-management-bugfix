@@ -120,6 +120,8 @@ public class AdministratorController {
 		if (administrator == null) {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
+		} else {
+			model.addAttribute("administratorName", administratorService.login(form.getMailAddress(), form.getPassword()).getName());
 		}
 		return "forward:/employee/showList";
 	}
