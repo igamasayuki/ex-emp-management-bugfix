@@ -55,6 +55,29 @@ public class EmployeeController {
 
 	
 	/////////////////////////////////////////////////////
+	// ユースケース：従業員から名前の「含む検索」を行う
+	/////////////////////////////////////////////////////
+	/**
+	 * 従業員一覧画面に、検索結果を出力します.
+	 * 
+	 * @param model モデル
+	 * @return 従業員一覧画面
+	 */
+	@RequestMapping("/searchByName")
+	public String searchByName(String name,Model model) {
+		List<Employee> employeeList = employeeService.searchByName(name);
+
+		if(employeeList.size() == 0) {
+			model.addAttribute("message", "１件もありませんでした");
+			employeeList = employeeService.showList();
+		}
+		
+		model.addAttribute("employeeList", employeeList);
+		return "employee/list";
+	}
+	
+	
+	/////////////////////////////////////////////////////
 	// ユースケース：従業員詳細を表示する
 	/////////////////////////////////////////////////////
 	/**
