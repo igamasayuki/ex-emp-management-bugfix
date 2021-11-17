@@ -5,3 +5,15 @@ $(function(){
 		$('#insertAdministratorForm').submit();
 	});
 });
+
+//$(function(){
+//	$(document).on('load', function(){
+//	
+//			$('#btn-primary').prop('disabled', true);
+//			
+//			if($('#name').val() != null && $('#mailAddress').val() != null && $('#password').val() == $('#confirmationPassword').val()){
+//				$('#btn-primary').prop('disabled', false);
+//			}
+//				
+//	});
+//});

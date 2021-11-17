@@ -91,9 +91,7 @@
 										<label th:if="${#fields.hasErrors('confirmationPassword')}" th:errors="*{confirmationPassword}" class="error-messages">
 											確認用パスワードを入力してください
 										</label>
-										<label th:text="${notEqualsPsss}" class="error-messages">
-											パスワードと確認用パスワードが一致していません
-										</label>
+										<label id="passwordMissMatch" class="error-messages" ></label>
 										<input type="password" name="confirmationPassword" id="confirmationPassword" class="form-control" placeholder="Confirmation password"
 											 th:field="*{confirmationPassword}" th:errorclass="error-input" value="xxxxxxxx">
 									</div>
@@ -122,5 +120,6 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="../js/bootstrap.min.js"></script>
 	<script src="../js/insert.js"></script>
+	<script src="../js/check_password.js"></script>
 </body>
 </html>
