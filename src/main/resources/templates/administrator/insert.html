@@ -89,14 +89,15 @@
 							<div class="form-group">
 								<div class="row">
 									<div class="col-sm-12">
-										<label for="comfirmPassword">
+										<label for="confirmPassword">
 											パスワード:
 										</label>
-										<label th:if="${#fields.hasErrors('comfirmPassword')}" th:errors="*{comfirmPassword}" class="error-messages">
+										<label th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="error-messages">
 											パスワードを入力してください
 										</label>
-										<input type="password" name="comfirmPassword" id="comfirmPassword" class="form-control" placeholder="password"
-											 th:field="*{comfirmPassword}" th:errorclass="error-input" value="xxxxxxxx">
+										<span id="duplicateMessage" class="error-messages"></span>
+										<input type="password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="password"
+											 th:field="*{confirmPassword}" th:errorclass="error-input" value="xxxxxxxx">
 									</div>
 								</div>
 							</div>
@@ -110,7 +111,6 @@
 							</div>
 						</fieldset>
 					</form>
-
 
 <!-- ここから下を編集する必要はありません -->
 				</div>

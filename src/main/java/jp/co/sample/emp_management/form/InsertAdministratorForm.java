@@ -26,7 +26,7 @@ public class InsertAdministratorForm {
 
 	/** 確認用パスワード */
 	@Pattern(regexp = "^([a-zA-Z0-9]{8,})$", message = "確認用パスワードは8文字以上の英数字で入力してください。")
-	private String comfirmPassword;
+	private String confirmPassword;
 
 	/**
 	 * @return the name
@@ -70,18 +70,18 @@ public class InsertAdministratorForm {
 		this.password = password;
 	}
 
-	public String getComfirmPassword() {
-		return comfirmPassword;
+	public String getConfirmPassword() {
+		return confirmPassword;
 	}
 
-	public void setComfirmPassword(String comfirmPassword) {
-		this.comfirmPassword = comfirmPassword;
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 
 	@Override
 	public String toString() {
 		return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
-				+ ", comfirmPassword=" + comfirmPassword + "]";
+				+ ", confirmPassword=" + confirmPassword + "]";
 	}
 
 }

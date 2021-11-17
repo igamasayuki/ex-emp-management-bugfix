@@ -80,7 +80,7 @@ public class AdministratorController {
 		}
 		
 		//　パスワードと確認用パスワードが一致しない場合に入力画面へリターン
-		if(!form.getPassword().equals(form.getComfirmPassword())) {
+		if(!form.getPassword().equals(form.getConfirmPassword())) {
 			model.addAttribute("passwordErrorMessage", "パスワードと登録用パスワードが一致していません。");
 			return toInsert();
 		}
