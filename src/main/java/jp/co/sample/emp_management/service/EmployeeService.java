@@ -65,7 +65,18 @@ public class EmployeeService {
 	 * @param employee 登録する従業員情報
 	 */
 	public void insert(Employee employee) {
+		employeeRepository.insert(employee);
 		System.out.println("insert実行！");
-//		employeeRepository.insert(employee);
+	}
+	
+	/**
+	 * 現状一番大きいIDの次のIDを取得します。
+	 * 
+	 * @return 現状一番大きいID+1
+	 */
+	public Integer getNextId() {
+		Integer nextId = employeeRepository.findMaxId()+1;
+		System.out.println(nextId);
+		return nextId;
 	}
 }

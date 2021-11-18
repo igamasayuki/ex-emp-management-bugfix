@@ -1,5 +1,7 @@
 package jp.co.sample.emp_management.form;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * 従業員情報を登録するためのフォームクラス.
  * 
@@ -12,7 +14,7 @@ public class InsertEmployeeForm {
 	/** 従業員名 */
 	private String name;
 	/** 画像 */
-	private String image;
+	private MultipartFile image;
 	/** 性別 */
 	private String gender;
 	/** 入社日 */
@@ -48,11 +50,11 @@ public class InsertEmployeeForm {
 		this.name = name;
 	}
 
-	public String getImage() {
+	public MultipartFile getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(MultipartFile image) {
 		this.image = image;
 	}
 
@@ -130,10 +132,10 @@ public class InsertEmployeeForm {
 
 	@Override
 	public String toString() {
-		return "InsertEmployeeForm [id=" + id + ", name=" + name + ", image=" + image + ", gender=" + gender
-				+ ", hireDate=" + hireDate + ", mailAddress=" + mailAddress + ", zipCode=" + zipCode + ", address="
-				+ address + ", telephone=" + telephone + ", salary=" + salary + ", characteristics=" + characteristics
-				+ ", dependentsCount=" + dependentsCount + "]";
+		return "InsertEmployeeForm [id=" + id + ", image=" + image + ", gender=" + gender + ", hireDate=" + hireDate
+				+ ", mailAddress=" + mailAddress + ", zipCode=" + zipCode + ", address=" + address + ", telephone="
+				+ telephone + ", salary=" + salary + ", characteristics=" + characteristics + ", dependentsCount="
+				+ dependentsCount + "]";
 	}
 
 }

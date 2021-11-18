@@ -41,6 +41,10 @@ public class EmployeeRepository {
 		return employee;
 	};
 
+	private static final RowMapper<Integer> MAX_ID_ROW_MAPPER = (rs, i) -> {
+		return rs.getInt("max");
+	};
+
 	@Autowired
 	private NamedParameterJdbcTemplate template;
 
@@ -104,8 +108,18 @@ public class EmployeeRepository {
 	 */
 	public void insert(Employee employee) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
-		String updateSql = "INSERT INTO employees VALUES (:id,:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount);";
-		template.update(updateSql, param);
+		String InsertSql = "INSERT INTO employees VALUES ((SELECT max(id) from employees)+1,:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount);";
+//		INSERT INTO employees VALUES ((SELECT max(id) from employees)+1,'ふるもと','','1','2020-01-01','1','1','1','1','1','1','1');
+		template.update(InsertSql, param);
+	}
+
+	/**
+	 * 現状のIDの一番大きなものを取得します.
+	 */
+	public Integer findMaxId() {
+		String findMaxIdSql = "select max(id) from employees;";
+		SqlParameterSource param = new MapSqlParameterSource();
+		return template.queryForObject(findMaxIdSql ,param, MAX_ID_ROW_MAPPER);
 	}
 
 }

@@ -72,7 +72,8 @@
 
 <!-- ここにモックのform要素を貼り付けます -->
 
-					<form method="post" action="list.html" th:action="@{/employee/insert}" th:object="${insertEmployeeForm}">
+					<form id="insertEmployee" method="post" action="list.html" th:action="@{/employee/insert}" 
+					th:object="${insertEmployeeForm}"  enctype="multipart/form-data">
 						<fieldset>
 							<legend>従業員登録</legend>
 							<table class="table table-striped">
@@ -89,7 +90,7 @@
 							      写真
 							    </th>
 							    <td>
-							      <input type="file">
+							      <input type="file" name="image" accept=".png,.jpg">
 							    </td>
 							  </tr>
 							  <tr>
@@ -97,7 +98,8 @@
 							      性別
 							    </th>
 							    <td>
-							        <input type="text" th:field="*{gender}">
+							        <label><input type="radio" name="gender" value="男性">男性</label>
+							        <label><input type="radio" name="gender" value="女性">女性</label>
 							    </td>
 							  </tr>
 							  <tr>
@@ -121,16 +123,26 @@
 							      郵便番号
 							    </th>
 							    <td>
-							      <input type="text" th:field="*{zipCode}">
+							      <input type="text" th:field="*{zipCode}" >
+							      <button type="button" id="getAddress">郵便番号から住所を取得</button>
 							    </td>
 							  </tr>
 							  <tr>
 							    <th nowrap>
-							      住所
+							      住所(自動入力)
 							    </th>
 							    <td>
-							       <input type="text" th:field="*{zipCode}">
+							       <input type="text" id="autoAddress">
 							    </td>
+							  </tr>
+							  <tr>
+							    <th nowrap>
+							      丁目・番地
+							    </th>
+							    <td>
+							       <input type="text" id="inputAddress">
+							       <input type="hidden" th:field="*{address}">
+								    </td>
 							  </tr>
 							  <tr>
 							    <th nowrap>
@@ -171,7 +183,7 @@
 							    </td>
 							  </tr>
 							</table>
-							<button type="submit" class="btn btn-primary">登録</button>
+							<button type="submit" class="btn btn-primary" id="register">登録</button>
 						</fieldset>
 					</form>
 					
@@ -184,6 +196,7 @@
 	<!-- end container -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="../../static/js/bootstrap.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/insertEmployee.js"></script>
 </body>
 </html>
