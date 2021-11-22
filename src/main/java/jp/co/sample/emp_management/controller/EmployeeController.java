@@ -2,6 +2,7 @@ package jp.co.sample.emp_management.controller;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jp.co.sample.emp_management.domain.Employee;
+import jp.co.sample.emp_management.form.InsertEmployeeForm;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
 import jp.co.sample.emp_management.service.EmployeeService;
 
@@ -35,6 +37,11 @@ public class EmployeeController {
 	@ModelAttribute
 	public UpdateEmployeeForm setUpForm() {
 		return new UpdateEmployeeForm();
+	}
+	
+	@ModelAttribute
+	public InsertEmployeeForm insertEmployee() {
+		return new InsertEmployeeForm();
 	}
 
 	/////////////////////////////////////////////////////
@@ -107,5 +114,18 @@ public class EmployeeController {
 		employee.setDependentsCount(form.getIntDependentsCount());
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
+	}
+	
+	@RequestMapping("/toEdit")
+		public String toEdit() {
+			return "employee/insert";
+	}
+	
+	@RequestMapping("/insert")
+		public String insert(InsertEmployeeForm form) {
+			Employee employee = new Employee();
+			BeanUtils.copyProperties(form, employee);
+			employeeService.insert(employee);
+			return "redirect:/employee/showList";
 	}
 }

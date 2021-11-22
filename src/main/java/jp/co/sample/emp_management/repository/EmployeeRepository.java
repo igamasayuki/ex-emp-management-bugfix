@@ -95,4 +95,10 @@ public class EmployeeRepository {
 		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
 		return employeeList;
 	}
+	
+	public void insert(Employee employee) {		
+		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+		String sql = "INSERT INTO employees VALUES((SELECT max(id)+1 FROM employees), :name, :image, :gender, :hireDate, :mailAddress, :zipCord, :address, :telephone, :salary, :characteristics, :dependentsCount)";		
+		template.update(sql, param);
+	}
 }
