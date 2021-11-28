@@ -35,7 +35,7 @@
 
 					<!-- ここにモックのform要素を貼り付けます -->
 
-					<form method="post" action="login.html" th:action="@{/insert}"
+					<form method="post" th:action="@{/insert}"
 						th:object="${insertAdministratorForm}">
 						<fieldset>
 							<legend>
@@ -89,13 +89,12 @@
 								<div class="row">
 									<div class="col-sm-12">
 										<label for="password"> 確認用パスワード: </label> <label
-										th:if="${mismatchPassword != null}"
-										 class="error-messages">
+											th:if="${mismatchPassword != null}" class="error-messages">
 											パスワードが一致しません </label> <input type="password"
 											name="confirmationPassword" id="confirmationPassword"
 											class="form-control" placeholder="確認用パスワード"
-											th:field="*{confirmationPassword}" th:errorclass="error-input"
-											value="xxxxxxxx">
+											th:field="*{confirmationPassword}"
+											th:errorclass="error-input" value="xxxxxxxx">
 									</div>
 								</div>
 							</div>

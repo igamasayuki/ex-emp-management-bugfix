@@ -66,7 +66,8 @@ public class EmployeeRepository {
 	 * @exception org.springframework.dao.DataAccessException 従業員が存在しない場合は例外を発生します
 	 */
 	public Employee load(Integer id) {
-		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees WHERE id=:id";
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count"
+				+ " FROM employees WHERE id=:id";
 
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 
@@ -90,4 +91,22 @@ public class EmployeeRepository {
 		String updateSql = "UPDATE employees SET dependents_count=:dependentsCount WHERE id=:id";
 		template.update(updateSql, param);
 	}
+	
+	public Employee getMaxIdEmployee() {
+		String sql = "SELECT * FROM employees WHERE id=(SELECT MAX(id) FROM employees);";
+		SqlParameterSource param = new MapSqlParameterSource();
+		Employee employee = template.queryForObject(sql, param, EMPLOYEE_ROW_MAPPER);
+		return employee;
+	}
+	
+	public void insert(Employee employee) {
+		/** 最後のidをインクリメントしたものをidに格納 */
+		Integer id = getMaxIdEmployee().getId();
+		employee.setId(++id);
+		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+		String sql = "INSERT INTO employees(id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count)"
+				+ " VALUES(:id,:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount)";
+		template.update(sql, param);
+	}
+	
 }
