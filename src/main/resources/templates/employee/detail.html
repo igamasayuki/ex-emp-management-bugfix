@@ -27,7 +27,7 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="list.html" th:href="@{/employee/showList}"> 
+					<a class="navbar-brand" href="list.html" th:href="@{/employee/showList}">
 						<!-- 企業ロゴ -->
 						<img src="../../static/img/header_logo_small.png" th:src="@{/img/header_logo_small.png}">
 					</a>
@@ -40,7 +40,7 @@
 						<li class="active"><a href="list.html" th:href="@{/employee/showList}">従業員管理</a></li>
 					</ul>
 					<p class="navbar-text navbar-right">
-					   <span th:text="${administratorName}">山田太郎</span>さんこんにちは！
+					   <span th:text="${session.username}">山田太郎</span>さんこんにちは！
 						&nbsp;&nbsp;&nbsp;
 						<a href="../administrator/login.html" class="navbar-link" th:href="@{/logout}">ログアウト</a>
 					</p>
@@ -55,15 +55,15 @@
 			<li>従業員リスト</li>
 			<li class="active">従業員詳細</li>
 		</ol>
-		
+
 		<!-- register form -->
 		<div class="row">
 			<div
 				class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12">
 				<!-- 背景をグレーに、埋め込んだようなコンポーネント -->
 				<div class="well">
-				
-				
+
+
 <!-- ここから上を編集する必要はありません -->
 
 <!-- ここにモックのform要素を貼り付けます -->
@@ -170,8 +170,8 @@
 							<button type="submit" class="btn btn-primary">更新</button>
 						</fieldset>
 					</form>
-					
-					
+
+
 <!-- ここから下を編集する必要はありません -->
 				</div>
 			</div>
