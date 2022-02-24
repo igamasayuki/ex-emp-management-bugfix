@@ -1,17 +1,28 @@
 package jp.co.sample.emp_management.form;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 /**
  * 管理者情報登録時に使用するフォーム.
- * 
+ *
  * @author igamasayuki
- * 
+ *
  */
 public class InsertAdministratorForm {
 	/** 名前 */
+	@NotBlank
+	@Size(min = 1, max = 128)
 	private String name;
 	/** メールアドレス */
+	@NotBlank
+	@Email
+	@Size(min = 1, max = 128)
 	private String mailAddress;
 	/** パスワード */
+	@NotBlank
+	@Size(min = 8, max = 16)
 	private String password;
 
 	/**
@@ -55,11 +66,11 @@ public class InsertAdministratorForm {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
-				+ "]";
+		return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress
+				+ ", password=" + password + "]";
 	}
-	
+
 }
