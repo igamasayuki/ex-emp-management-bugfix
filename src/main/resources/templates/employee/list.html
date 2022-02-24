@@ -89,6 +89,23 @@
         </li>
       </ol>
 
+      <div class="row">
+        <form
+          th:action="@{/employee/searchEmployee}"
+          method="post"
+          th:object="${searchEmployeeForm}"
+        >
+          <!-- 名前で従業員を検索するフォーム -->
+          <p>従業員検索</p>
+          <input
+            type="text"
+            th:field="*{name}"
+            placeholder="従業員名を入れてください"
+          />
+          <button>検索</button>
+        </form>
+      </div>
+
       <!-- table -->
       <div class="row">
         <div
@@ -115,6 +132,13 @@
               </tr>
             </thead>
             <tbody>
+              <tr th:if="${zeroResults}">
+                <td colspan="3">
+                  <span th:text="${zeroResults}"
+                    >検索結果0件の場合のメッセージ</span
+                  >
+                </td>
+              </tr>
               <tr th:each="employee : ${employeeList}">
                 <td>
                   <a
