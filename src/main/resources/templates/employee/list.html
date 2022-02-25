@@ -99,8 +99,10 @@
           th:action="@{/employee/searchEmployee}"
           method="post"
           th:object="${searchEmployeeForm}"
+          class="ui-widget"
         >
           <!-- 名前で従業員を検索するフォーム -->
+
           <p>従業員検索</p>
           <input
             type="text"
@@ -170,6 +172,8 @@
     <!-- end container -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.js"></script>
     <script src="../../static/js/bootstrap.min.js"></script>
+    <script th:src="@{/js/list.js}"></script>
   </body>
 </html>
