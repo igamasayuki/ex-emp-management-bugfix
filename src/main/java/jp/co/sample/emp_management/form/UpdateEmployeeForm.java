@@ -4,9 +4,9 @@ import javax.validation.constraints.Pattern;
 
 /**
  * 従業員情報更新時に使用するフォーム.
- * 
+ *
  * @author igamasayuki
- * 
+ *
  */
 public class UpdateEmployeeForm {
 	/** id */
@@ -17,7 +17,7 @@ public class UpdateEmployeeForm {
 
 	/**
 	 * IDを数値として返します.
-	 * 
+	 *
 	 * @return 数値のID
 	 */
 	public Integer getIntId() {
@@ -26,7 +26,7 @@ public class UpdateEmployeeForm {
 
 	/**
 	 * 扶養人数を数値として返します.
-	 * 
+	 *
 	 * @return 数値の扶養人数
 	 */
 	public Integer getIntDependentsCount() {

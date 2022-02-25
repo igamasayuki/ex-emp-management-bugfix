@@ -51,7 +51,28 @@ public class EmployeeService {
 		employeeRepository.update(employee);
 	}
 
+	/**
+	 * 名前で従業員情報をあいまい検索
+	 *
+	 * @param name 検索情報
+	 * @return 検索結果
+	 */
 	public List<Employee> findByEmployeeName(String name) {
 		return employeeRepository.findByEmployeeName(name);
+	}
+
+	/**
+	 * 従業員新規登録
+	 * 
+	 * @param employee
+	 */
+	public synchronized void insert(Employee employee) {
+		int maxId = employeeRepository.findMaxId();
+		employee.setId(maxId + 1);
+		employeeRepository.insert(employee);
+	}
+
+	public Boolean findByMailAddress(String mailAddress) {
+		return employeeRepository.findByMailAddress(mailAddress);
 	}
 }

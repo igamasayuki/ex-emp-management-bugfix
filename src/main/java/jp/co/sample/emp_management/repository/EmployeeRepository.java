@@ -98,4 +98,42 @@ public class EmployeeRepository {
 		List<Employee> employeeList = template.query(sql.toString(), param, EMPLOYEE_ROW_MAPPER);
 		return employeeList;
 	}
+
+	public int findMaxId() {
+		String sql = "SELECT max(id) FROM employees;";
+		SqlParameterSource param = new MapSqlParameterSource();
+		int maxId = template.queryForObject(sql, param, Integer.class);
+		return maxId;
+	}
+
+	/**
+	 * 授業員情報を新規登録します
+	 *
+	 * @param employee 従業員情報
+	 */
+	public void insert(Employee employee) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("INSERT INTO employees ");
+		sql.append(
+				"(id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count) ");
+		sql.append(
+				"VALUES (:id,:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount);");
+		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+		template.update(sql.toString(), param);
+	}
+
+	public Boolean findByMailAddress(String mailAddress) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT ");
+		sql.append(
+				"id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count ");
+		sql.append("FROM employees WHERE mail_address = :mailAddress;");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress);
+		List<Employee> employeeList = template.query(sql.toString(), param, EMPLOYEE_ROW_MAPPER);
+		if (employeeList.size() == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 }
