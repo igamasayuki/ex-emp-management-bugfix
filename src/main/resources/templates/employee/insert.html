@@ -65,6 +65,11 @@
                   >従業員管理</a
                 >
               </li>
+              <li class="active">
+                <a href="insert.html" th:href="@{/employee/toInsert}"
+                  >従業員登録</a
+                >
+              </li>
             </ul>
             <p class="navbar-text navbar-right">
               <span th:text="${session.username}">山田太郎</span
@@ -87,7 +92,7 @@
         <li>
           <a th:href="@{/employee/showList}"> 従業員リスト </a>
         </li>
-        <li class="active">従業員詳細</li>
+        <li class="active">従業員登録</li>
       </ol>
 
       <!-- register form -->
@@ -111,120 +116,186 @@
             <form
               method="post"
               action="list.html"
-              th:action="@{/employee/update}"
-              th:object="${updateEmployeeForm}"
+              th:action="@{/employee/insert}"
+              th:object="${insertEmployeeForm}"
+              enctype="multipart/form-data"
             >
               <fieldset>
-                <legend>従業員情報</legend>
+                <legend>従業員登録</legend>
                 <table class="table table-striped">
                   <tr>
                     <th nowrap>従業員名</th>
                     <td>
-                      <span th:text="${employee.name}">山田花子</span>
+                      <p th:errors="*{name}" class="error-messages">
+                        バリデーションエラーメッセージ
+                      </p>
+                      <input
+                        type="text"
+                        th:field="*{name}"
+                        class="form-control"
+                        th:errorclass="error-input"
+                      />
                     </td>
                   </tr>
-                  <tr th:if="${!#strings.equals(employee.image,'')}">
+                  <tr>
                     <th nowrap>写真</th>
+                    <p th:errors="*{image}" class="error-messages">
+                      バリデーションエラーメッセージ
+                    </p>
                     <td>
-                      <img
-                        src="../../static/img/e2.png"
-                        th:src="${'/img/' + employee.image}"
+                      <input
+                        type="file"
+                        th:field="*{image}"
+                        th:errorclass="error-input"
                       />
                     </td>
                   </tr>
                   <tr>
                     <th nowrap>性別</th>
                     <td>
-                      <span th:text="${employee.gender}">女性</span>
+                      <p th:errors="*{gender}" class="error-messages">
+                        バリデーションエラーメッセージ
+                      </p>
+                      <input
+                        type="radio"
+                        id="male"
+                        name="gender"
+                        value="男性"
+                        checked
+                        th:errorclass="error-input"
+                      />
+                      <label for="male">男性</label>
+                      <input
+                        type="radio"
+                        id="female"
+                        name="gender"
+                        value="女性"
+                        th:errorclass="error-input"
+                      />
+                      <label for="female">女性</label>
                     </td>
                   </tr>
                   <tr>
                     <th nowrap>入社日</th>
                     <td>
-                      <span
-                        th:text="${#dates.format(employee.hireDate, 'yyyy年MM月dd日')}"
-                        >2012/11/29</span
-                      >
+                      <p th:errors="*{hireDate}" class="error-messages">
+                        バリデーションエラーメッセージ
+                      </p>
+                      <input
+                        type="date"
+                        th:field="*{hireDate}"
+                        class="form-control"
+                        th:errorclass="error-input"
+                      />
                     </td>
                   </tr>
                   <tr>
                     <th nowrap>メールアドレス</th>
                     <td>
-                      <span th:text="${employee.mailAddress}"
-                        >yamada@sample.com</span
-                      >
+                      <p th:errors="*{mailAddress}" class="error-messages">
+                        バリデーションエラーメッセージ
+                      </p>
+                      <input
+                        type="text"
+                        th:field="*{mailAddress}"
+                        class="form-control"
+                        th:errorclass="error-input"
+                      />
                     </td>
                   </tr>
                   <tr>
                     <th nowrap>郵便番号</th>
                     <td>
-                      <span th:text="${employee.zipCode}">111-1111</span>
+                      <p th:errors="*{zipCode}" class="error-messages">
+                        バリデーションエラーメッセージ
+                      </p>
+                      <input
+                        type="text"
+                        th:field="*{zipCode}"
+                        class="form-control"
+                        th:errorclass="error-input"
+                        placeholder="000-0000(ハイフンありで入力)"
+                      />
+                      <button id="addressSearchButton" type="button">
+                        郵便番号で住所検索する
+                      </button>
                     </td>
                   </tr>
                   <tr>
                     <th nowrap>住所</th>
                     <td>
-                      <span th:text="${employee.address}"
-                        >東京都新宿区1-1-1</span
-                      >
+                      <p th:errors="*{address}" class="error-messages">
+                        バリデーションエラーメッセージ
+                      </p>
+                      <input
+                        type="text"
+                        th:field="*{address}"
+                        class="form-control"
+                        th:errorclass="error-input"
+                      />
                     </td>
                   </tr>
                   <tr>
                     <th nowrap>電話番号</th>
                     <td>
-                      <span th:text="${employee.telephone}">090-0000-0000</span>
+                      <p th:errors="*{telephone}" class="error-messages">
+                        バリデーションエラーメッセージ
+                      </p>
+                      <input
+                        type="text"
+                        th:field="*{telephone}"
+                        class="form-control"
+                        th:errorclass="error-input"
+                        placeholder="000-0000-0000(ハイフンありで入力)"
+                      />
                     </td>
                   </tr>
                   <tr>
                     <th nowrap>給料</th>
                     <td>
-                      <span
-                        th:text="${#numbers.formatInteger(employee.salary, 1, 'COMMA')}"
-                        >400000円</span
-                      >
+                      <p th:errors="*{salary}" class="error-messages">
+                        バリデーションエラーメッセージ
+                      </p>
+                      <input
+                        type="text"
+                        th:field="*{salary}"
+                        class="form-control"
+                        th:errorclass="error-input"
+                        placeholder="数字で入力"
+                      />
                     </td>
                   </tr>
                   <tr>
                     <th nowrap>特性</th>
                     <td>
-                      <span th:text="${employee.characteristics}"
-                        >明るく素直な性格です。リーダーシップを発揮します。新卒社員研修の時はグループ開発の時にリーダーを買ってでました。積極性も人間性も抜群です。周りに対する不満も聞いたことがありません。</span
-                      >
+                      <p th:errors="*{characteristics}" class="error-messages">
+                        バリデーションエラーメッセージ
+                      </p>
+                      <textarea
+                        th:field="*{characteristics}"
+                        class="form-control"
+                        th:errorclass="error-input"
+                        placeholder="1文字から300文字まで"
+                      />
                     </td>
                   </tr>
                   <tr>
                     <th nowrap>扶養人数</th>
                     <td>
-                      <label
-                        th:if="${#fields.hasErrors('dependentsCount')}"
-                        th:errors="*{dependentsCount}"
-                        class="error-messages"
-                      >
-                        扶養人数を入力してください
-                      </label>
-                      <label
-                        class="control-label"
-                        style="color: red"
-                        for="dependentsCount"
-                      ></label>
-                      <input
-                        type="hidden"
-                        name="id"
-                        th:value="${employee.id}"
-                      />
+                      <p th:errors="*{dependentsCount}" class="error-messages">
+                        バリデーションエラーメッセージ
+                      </p>
                       <input
                         type="text"
-                        name="dependentsCount"
-                        id="dependentsCount"
+                        th:field="*{dependentsCount}"
                         class="form-control"
-                        value="3"
                         th:errorclass="error-input"
-                        th:value="${employee.dependentsCount}"
+                        placeholder="0から9人まで"
                       />
                     </td>
                   </tr>
                 </table>
-                <button type="submit" class="btn btn-primary">更新</button>
+                <button type="submit" class="btn btn-primary">登録</button>
               </fieldset>
             </form>
 
@@ -236,5 +307,6 @@
     <!-- end container -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="../../static/js/bootstrap.min.js"></script>
+    <script th:src="@{/js/addressSearch.js}"></script>
   </body>
 </html>
