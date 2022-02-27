@@ -72,15 +72,22 @@
               </li>
             </ul>
             <p class="navbar-text navbar-right">
-              <span th:text="${session.username}">山田太郎</span
-              >さんこんにちは！ &nbsp;&nbsp;&nbsp;
+              <span th:text="${session.username}">山田太郎</span>さんこんにちは!
+              &nbsp;&nbsp;&nbsp;
               <a
-                href="../administrator/login.html"
-                class="navbar-link"
-                th:href="@{/logout}"
-                >ログアウト</a
+                href="#"
+                onclick="document.getElementById('logout-form').submit();"
               >
+                ログアウト
+              </a>
             </p>
+            <form id="logout-form" th:action="@{/logout}" method="post">
+              <input
+                type="hidden"
+                name="${_csrf.parameterName}"
+                value="${_csrf.token}"
+              />
+            </form>
           </div>
           <!-- /.navbar-collapse -->
         </div>

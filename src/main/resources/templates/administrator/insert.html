@@ -137,18 +137,18 @@
                 <div class="form-group">
                   <div class="row">
                     <div class="col-sm-12">
-                      <label for="passwordConfirm"> 確認用パスワード: </label>
+                      <label for="passwordConfirmation">
+                        確認用パスワード:
+                      </label>
                       <label
-                        th:if="${passwordConfirmError}"
-                        th:text="${passwordConfirmError}"
+                        th:errors="*{passwordConfirmation}"
                         class="error-messages"
                       >
                         確認用パスワードを入力してください
                       </label>
                       <input
                         type="password"
-                        id="passwordConfirm"
-                        name="passwordConfirm"
+                        th:field="*{passwordConfirmation}"
                         class="form-control"
                         placeholder="確認用password"
                       />

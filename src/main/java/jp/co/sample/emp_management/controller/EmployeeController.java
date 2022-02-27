@@ -7,9 +7,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,6 +38,9 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
+
+	@Autowired
+	private MessageSource messageSource;
 
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
@@ -124,7 +129,8 @@ public class EmployeeController {
 	public String searchEmployee(SearchEmployeeForm form, Model model) {
 		List<Employee> employeeList = employeeService.findByEmployeeName(form.getName());
 		if (employeeList.isEmpty()) {
-			model.addAttribute("zeroResults", "１件もありませんでした");
+			model.addAttribute("zeroResults",
+					messageSource.getMessage("zeroResults", new String[] {}, Locale.getDefault()));
 		} else {
 			model.addAttribute("employeeList", employeeList);
 		}
