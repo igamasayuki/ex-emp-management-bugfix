@@ -57,11 +57,12 @@
               <fieldset>
                 <legend>ログイン</legend>
                 <div class="form-group">
-                  <div class="alert alert-danger" th:if="${errorMessage}">
-                    <p th:text="${errorMessage}">
-                      メールアドレスまたはパスワードが間違っています
-                    </p>
-                  </div>
+                  <label
+                    th:if="${errorMessage}"
+                    th:text="${errorMessage}"
+                    class="error-messages"
+                  >
+                  </label>
                 </div>
                 <div class="form-group">
                   <label for="mailAddress">メールアドレス:</label>

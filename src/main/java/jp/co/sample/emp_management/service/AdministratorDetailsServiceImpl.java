@@ -25,6 +25,21 @@ public class AdministratorDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("そのメールアドレスは登録されていません");
 		}
 		Collection<GrantedAuthority> authorityList = new ArrayList<>();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println(administrator);
+		if ("admin".equals(administrator.getName())) {
+			authorityList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		}
 		authorityList.add(new SimpleGrantedAuthority("ROLE_USER"));
 		return new LoginAdministrator(administrator, authorityList);
 	}

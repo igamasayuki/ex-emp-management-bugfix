@@ -6,3 +6,5 @@ spring:
     password: postgres
   messages:
     basename: ValidationMessages
+  thymeleaf:
+    cache: false

@@ -1,5 +1,6 @@
 package jp.co.sample.emp_management.controller;
 
+import java.util.Locale;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -27,7 +28,7 @@ public class AdministratorController {
 	private AdministratorService administratorService;
 
 	@Autowired
-	private MessageSource messageSource;
+	private MessageSource MessageSource;
 
 	// @Autowired
 	// private HttpSession session;
@@ -102,7 +103,11 @@ public class AdministratorController {
 	 * @return ログイン画面
 	 */
 	@RequestMapping("/")
-	public String toLogin() {
+	public String toLogin(Model model, String err) {
+		if (err != null) {
+			model.addAttribute("errorMessage",
+					MessageSource.getMessage("errorMessage", new String[] {}, Locale.getDefault()));
+		}
 		return "administrator/login";
 	}
 

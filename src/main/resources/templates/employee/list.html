@@ -65,15 +65,15 @@
                   >従業員管理</a
                 >
               </li>
-              <li class="active">
+              <li sec:authorize="hasRole('ADMIN')">
                 <a href="insert.html" th:href="@{/employee/toInsert}"
                   >従業員登録</a
                 >
               </li>
             </ul>
             <p class="navbar-text navbar-right">
-              <span th:text="${session.username}">山田太郎</span>さんこんにちは!
-              &nbsp;&nbsp;&nbsp;
+              <span sec:authentication="principal.administrator.name"></span
+              >さんこんにちは! &nbsp;&nbsp;&nbsp;
               <a
                 href="#"
                 onclick="document.getElementById('logout-form').submit();"
