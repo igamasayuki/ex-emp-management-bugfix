@@ -1,5 +1,8 @@
 	package jp.co.sample.emp_management.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
@@ -9,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jp.co.sample.emp_management.domain.Administrator;
 import jp.co.sample.emp_management.form.InsertAdministratorForm;
@@ -84,6 +89,22 @@ public class AdministratorController {
 			return toInsert();
 		}
 		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/insert/check-password", method = RequestMethod.POST)
+	public Map<String, String> check(InsertAdministratorForm insertAdministratorForm){
+		String password = insertAdministratorForm.getPassword();
+		String confirmationPassword = insertAdministratorForm.getConfirmationPassword();
+		
+		Map<String, String> map = new HashMap<>();
+		//パスワード一致チェック
+		String disagreementMessage = null;
+		if(!password.equals(confirmationPassword)) {
+			disagreementMessage = "パスワードが一致していません";
+		} 
+		map.put("disagreementMessage", disagreementMessage);
+		return map;
 	}
 
 	/////////////////////////////////////////////////////
