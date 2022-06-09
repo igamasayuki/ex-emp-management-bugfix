@@ -1,4 +1,4 @@
-package jp.co.sample.emp_management.controller;
+	package jp.co.sample.emp_management.controller;
 
 import javax.servlet.http.HttpSession;
 
@@ -72,12 +72,18 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(InsertAdministratorForm form) {
+	public String insert(InsertAdministratorForm form, Model model) {
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		administratorService.insert(administrator);
-		return toLogin();
+		if(administratorService.findByMailAddress(form.getMailAddress()) == null) {
+			administratorService.insert(administrator);
+			return toLogin();
+		}else {
+			model.addAttribute("errDupliEmail", "既に登録されたメールアドレスです。他のメールアドレスをご利用ください");
+			return toInsert();
+		}
+		
 	}
 
 	/////////////////////////////////////////////////////
