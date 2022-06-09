@@ -1,4 +1,4 @@
-	package jp.co.sample.emp_management.controller;
+package jp.co.sample.emp_management.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class AdministratorController {
 
 	@Autowired
 	private AdministratorService administratorService;
-	
+
 	@Autowired
 	private HttpSession session;
 
@@ -45,7 +45,7 @@ public class AdministratorController {
 	public InsertAdministratorForm setUpInsertAdministratorForm() {
 		return new InsertAdministratorForm();
 	}
-	
+
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
 	 * 
@@ -72,8 +72,7 @@ public class AdministratorController {
 	/**
 	 * 管理者情報を登録します.
 	 * 
-	 * @param form
-	 *            管理者情報用フォーム
+	 * @param form 管理者情報用フォーム
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
@@ -81,28 +80,28 @@ public class AdministratorController {
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		if(administratorService.findByMailAddress(form.getMailAddress()) == null) {
+		if (administratorService.findByMailAddress(form.getMailAddress()) == null) {
 			administratorService.insert(administrator);
 			return toLogin();
-		}else {
+		} else {
 			model.addAttribute("errDupliEmail", "既に登録されたメールアドレスです。他のメールアドレスをご利用ください");
 			return toInsert();
 		}
-		
+
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "/insert/check-password", method = RequestMethod.POST)
-	public Map<String, String> check(InsertAdministratorForm insertAdministratorForm){
+	public Map<String, String> check(InsertAdministratorForm insertAdministratorForm) {
 		String password = insertAdministratorForm.getPassword();
 		String confirmationPassword = insertAdministratorForm.getConfirmationPassword();
-		
+
 		Map<String, String> map = new HashMap<>();
-		//パスワード一致チェック
+		// パスワード一致チェック
 		String disagreementMessage = null;
-		if(!password.equals(confirmationPassword)) {
+		if (!password.equals(confirmationPassword)) {
 			disagreementMessage = "パスワードが一致していません";
-		} 
+		}
 		map.put("disagreementMessage", disagreementMessage);
 		return map;
 	}
@@ -123,10 +122,8 @@ public class AdministratorController {
 	/**
 	 * ログインします.
 	 * 
-	 * @param form
-	 *            管理者情報用フォーム
-	 * @param result
-	 *            エラー情報格納用オブッジェクト
+	 * @param form   管理者情報用フォーム
+	 * @param result エラー情報格納用オブッジェクト
 	 * @return ログイン後の従業員一覧画面
 	 */
 	@RequestMapping("/login")
@@ -136,9 +133,10 @@ public class AdministratorController {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
 		}
+		model.addAttribute("userName",administrator.getName());
 		return "forward:/employee/showList";
 	}
-	
+
 	/////////////////////////////////////////////////////
 	// ユースケース：ログアウトをする
 	/////////////////////////////////////////////////////
@@ -152,5 +150,5 @@ public class AdministratorController {
 		session.invalidate();
 		return "redirect:/";
 	}
-	
+
 }
