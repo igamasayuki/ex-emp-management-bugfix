@@ -126,18 +126,18 @@ public class EmployeeController {
 	@PostMapping("/create")
 	public String create(InsertEmployeeForm form) {
 		Integer id = employeeService.getMaxIdEmployee().getId() + 1;
-		
+
 		// MultipartFileでフォームから画像ファイルを受信
 		MultipartFile file = form.getImage();
-		if(file.getSize() >= 20000) {
+		if (file.getSize() >= 20000) {
 			return toInsert();
 		}
 		// デフォルトの画像ファイルの名前を取得
 		String defaultFileName = file.getOriginalFilename();
-		
+
 		String extension = defaultFileName.substring(defaultFileName.lastIndexOf("."));
 		String fileName = "e" + id + extension;
-		
+
 		// javaIOでフィルパスと画像の名前を指定
 		File filepath = new File("src/main/resources/static/img/" + fileName);
 		try {
@@ -147,32 +147,15 @@ public class EmployeeController {
 			FileOutputStream stream = new FileOutputStream(filepath.toString());
 //			stream.write(bytes);
 			stream.close();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 //		Employee employee = new Employee();
 //		BeanUtils.copyProperties(form, employee);
 //		employee.setImage(fileName);
 //		employeeService.insert(employee);
 		return toInsert();
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

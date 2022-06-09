@@ -17,6 +17,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+//	存在しないサービス
 	@Autowired
 	private UserDetailsService memberDetailsService;
 
@@ -28,13 +29,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// リクエストを許可する範囲を設定
-		http.authorizeRequests().antMatchers("/", "/toInsert", "/insert").permitAll().anyRequest().authenticated();
+		http.authorizeRequests()
+				.antMatchers("/", "/toInsert", "/insert")
+				.permitAll()
+				.anyRequest()
+				.authenticated();
 
-		http.formLogin().loginPage("/").loginProcessingUrl("/login").failureUrl("/?error=true")
-				.defaultSuccessUrl("/employee/showList", false).usernameParameter("mailAddress")
-				.passwordParameter("password");
-		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout**")).logoutSuccessUrl("/")
-				.deleteCookies("JSESSIONID").invalidateHttpSession(true);
+		http.formLogin()
+				.loginPage("/")
+				.loginProcessingUrl("/login")
+				.failureUrl("/")
+				.defaultSuccessUrl("/employee/showList", true)
+				.usernameParameter("mailAddress")
+				.passwordParameter("password")
+				.permitAll();
+		
+		http.logout()
+				.logoutUrl("/logout")
+				.logoutSuccessUrl("/")
+				.permitAll();
+//				.invalidateHttpSession(true);
+//				.logoutRequestMatcher(new AntPathRequestMatcher("/logout**"))
 	}
 
 	@Override
