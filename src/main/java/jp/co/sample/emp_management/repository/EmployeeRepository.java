@@ -81,7 +81,7 @@ public class EmployeeRepository {
 	 * @return 検索された従業員情報
 	 */
 	public List<Employee> findByName(String employeeName) {
-		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees WHERE name like:name ORDER BY hire_date";
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees WHERE name like :name ORDER BY hire_date";
 
 		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + employeeName + "%");
 		List<Employee> developmentList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);

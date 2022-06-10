@@ -48,30 +48,21 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@RequestMapping("/showList")
-	public String showList(Model model) {
-		List<Employee> employeeList = employeeService.showList();
+	public String showList(String employeeName, Model model) {
+		List<Employee> employeeList = null;
+		if ("".equals(employeeName)) {
+			employeeList = employeeService.showList();
+		} else if (employeeService.findByName(employeeName) == null) {
+			employeeList = employeeService.showList();
+			model.addAttribute("errorMessage","一件もありませんでした");
+		}else {
+			employeeList = employeeService.findByName(employeeName);
+		}
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}
 
-	/////////////////////////////////////////////////////
-	// ユースケース：名前で従業員情報を表示する
-	/////////////////////////////////////////////////////
-	@RequestMapping("/findByName")
-	public String findByName(String employeeName, Model model) {
-		List<Employee> employeeList = new ArrayList<>();
-		if (employeeName == null) {
-			employeeList = employeeService.showList();
-		} else {
-			employeeList = employeeService.findByName(employeeName);
-			if (employeeList == null) {
-				employeeList = employeeService.showList();
-				model.addAttribute("errorMessage", "一件もありませんでした");
-			}
-		}
-		model.addAttribute("employeeList", employeeList);
-		return "forward:/employee/showList";
-	}
+
 
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員詳細を表示する

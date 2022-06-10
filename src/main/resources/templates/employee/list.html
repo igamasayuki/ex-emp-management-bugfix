@@ -55,7 +55,7 @@
 		<ol class="breadcrumb">
 			<li class="active">
 				<a href="list.html" th:href="@{/employee/showList}">従業員リスト</a>
-				<form method="post" th:action="@{employee/findByName}">
+				<form method="post" th:action="@{employee/showList}">
 					<input type="text" name="employeeName" id="employeeName" placeholder="従業員検索">
 					<button><i class="fa fa-search" aria-hidden="true"></i></button>
 					<span th:text="${errorMessage}"></span>
