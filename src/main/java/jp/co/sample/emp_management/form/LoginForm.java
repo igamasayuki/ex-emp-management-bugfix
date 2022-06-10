@@ -1,8 +1,5 @@
 package jp.co.sample.emp_management.form;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * ログイン時に使用するフォーム.
@@ -11,16 +8,12 @@ import javax.validation.constraints.Size;
  * 
  */
 public class LoginForm {
-	
+
 	/** メールアドレス */
-	@NotNull(message="メールアドレスを入力してください。")
-	@Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")
 	private String mailAddress;
 	/** パスワード */
-	@NotNull(message = "パスワードを入力してください。")
-	@Size(min = 1, message = "値を入力してください")
 	private String password;
-	
+
 	/**
 	 * @return the mailAddress
 	 */
