@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,11 +63,12 @@ public class AdministratorController {
 	/////////////////////////////////////////////////////
 	/**
 	 * 管理者登録画面を出力します.
+	 * @param model 
 	 * 
 	 * @return 管理者登録画面
 	 */
 	@RequestMapping("/toInsert")
-	public String toInsert() {
+	public String toInsert(Model model) {
 		return "administrator/insert";
 	}
 
@@ -76,18 +79,21 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(InsertAdministratorForm form, Model model) {
+	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
+		if(!form.getConfirmationPassword().equals(form.getConfirmationPassword())) {
+			FieldError disagreementPassword = new FieldError(result.getObjectName(), "confirmationPassword","上のパスワードと同じに入力してください");
+			result.addError(disagreementPassword);
+		}
+		
+		if(result.hasErrors()) {
+			return toInsert(model);
+		}
+		
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		if (administratorService.findByMailAddress(form.getMailAddress()) == null) {
-			administratorService.insert(administrator);
-			return toLogin();
-		} else {
-			model.addAttribute("errDupliEmail", "既に登録されたメールアドレスです。他のメールアドレスをご利用ください");
-			return toInsert();
-		}
-
+		administratorService.insert(administrator);
+		return toLogin();
 	}
 
 	@ResponseBody
