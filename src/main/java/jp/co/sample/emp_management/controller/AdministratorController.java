@@ -85,7 +85,7 @@ public class AdministratorController {
 		Administrator administrator = new Administrator();
 		BeanUtils.copyProperties(form, administrator);
 		if(administratorService.findByMailAddress(form.getMailAddress()) != null) {
-			FieldError emailError = new FieldError(result.getObjectName(), "email", "既に登録したメードアドレスです。新しいメードアドレスを入力してください");
+			FieldError emailError = new FieldError(result.getObjectName(), "mailAddress", "既に登録したメードアドレスです。新しいメードアドレスを入力してください");
 			result.addError(emailError);
 		}
 		if(result.hasErrors()) {
