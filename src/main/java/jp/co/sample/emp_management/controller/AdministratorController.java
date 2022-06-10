@@ -1,4 +1,7 @@
-	package jp.co.sample.emp_management.controller;
+package jp.co.sample.emp_management.controller;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +14,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jp.co.sample.emp_management.domain.Administrator;
 import jp.co.sample.emp_management.form.InsertAdministratorForm;
@@ -29,7 +34,7 @@ public class AdministratorController {
 
 	@Autowired
 	private AdministratorService administratorService;
-	
+
 	@Autowired
 	private HttpSession session;
 	
@@ -47,7 +52,7 @@ public class AdministratorController {
 	public InsertAdministratorForm setUpInsertAdministratorForm() {
 		return new InsertAdministratorForm();
 	}
-	
+
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
 	 * 
@@ -75,27 +80,41 @@ public class AdministratorController {
 	/**
 	 * 管理者情報を登録します.
 	 * 
-	 * @param form
-	 *            管理者情報用フォーム
+	 * @param form 管理者情報用フォーム
 	 * @return ログイン画面へリダイレクト
 	 */
 
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
-
-		Administrator administrator = new Administrator();
-		BeanUtils.copyProperties(form, administrator);
-		if(administratorService.findByMailAddress(form.getMailAddress()) != null) {
-			FieldError emailError = new FieldError(result.getObjectName(), "mailAddress", "既に登録したメードアドレスです。新しいメードアドレスを入力してください");
-			result.addError(emailError);
+		if(!form.getConfirmationPassword().equals(form.getConfirmationPassword())) {
+			FieldError disagreementPassword = new FieldError(result.getObjectName(), "confirmationPassword","上のパスワードと同じに入力してください");
+			result.addError(disagreementPassword);
 		}
+		
 		if(result.hasErrors()) {
 			return toInsert(model);
 		}
-		
-		// フォームからドメインにプロパティ値をコピー
+
+		Administrator administrator = new Administrator();
+		BeanUtils.copyProperties(form, administrator);
 		administratorService.insert(administrator);
 		return "redirect:/";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/insert/check-password", method = RequestMethod.POST)
+	public Map<String, String> check(InsertAdministratorForm insertAdministratorForm) {
+		String password = insertAdministratorForm.getPassword();
+		String confirmationPassword = insertAdministratorForm.getConfirmationPassword();
+
+		Map<String, String> map = new HashMap<>();
+		// パスワード一致チェック
+		String disagreementMessage = null;
+		if (!password.equals(confirmationPassword)) {
+			disagreementMessage = "パスワードが一致していません";
+		}
+		map.put("disagreementMessage", disagreementMessage);
+		return map;
 	}
 
 	/////////////////////////////////////////////////////
@@ -114,10 +133,8 @@ public class AdministratorController {
 	/**
 	 * ログインします.
 	 * 
-	 * @param form
-	 *            管理者情報用フォーム
-	 * @param result
-	 *            エラー情報格納用オブッジェクト
+	 * @param form   管理者情報用フォーム
+	 * @param result エラー情報格納用オブッジェクト
 	 * @return ログイン後の従業員一覧画面
 	 */
 	@RequestMapping("/login")
@@ -127,9 +144,10 @@ public class AdministratorController {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
 		}
+		model.addAttribute("userName",administrator.getName());
 		return "forward:/employee/showList";
 	}
-	
+
 	/////////////////////////////////////////////////////
 	// ユースケース：ログアウトをする
 	/////////////////////////////////////////////////////
@@ -143,5 +161,5 @@ public class AdministratorController {
 		session.invalidate();
 		return "redirect:/";
 	}
-	
+
 }
