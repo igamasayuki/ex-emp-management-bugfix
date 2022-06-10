@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,7 @@ import jp.co.sample.emp_management.service.AdministratorService;
 @Controller
 @RequestMapping("/")
 public class AdministratorController {
+	
 
 	@Autowired
 	private AdministratorService administratorService;
@@ -97,6 +99,10 @@ public class AdministratorController {
 
 		Administrator administrator = new Administrator();
 		BeanUtils.copyProperties(form, administrator);
+		BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
+		String encodedPassword = bcpe.encode(form.getPassword());
+		administrator.setPassword(encodedPassword);
+		
 		administratorService.insert(administrator);
 		return "redirect:/";
 	}
@@ -139,8 +145,9 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/login")
 	public String login(LoginForm form, BindingResult result, Model model) {
-		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
-		if (administrator == null) {
+		BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
+		Administrator administrator = administratorService.findByMailAddress(form.getMailAddress());
+		if (administrator == null || !bcpe.matches(form.getPassword(), administrator.getPassword()) ) {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
 		}
