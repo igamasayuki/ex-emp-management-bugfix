@@ -37,6 +37,11 @@ public class AdministratorController {
 
 	@Autowired
 	private HttpSession session;
+	
+	@ModelAttribute
+	public InsertAdministratorForm setUpForm() {
+		return new InsertAdministratorForm();
+	}
 
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
@@ -78,6 +83,7 @@ public class AdministratorController {
 	 * @param form 管理者情報用フォーム
 	 * @return ログイン画面へリダイレクト
 	 */
+
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
 		if(!form.getConfirmationPassword().equals(form.getConfirmationPassword())) {
@@ -88,12 +94,11 @@ public class AdministratorController {
 		if(result.hasErrors()) {
 			return toInsert(model);
 		}
-		
+
 		Administrator administrator = new Administrator();
-		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
 		administratorService.insert(administrator);
-		return toLogin();
+		return "redirect:/";
 	}
 
 	@ResponseBody
