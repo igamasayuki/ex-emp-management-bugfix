@@ -32,6 +32,11 @@ public class AdministratorController {
 	
 	@Autowired
 	private HttpSession session;
+	
+	@ModelAttribute
+	public InsertAdministratorForm setUpForm() {
+		return new InsertAdministratorForm();
+	}
 
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
