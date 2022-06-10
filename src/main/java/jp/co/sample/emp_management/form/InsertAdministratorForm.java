@@ -12,15 +12,16 @@ import javax.validation.constraints.Size;
  */
 public class InsertAdministratorForm {
 	/** 名前 */
-	@NotNull(message="名前を入力してください。")
-	@Size(min=1, max = 127, message = "名前は1桁以上１２７桁以下で入力してください。")
+	@NotNull(message = "名前を入力してください。")
+	@Size(min = 1, max = 127, message = "名前は1桁以上１２７桁以下で入力してください。")
 	private String name;
 	/** メールアドレス */
-	@NotNull(message="メールアドレスを入力してください。")
+	@NotNull(message = "メールアドレスを入力してください。")
 	@Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}")
 	private String mailAddress;
 	/** パスワード */
-	@NotNull(message="パスワードを入力してください。")
+	@NotNull(message = "パスワードを入力してください。")
+
 	@Size(min = 1, message = "値を入力してください")
 	private String password;
 
@@ -65,11 +66,11 @@ public class InsertAdministratorForm {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
 				+ "]";
 	}
-	
+
 }

@@ -82,6 +82,7 @@ public class AdministratorController {
 
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
+
 		Administrator administrator = new Administrator();
 		BeanUtils.copyProperties(form, administrator);
 		if(administratorService.findByMailAddress(form.getMailAddress()) != null) {
@@ -94,7 +95,7 @@ public class AdministratorController {
 		
 		// フォームからドメインにプロパティ値をコピー
 		administratorService.insert(administrator);
-		return toLogin();
+		return "redirect:/";
 	}
 
 	/////////////////////////////////////////////////////
