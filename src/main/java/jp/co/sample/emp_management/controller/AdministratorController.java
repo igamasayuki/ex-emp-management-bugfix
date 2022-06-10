@@ -1,4 +1,4 @@
-package jp.co.sample.emp_management.controller;
+	package jp.co.sample.emp_management.controller;
 
 import javax.servlet.http.HttpSession;
 
@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,6 +63,7 @@ public class AdministratorController {
 	/////////////////////////////////////////////////////
 	/**
 	 * 管理者登録画面を出力します.
+	 * @param model 
 	 * 
 	 * @return 管理者登録画面
 	 */
@@ -77,16 +79,21 @@ public class AdministratorController {
 	 *            管理者情報用フォーム
 	 * @return ログイン画面へリダイレクト
 	 */
+
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
+
+		Administrator administrator = new Administrator();
+		BeanUtils.copyProperties(form, administrator);
+		if(administratorService.findByMailAddress(form.getMailAddress()) != null) {
+			FieldError emailError = new FieldError(result.getObjectName(), "mailAddress", "既に登録したメードアドレスです。新しいメードアドレスを入力してください");
+			result.addError(emailError);
+		}
 		if(result.hasErrors()) {
-			model.addAttribute(form);
 			return toInsert(model);
 		}
 		
-		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
-		BeanUtils.copyProperties(form, administrator);
 		administratorService.insert(administrator);
 		return "redirect:/";
 	}

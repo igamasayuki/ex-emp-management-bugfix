@@ -34,6 +34,9 @@
 					<form method="post" action="login.html" th:action="@{/insert}" th:object="${insertAdministratorForm}">
 						<fieldset>
 							<legend>管理者登録<br>(システムにログインできる管理者を登録します)</legend>
+							
+							<span th:text="${errDupliEmail}">dupliEmail</span>
+						
 							<!-- 氏名 -->
 							<div class="form-group">
 								<div class="row">

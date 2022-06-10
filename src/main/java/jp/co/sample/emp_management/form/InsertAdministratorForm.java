@@ -21,6 +21,7 @@ public class InsertAdministratorForm {
 	private String mailAddress;
 	/** パスワード */
 	@NotNull(message = "パスワードを入力してください。")
+
 	@Size(min = 1, message = "値を入力してください")
 	private String password;
 
