@@ -1,6 +1,5 @@
 package jp.co.sample.emp_management.controller;
 
-import javax.naming.Binding;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
@@ -63,8 +62,7 @@ public class AdministratorController {
 	 * @return 管理者登録画面
 	 */
 	@RequestMapping("/toInsert")
-	public String toInsert(InsertAdministratorForm form,BindingResult result,
-			RedirectAttributes redirectAttributes,Model model) {
+	public String toInsert(InsertAdministratorForm form) {
 		return "administrator/insert";
 	}
 
@@ -75,18 +73,18 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form,BindingResult result,
-			RedirectAttributes redirectAttributes,Model model) {
-		
-		if(result.hasErrors()) {
-			return toInsert(form, result, redirectAttributes, model);
+	public String insert(@Validated InsertAdministratorForm form, BindingResult result,
+			RedirectAttributes redirectAttributes, Model model) {
+
+		if (result.hasErrors()) {
+			return toInsert(form);
 		}
-		
+
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
 		administratorService.insert(administrator);
-		
+
 		return "redirect:/";
 	}
 
