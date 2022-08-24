@@ -61,7 +61,7 @@ public class AdministratorController {
 	 * @return 管理者登録画面
 	 */
 	@RequestMapping("/toInsert")
-	public String toInsert(InsertAdministratorForm form, Model model) {
+	public String toInsert(InsertAdministratorForm form) {
 		return "administrator/insert";
 	}
 
@@ -73,10 +73,9 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form,
-			BindingResult result,
-			Model model) {
+			BindingResult result) {
 		if (result.hasErrors()) {
-			return toInsert(form, model);
+			return toInsert(form);
 		}
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
