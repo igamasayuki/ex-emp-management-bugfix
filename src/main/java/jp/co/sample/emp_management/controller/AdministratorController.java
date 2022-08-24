@@ -113,7 +113,7 @@ public class AdministratorController {
 	/**
 	 * ログアウトをします. (SpringSecurityに任せるためコメントアウトしました)
 	 * 
-	 * @return ログイン画面
+	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping(value = "/logout")
 	public String logout() {
