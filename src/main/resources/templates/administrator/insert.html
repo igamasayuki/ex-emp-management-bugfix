@@ -70,8 +70,7 @@
                         class="form-control"
                         placeholder="山田太郎"
                         th:field="*{name}"
-                        th:errorclass="error-input"
-                        value="山田太郎"
+                        value="*{name}"
                       />
                     </div>
                   </div>
@@ -94,8 +93,7 @@
                         class="form-control"
                         placeholder="yamada@mail.com"
                         th:field="*{mailAddress}"
-                        th:errorclass="error-input"
-                        value="yamada@mail.com"
+                        value="*{mailAddress}"
                       />
                     </div>
                   </div>
@@ -118,7 +116,6 @@
                         class="form-control"
                         placeholder="password"
                         th:field="*{password}"
-                        th:errorclass="error-input"
                         value="xxxxxxxx"
                       />
                     </div>
