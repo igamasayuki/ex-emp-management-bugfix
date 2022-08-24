@@ -73,8 +73,18 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form,
-			BindingResult result) {
+			BindingResult result,
+			Model model) {
 		if (result.hasErrors()) {
+			// エラーチェックを行う場合でもメールアドレスの重複がないか確認
+			if (administratorService.findByMailAddress(form.getMailAddress()) != null) {
+				model.addAttribute("duplicateMessage", "このメールアドレスは既に登録されています");
+				return toInsert(form);
+			}
+			return toInsert(form);
+		}
+		if (administratorService.findByMailAddress(form.getMailAddress()) != null) {
+			model.addAttribute("duplicateMessage", "このメールアドレスは既に登録されています");
 			return toInsert(form);
 		}
 		Administrator administrator = new Administrator();
