@@ -74,6 +74,16 @@ public class AdministratorController {
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form,
 			BindingResult result) {
+//		メール重複チェック
+		if (administratorService.findByMailAddress(form.getMailAddress()) != null) {
+//			使い方比較のためコメントアウトして残してます
+//			FieldError fieldError = new FieldError(result.getObjectName(), "mailAddress", "このメールアドレスは既に登録されています");
+//			result.addError(fieldError);
+//			参考: https://begi-tech.com/article/springjava-originalvalidation
+//			https://spring.pleiades.io/spring-framework/docs/current/javadoc-api/org/springframework/validation/Errors.html#rejectValue-java.lang.String-java.lang.String-java.lang.String-
+			result.rejectValue("mailAddress", null, "このメールアドレスは既に登録されています");
+		}
+//		フォームのValidationによるエラーがない場合でも、メール重複があれば直前の処理でerrorを保持しているため、ここで引っかかる
 		if (result.hasErrors()) {
 			return toInsert(form);
 		}
