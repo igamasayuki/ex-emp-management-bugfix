@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jp.co.sample.emp_management.domain.Employee;
@@ -89,5 +90,24 @@ public class EmployeeController {
 		employee.setDependentsCount(form.getIntDependentsCount());
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
+	}
+	
+	/**
+	 * 名前曖昧検索により従業員一覧を返します.
+	 * 
+	 * @param name 名前
+	 * @param model メッセージやリストを格納するオブジェクト.
+	 * @return 従業員リスト画面 リストがない場合はshowList()メソッド
+	 */
+	@PostMapping("/search")
+	public String search(String name, Model model) {
+		List<Employee> employeeList = employeeService.searchEmployees(name);
+		model.addAttribute("searchName", name);
+		if (employeeList.isEmpty()) {
+			model.addAttribute("noEmployeeMessage", "1件もありませんでした");
+			return showList(model);
+		}
+		model.addAttribute("employeeList", employeeList);
+		return "employee/list";
 	}
 }
