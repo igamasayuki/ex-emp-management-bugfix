@@ -99,7 +99,7 @@
           <!-- ここから検索フォーム -->
           <div class="search-employees">
             <label th:text="${noEmployeeMessage}" style="color: red"></label>
-          	<form action="list.html" th:action="@{/employee/search}" method="post">
+          	<form action="list.html" th:action="@{/employee/showList}" method="post">
           	  <label for="search-name">従業員検索:</label>
           	  <input type="text" name="name" id="search-name" th:value="${searchName}">
           	  <button type="submit">検索</button>
