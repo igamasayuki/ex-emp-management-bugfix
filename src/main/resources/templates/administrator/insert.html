@@ -124,6 +124,31 @@
                     </div>
                   </div>
                 </div>
+                <!-- パスワード(再入力) -->
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <label for="password2"> パスワード(再入力): </label>
+                      <label
+                        th:errors="*{password2}"
+                        class="error-messages"
+                        id="password-mismatch"
+                      >
+                        パスワードが一致していません
+                      </label>
+                      <input
+                        type="password"
+                        name="password2"
+                        id="password2"
+                        class="form-control"
+                        placeholder="password"
+                        th:field="*{password2}"
+                        th:errorclass="error-input"
+                        value="xxxxxxxx"
+                      />
+                    </div>
+                  </div>
+                </div>
                 <!-- 登録ボタン -->
                 <div class="form-group">
                   <div class="row">
@@ -145,5 +170,6 @@
     <!-- end container -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="../../static/js/bootstrap.min.js"></script>
+    <script src="../../static/js/insert.js" th:src="@{/js/insert.js}"></script>
   </body>
 </html>
