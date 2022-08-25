@@ -95,7 +95,14 @@
           class="table-responsive col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12"
         >
           <!-- ここから上を編集する必要はありません -->
-
+		<form method="post" th:action="@{/employee/showList}">
+			<label>従業員名検索：
+			<input type="text" name="name">
+			<button>検索</button>
+		</label>
+		</form>
+		<br>
+		<span th:text="${message}"></span>
           <!-- ここにモックのtable要素を貼り付けます -->
 
           <table class="table table-striped">
