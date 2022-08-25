@@ -83,6 +83,12 @@ public class AdministratorController {
 //			https://spring.pleiades.io/spring-framework/docs/current/javadoc-api/org/springframework/validation/Errors.html#rejectValue-java.lang.String-java.lang.String-java.lang.String-
 			result.rejectValue("mailAddress", null, "このメールアドレスは既に登録されています");
 		}
+		
+//		パスワードが一致しているか確認
+		if (!form.getPassword().equals(form.getPassword2())) {
+			result.rejectValue("password2", null, "パスワードが一致していません");
+		}
+		
 //		フォームのValidationによるエラーがない場合でも、メール重複があれば直前の処理でerrorを保持しているため、ここで引っかかる
 		if (result.hasErrors()) {
 			return toInsert(form);
