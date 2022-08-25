@@ -73,18 +73,24 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form,
-			BindingResult result,
-			Model model) {
+			BindingResult result) {
 		if (result.hasErrors()) {
 			// エラーチェックを行う場合でもメールアドレスの重複がないか確認
 			if (administratorService.findByMailAddress(form.getMailAddress()) != null) {
-				model.addAttribute("duplicateMessage", "このメールアドレスは既に登録されています");
+//				使い方比較のためコメントアウトして残してます
+//				FieldError fieldError = new FieldError(result.getObjectName(), "mailAddress", "このメールアドレスは既に登録されています");
+//				result.addError(fieldError);
+//				参考: https://begi-tech.com/article/springjava-originalvalidation
+//				https://spring.pleiades.io/spring-framework/docs/current/javadoc-api/org/springframework/validation/Errors.html#rejectValue-java.lang.String-java.lang.String-java.lang.String-
+				result.rejectValue("mailAddress", null, "このメールアドレスは既に登録されています");
 				return toInsert(form);
 			}
 			return toInsert(form);
 		}
 		if (administratorService.findByMailAddress(form.getMailAddress()) != null) {
-			model.addAttribute("duplicateMessage", "このメールアドレスは既に登録されています");
+//			FieldError fieldError = new FieldError(result.getObjectName(), "mailAddress", "このメールアドレスは既に登録されています");
+//			result.addError(fieldError);
+			result.rejectValue("mailAddress", null, "このメールアドレスは既に登録されています");
 			return toInsert(form);
 		}
 		Administrator administrator = new Administrator();
