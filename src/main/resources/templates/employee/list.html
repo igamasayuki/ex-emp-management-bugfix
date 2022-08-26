@@ -95,7 +95,16 @@
           class="table-responsive col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12"
         >
           <!-- ここから上を編集する必要はありません -->
-
+          
+          <!-- ここから検索フォーム -->
+          <div class="search-employees">
+            <label th:text="${noEmployeeMessage}" style="color: red"></label>
+          	<form action="list.html" th:action="@{/employee/showList}" method="post">
+          	  <label for="search-name">従業員検索:</label>
+          	  <input type="text" name="name" id="search-name" th:value="${searchName}">
+          	  <button type="submit">検索</button>
+          	</form>
+          </div>
           <!-- ここにモックのtable要素を貼り付けます -->
 
           <table class="table table-striped">

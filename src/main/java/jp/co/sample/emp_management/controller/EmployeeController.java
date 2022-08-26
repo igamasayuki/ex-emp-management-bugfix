@@ -44,11 +44,24 @@ public class EmployeeController {
 	 * 従業員一覧画面を出力します.
 	 * 
 	 * @param model モデル
+	 * @param name 名前
 	 * @return 従業員一覧画面
 	 */
 	@RequestMapping("/showList")
-	public String showList(Model model) {
-		List<Employee> employeeList = employeeService.showList();
+	public String showList(Model model, String name) {
+		List<Employee> employeeList = null;
+		// ログイン後、最初に一覧を表示すると「1件もありませんでした」と表示されないようにnameのnull判定で分岐してるけど正解か分からん
+		if (name == null) {
+			employeeList = employeeService.showList();
+		} else {
+			employeeList = employeeService.searchEmployees(name);
+			model.addAttribute("searchName", name);
+			if (employeeList.isEmpty()) {
+				model.addAttribute("noEmployeeMessage", "1件もありませんでした");
+				employeeList = employeeService.showList();
+			}
+		}
+		
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}
@@ -90,4 +103,5 @@ public class EmployeeController {
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
 	}
+	
 }
