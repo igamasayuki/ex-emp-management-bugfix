@@ -50,6 +50,7 @@ public class EmployeeController {
 	@RequestMapping("/showList")
 	public String showList(Model model, String name) {
 		List<Employee> employeeList = null;
+		// ログイン後、最初に一覧を表示すると「1件もありませんでした」と表示されないようにnameのnull判定で分岐してるけど正解か分からん
 		if (name == null) {
 			employeeList = employeeService.showList();
 		} else {
