@@ -17,9 +17,6 @@ $(function() {
 			console.dir(JSON.stringify(data));
 			$("#search-name").autocomplete({
 				source : data,
-				autoFocus: true,
-				delay: 500,
-				minLength: 1
 			});
 		}).fail(function(XMLHttpRequest, textStatus, errorThrown) {
 			alert("エラーが発生しました");
