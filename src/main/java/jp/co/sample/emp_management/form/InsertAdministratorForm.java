@@ -1,8 +1,6 @@
 package jp.co.sample.emp_management.form;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 /**
  * 管理者情報登録時に使用するフォーム.
