@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jp.co.sample.emp_management.domain.Administrator;
 import jp.co.sample.emp_management.form.InsertAdministratorForm;
 import jp.co.sample.emp_management.form.LoginForm;
+import jp.co.sample.emp_management.repository.AdministratorRepository;
 import jp.co.sample.emp_management.service.AdministratorService;
 
 /**
@@ -26,6 +27,7 @@ public class AdministratorController {
 
 	@Autowired
 	private AdministratorService administratorService;
+	
 
 	@Autowired
 	private HttpSession session;
@@ -70,12 +72,21 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(InsertAdministratorForm form) {
-		Administrator administrator = new Administrator();
-		// フォームからドメインにプロパティ値をコピー
-		BeanUtils.copyProperties(form, administrator);
-		administratorService.insert(administrator);
-		return "employee/list";
+	public String insert(InsertAdministratorForm form, Model model) {
+		Administrator emailAddress = administratorService.email(form.getMailAddress());
+		if(emailAddress == null) {
+			Administrator administrator = new Administrator();
+			// フォームからドメインにプロパティ値をコピー
+			BeanUtils.copyProperties(form, administrator);
+			administratorService.insert(administrator);
+			return "redirect:/";
+		}else {
+			String duplication = "このメールアドレスはすでに使用されています";
+			model.addAttribute("duplication", duplication);
+			return "administrator/insert";
+		}
+		
+		
 	}
 
 	/////////////////////////////////////////////////////

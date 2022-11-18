@@ -40,4 +40,11 @@ public class AdministratorService {
 		Administrator administrator = administratorRepository.findByMailAddressAndPassward(mailAddress, password);
 		return administrator;
 	}
+	
+	public Administrator email(String mailAddress) {
+		Administrator email =  administratorRepository.findByMailAddress(mailAddress);
+		return email;
+	}
+	
+	
 }
