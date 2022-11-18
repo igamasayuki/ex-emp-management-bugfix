@@ -1,7 +1,6 @@
 package jp.co.sample.emp_management.controller;
 
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -127,5 +126,6 @@ public class AdministratorController {
 		session.invalidate();
 		return "redirect:/";
 	}
+	
 
 }
