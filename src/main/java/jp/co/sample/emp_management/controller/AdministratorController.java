@@ -1,5 +1,8 @@
 package jp.co.sample.emp_management.controller;
 
+
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
@@ -73,19 +76,18 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form,BindingResult result,RedirectAttributes redirectAttributes,Model model) {
+	public String insert(@Validated InsertAdministratorForm form,BindingResult result,RedirectAttributes redirectAttributes,Model model,Map<String,String> errorMap) {
+		
+		Administrator admin = administratorService.searchMailAddress(form.getMailAddress());
+		if(admin != null) {
+			result.rejectValue("mailAddress", null, "そのメールアドレスは既に存在します");
+		}
 		
 		if(result.hasErrors()) {
 			return toInsert(model, form);
 		}
 		
 		//メールアドレスを条件に１件取得してnullかどうか→無かったら登録
-		Administrator admin = administratorService.searchMailAddress(form.getMailAddress());
-		System.out.println(admin);
-		if(admin != null) {
-			model.addAttribute("dup","そのメールアドレスは既に存在します");
-			return toInsert(model, form);
-		}
 		
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
