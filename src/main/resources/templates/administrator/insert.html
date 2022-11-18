@@ -88,6 +88,7 @@
                       >
                         メールアドレスを入力してください
                       </label>
+                      <div th:text="${dup}" style="color:red">エラー！</div>
                       <div th:errors="*{mailAddress}" style="color:red">エラー！</div>
                       <input
                         type="text"
