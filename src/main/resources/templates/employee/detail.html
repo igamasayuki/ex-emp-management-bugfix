@@ -132,7 +132,11 @@
                   <tr>
                     <th nowrap>入社日</th>
                     <td>
+<<<<<<< HEAD
                       <span th:text="${#dates.format(employee.hireDate,'yyyy年MM月dd日')}">xxxx/xx/xx</span>
+=======
+                    <span th:text="${#dates.format(employee.hireDate,'yyyy年MM月dd日')}">xxxx/xx/xx</span>
+>>>>>>> develop
                     </td>
                   </tr>
                   <tr>
@@ -168,7 +172,7 @@
                   <tr>
                     <th nowrap>給料</th>
                     <td>
-                      <span th:utext="${employee.salary + '円'}">400000円</span>
+                      <span th:utext="${#numbers.formatInteger(employee.salary,1,'COMMA') + '円'}">400000円</span>
                     </td>
                   </tr>
                   <tr>

@@ -63,6 +63,7 @@
                       >
                         氏名を入力してください
                       </label>
+                      <div th:errors="*{name}" style="color:red">エラー！</div>
                       <input
                         type="text"
                         name="name"
@@ -87,6 +88,8 @@
                       >
                         メールアドレスを入力してください
                       </label>
+                      <div th:text="${dup}" style="color:red">エラー！</div>
+                      <div th:errors="*{mailAddress}" style="color:red">エラー！</div>
                       <input
                         type="text"
                         name="mailAddress"
@@ -111,6 +114,7 @@
                       >
                         パスワードを入力してください
                       </label>
+                      <div th:errors="*{password}" style="color:red">エラー！</div>
                       <input
                         type="password"
                         name="password"
