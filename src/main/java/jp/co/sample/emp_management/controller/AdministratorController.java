@@ -1,11 +1,14 @@
 package jp.co.sample.emp_management.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.jni.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jp.co.sample.emp_management.domain.Administrator;
 import jp.co.sample.emp_management.form.InsertAdministratorForm;
 import jp.co.sample.emp_management.form.LoginForm;
+import jp.co.sample.emp_management.repository.AdministratorRepository;
+import jp.co.sample.emp_management.repository.EmployeeRepository;
 import jp.co.sample.emp_management.service.AdministratorService;
 
 /**
@@ -65,7 +70,7 @@ public class AdministratorController {
 	public String toInsert() {
 		return "administrator/insert";
 	}
-	
+
 	/**
 	 * 管理者情報を登録します.
 	 * 
@@ -73,14 +78,25 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert( 
-			@Validated InsertAdministratorForm form
-			,BindingResult result
-			,RedirectAttributes redirectAttributes
-			,Model model) {
-		if(result.hasErrors()) {
+	public String insert(@Validated InsertAdministratorForm form, BindingResult result,
+			RedirectAttributes redirectAttributes, Model model) {
+
+		// ここにEメールアドレス重複☑を書く
+		// メソッド(AdministratorServiceにseachByMailAddress()のこと)を呼ぶ
+		// ・もしnullじゃなければ(Administratorオブジェクトが返ってきたら)重複しているメールアドレスのため入力画面に戻りエラーメッセージを出す
+
+		Administrator administrator1 = administratorService.seachByMailAddress(form.getMailAddress());
+		if (administrator1 != null) {
+			model.addAttribute("errorMessage", "メールアドレスが重複してます。");
+			return toInsert();
+
+		}
+		// ・もし戻り値がnullなら重複していないメールアドレスのため登録処理を行う
+
+		if (result.hasErrors()) {
 			return toInsert();
 		}
+
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
@@ -97,10 +113,10 @@ public class AdministratorController {
 	 * @return ログイン画面
 	 */
 	@RequestMapping("/")
-	public String toLogin( ) {
-			
+	public String toLogin() {
+
 		return "administrator/login";
-		
+
 	}
 
 	/**
@@ -110,7 +126,7 @@ public class AdministratorController {
 	 * @return ログイン後の従業員一覧画面
 	 */
 	@RequestMapping("/login")
-	
+
 	public String login(LoginForm form, Model model) {
 		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
 		if (administrator == null) {

@@ -30,6 +30,17 @@ public class AdministratorService {
 	}
 
 	/**
+	 * 重複チェック
+	 * 
+	 * @param mailAddress メールアドレス
+	 * @return 管理者情報
+	 */
+	public Administrator seachByMailAddress(String mailAddress) {
+		Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
+		return administrator;
+	}
+
+	/**
 	 * ログインをします.
 	 * 
 	 * @param mailAddress メールアドレス

@@ -67,6 +67,7 @@ public class AdministratorRepository {
 		}
 		return administratorList.get(0);
 	}
+	
 
 	/**
 	 * 管理者情報を挿入します.
@@ -90,8 +91,10 @@ public class AdministratorRepository {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress);
 		List<Administrator> administratorList = template.query(sql, param, ADMINISTRATOR_ROW_MAPPER);
 		if (administratorList.size() == 0) {
+			
 			return null;
 		}
+		
 		return administratorList.get(0);
 	}
 
