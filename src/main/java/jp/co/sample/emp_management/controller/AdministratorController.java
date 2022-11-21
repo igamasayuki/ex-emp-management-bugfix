@@ -1,6 +1,5 @@
 package jp.co.sample.emp_management.controller;
 
-
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -66,7 +65,7 @@ public class AdministratorController {
 	 * @return 管理者登録画面
 	 */
 	@RequestMapping("/toInsert")
-	public String toInsert(Model model,InsertAdministratorForm form) {
+	public String toInsert(Model model, InsertAdministratorForm form) {
 		return "administrator/insert";
 	}
 
@@ -77,23 +76,24 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form,BindingResult result,RedirectAttributes redirectAttributes,Model model,Map<String,String> errorMap) {
-		
+	public String insert(@Validated InsertAdministratorForm form, BindingResult result,
+			RedirectAttributes redirectAttributes, Model model, Map<String, String> errorMap) {
+
 		Administrator admin = administratorService.searchMailAddress(form.getMailAddress());
-		if(admin != null) {
+		if (admin != null) {
 			result.rejectValue("mailAddress", null, "そのメールアドレスは既に存在します");
 		}
-		
-		if(result.hasErrors()) {
+
+		if (result.hasErrors()) {
 			return toInsert(model, form);
 		}
-		
-		//メールアドレスを条件に１件取得してnullかどうか→無かったら登録
-		
+
+		// メールアドレスを条件に１件取得してnullかどうか→無かったら登録
+
 		BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
 		String encodeedPassword = bcpe.encode(form.getPassword());
 		form.setPassword(encodeedPassword);
-		
+
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
@@ -128,14 +128,17 @@ public class AdministratorController {
 	public String login(LoginForm form, Model model) {
 		BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
 		String pass = bcpe.encode(form.getPassword());
-		System.out.println("ログインする人のPASS ＝　"+bcpe.encode(form.getPassword()));
-		System.out.println("ログインする人のPASS22222 ＝　"+ pass);
-		Administrator administrator = administratorService.login(form.getMailAddress(),bcpe.encode(form.getPassword()));
-		if (administrator == null) {
-			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
-			return toLogin();
+		System.out.println("ログインする人のPASS ＝　" + bcpe.encode(form.getPassword()));
+		System.out.println("ログインする人のPASS22222 ＝　" + pass);
+		Administrator administrator = administratorService.searchMailAddress(form.getMailAddress());
+		if (bcpe.matches(form.getPassword(), administrator.getPassword())) {
+
+			return "forward:/employee/showList";
 		}
-		return "forward:/employee/showList";
+
+		model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
+		return "redirect:/toLogin()";
+
 	}
 
 	/////////////////////////////////////////////////////
