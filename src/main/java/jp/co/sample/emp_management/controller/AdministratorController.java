@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import jp.co.sample.emp_management.domain.Administrator;
 import jp.co.sample.emp_management.form.InsertAdministratorForm;
@@ -89,9 +90,15 @@ public class AdministratorController {
 		
 		//メールアドレスを条件に１件取得してnullかどうか→無かったら登録
 		
+		BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
+		String encodeedPassword = bcpe.encode(form.getPassword());
+		form.setPassword(encodeedPassword);
+		
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
+		System.out.println("登録する管理者　パスワード　：" + administrator.getPassword());
+		System.out.println("登録する管理者　：" + administrator);
 		administratorService.insert(administrator);
 
 		return "redirect:/";
@@ -119,7 +126,11 @@ public class AdministratorController {
 	 */
 	@RequestMapping("/login")
 	public String login(LoginForm form, Model model) {
-		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
+		BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
+		String pass = bcpe.encode(form.getPassword());
+		System.out.println("ログインする人のPASS ＝　"+bcpe.encode(form.getPassword()));
+		System.out.println("ログインする人のPASS22222 ＝　"+ pass);
+		Administrator administrator = administratorService.login(form.getMailAddress(),bcpe.encode(form.getPassword()));
 		if (administrator == null) {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
