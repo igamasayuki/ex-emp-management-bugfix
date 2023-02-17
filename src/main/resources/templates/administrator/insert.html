@@ -80,6 +80,7 @@
                 <div class="form-group">
                   <div class="row">
                     <div class="col-sm-12">
+                    <div th:text="${message}" style="color:red"></div>
                       <label for="mailAddress"> メールアドレス: </label>
                       <label
                         th:errors="*{mailAddress}"
