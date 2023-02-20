@@ -80,6 +80,19 @@
 									</div>
 								</div>
 							</div>
+							<!-- 確認用パスワード -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="password"> 確認パスワード: </label><label
+											th:if="${#fields.hasErrors('passwordValid')}" th:errors="*{passwordValid}" style="color:red">
+											PasswordとPassword confirmationは同一にしてください。 </label> <input type="password" name="passwordConfirmation"
+											id="password" class="form-control" placeholder="password"
+											th:field="*{passwordConfirmation}" th:errorclass="error-input"
+											value="xxxxxxxx" />
+									</div>
+								</div>
+							</div>
 							<!-- 登録ボタン -->
 							<div class="form-group">
 								<div class="row">
