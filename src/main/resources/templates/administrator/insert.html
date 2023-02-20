@@ -87,6 +87,9 @@
                       >
                         メールアドレスを入力してください
                       </label>
+                       <span th:unless="${registeredAdministrator} == null" th:text="${registeredMessage}" class="error-messages">
+                       すでに登録されているメールアドレスです
+                       </span>
                       <input
                         type="text"
                         name="mailAddress"
