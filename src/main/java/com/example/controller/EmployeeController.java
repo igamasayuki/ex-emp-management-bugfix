@@ -51,12 +51,7 @@ public class EmployeeController {
 	 */
 	@GetMapping("/showList")
 	public String showList(Model model) {
-	
-
 		List<Employee> employeeList = employeeService.showList();
-			
-
-		
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}
