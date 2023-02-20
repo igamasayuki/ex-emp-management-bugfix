@@ -83,13 +83,11 @@
                       <label for="mailAddress"> メールアドレス: </label>
                       <label
                         th:errors="*{mailAddress}"
+                        th:field="*{mailAddress}"
                         class="error-messages"
                       >
-                        メールアドレスを入力してください
+                        メールアドレスを入力してください or すでに登録されているメールアドレスです
                       </label>
-                       <span th:unless="${registeredAdministrator} == null" th:text="${registeredMessage}" class="error-messages">
-                       すでに登録されているメールアドレスです
-                       </span>
                       <input
                         type="text"
                         name="mailAddress"
