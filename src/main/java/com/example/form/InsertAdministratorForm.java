@@ -13,7 +13,8 @@ public class InsertAdministratorForm {
 	@NotBlank
 	private String name;
 	/** メールアドレス */
-	@NotBlank
+	@NotBlank(message = "メールアドレスを入力してください")
+	@UnusedMailAddress
 	private String mailAddress;
 	/** パスワード */
 	@NotBlank
