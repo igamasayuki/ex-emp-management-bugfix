@@ -65,7 +65,6 @@ public class AdministratorController {
 	 */
 	@GetMapping("/toInsert")
 	public String toInsert(Model model, InsertAdministratorForm form) {
-		System.out.println("toInsertの中のform:" + form);
 		return "administrator/insert";
 	}
 
@@ -79,13 +78,11 @@ public class AdministratorController {
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
 
 		Administrator registeredAdministrator = administratorService.findByMailAddress(form.getMailAddress());
-//		FieldError resisteredError = new FieldError("error-message", "mailAddress", "すでに登録されているメールアドレスです");
-		if (!(registeredAdministrator == null)) {
+		if (registeredAdministrator != null) {
 			result.rejectValue("mailAddress", null, "すでに登録されているメールアドレスです");
 		}
 
 		if (result.hasErrors()) {
-			System.out.println("ifの中のform:" + form);
 			return toInsert(model, form);
 		}
 
