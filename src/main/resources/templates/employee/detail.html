@@ -56,7 +56,7 @@
 		<!-- パンくずリスト -->
 		<ol class="breadcrumb">
 			<li><a href="detail.html" th:href="@{/employee/showList}">従業員リスト</a></li>
-			<li class="active"> 従業員詳細</li>
+			<li class="active">従業員詳細</li>
 		</ol>
 
 		<!-- register form -->
@@ -81,8 +81,7 @@
 								<tr>
 									<th nowrap>写真</th>
 									<td><img src="../../static/img/e2.png"
-										th:src="${'/img/' + employee.image}" />
-									</td>
+										th:src="${'/img/' + employee.image}" /></td>
 								</tr>
 								<tr>
 									<th nowrap>性別</th>
@@ -116,7 +115,8 @@
 								</tr>
 								<tr>
 									<th nowrap>給料</th>
-									<td><span th:text="${#numbers.formatInteger(employee.salary,1,'COMMA') + '円'}">400000円</span>
+									<td><span
+										th:text="${#numbers.formatInteger(employee.salary,1,'COMMA') + '円'}">400000円</span>
 									</td>
 								</tr>
 								<tr>
@@ -127,14 +127,12 @@
 								<tr>
 									<th nowrap>扶養人数</th>
 									<td><label th:errors="*{dependentsCount}"
-										class="error-messages">
-											扶養人数を入力してください </label> <label class="control-label"
-										style="color: red" for="dependentsCount"></label>
-										<input type="hidden" name="id" th:value="${employee.id}" />
-										<input type="text" name="dependentsCount" id="dependentsCount"
+										class="error-messages"> 扶養人数を入力してください </label> <label
+										class="control-label" style="color: red" for="dependentsCount"></label>
+										<input type="hidden" name="id" th:value="${employee.id}" /> <input
+										type="text" name="dependentsCount" id="dependentsCount"
 										class="form-control" value="3" th:errorclass="error-input"
-										th:value="${employee.dependentsCount}" />
-									</td>
+										th:value="${employee.dependentsCount}" /></td>
 								</tr>
 							</table>
 							<button type="submit" class="btn btn-primary">更新</button>
