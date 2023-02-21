@@ -25,7 +25,7 @@ public class InsertAdministratorForm {
 	 * 確認用パスワード*/
 	private String passwordConfirmation;
 
-	    @AssertTrue(message = "PasswordとPassword confirmationは同一にしてください。")
+	    @AssertTrue(message = "パスワードと確認用パスワードは同一にしてください。")
 	    public boolean isPasswordValid() {
 	        if (password == null || password.isEmpty()) {
 	            return true;
