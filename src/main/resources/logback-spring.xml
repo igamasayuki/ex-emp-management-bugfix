@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<include
+		resource="org/springframework/boot/logging/logback/base.xml" />
+
+	<!-- 参照サイト：https://qiita.com/joe_hrmn/items/356f1e2b05cb90241414 -->
+	<property name="logFileName" value="error" />
+	<springProfile name="default"><!-- ローカル環境のログ置き場 -->
+		<property name="logFilePath" value="./log/" />
+	</springProfile>
+	<springProfile name="develop"><!-- テスト環境のログ置き場 -->
+		<property name="logFilePath" value="/var/log/xxx/" />
+	</springProfile>
+	<springProfile name="production"><!-- 本番環境のログ置き場 -->
+		<property name="logFilePath" value="/var/log/xxx/" />
+	</springProfile>
+
+	<appender name="LOGFILEOUT"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logFilePath}${logFileName}.log</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch><!-- ERRORだった場合はログを出力する -->
+			<onMismatch>DENY</onMismatch><!--ERROR以外だった場合はログを出力しない -->
+		</filter>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> <!--定期的にログをバックアップする設定 -->
+			<fileNamePattern>${logFilePath}${logFileName}-%d{yyyy-MM-dd}.log.zip</fileNamePattern><!--バックアップ時に使用する名前、%dオプションで指定した粒度でrollingする -->
+			<maxHistory>3</maxHistory><!--ファイルを保存する最大数。これを越えたファイルはrolling時に削除される -->
+		</rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}[%-5level] %logger{26} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="LOGFILEOUT" />
+	</root>
+
+</configuration>
