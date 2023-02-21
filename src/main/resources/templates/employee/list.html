@@ -43,6 +43,7 @@
 							th:href="@{/employee/showList}">従業員管理</a></li>
 					</ul>
 					<p class="navbar-text navbar-right">
+						<!-- 修正しました -->
 						<span th:text="${session.administratorName}">山田太郎</span>さんこんにちは！
 						&nbsp;&nbsp;&nbsp; <a href="../administrator/login.html"
 							class="navbar-link" th:href="@{/logout}">ログアウト</a>
@@ -78,11 +79,11 @@
 					<tbody>
 						<tr th:each="employee : ${employeeList}">
 							<td><a href="detail.html"
-								th:href="@{'/employee/showDetail?id=' + ${employee.id}}">
-									<span th:text="${employee.name}">山田太郎</span>
+								th:href="@{'/employee/showDetail?id=' + ${employee.id}}"> <span
+									th:text="${employee.name}">山田太郎</span>
 							</a></td>
-							<td>
-								<span th:text="${#dates.format(employee.hireDate, 'yyyy年MM月dd日')}"></span>
+							<td><span
+								th:text="${#dates.format(employee.hireDate, 'yyyy年MM月dd日')}"></span>
 							</td>
 							<td><span th:text="${employee.dependentsCount} + '人'">3人</span>
 							</td>
