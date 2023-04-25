@@ -1,7 +1,18 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.0.2'
+	id 'org.springframework.boot' version '3.0.6'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id 'checkstyle' // CheckStyleプラグイン導入のため追加
+}
+
+// CheckStyleプラグイン導入のため追加
+checkstyle {
+    toolVersion = '9.1'
+    configFile = file(“${project.rootDir}/checkstyle.xml”) // checkstyle.xmlのパスを指定してください。
+}
+// CheckStyleプラグイン導入のため追加
+configurations {
+    checkstyle
 }
 
 group = 'com.example'
@@ -20,8 +31,17 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// CheckStyleプラグイン導入のため追加
+    checkstyle 'com.puppycrawl.tools:checkstyle:9.1'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// CheckStyleプラグイン導入のため追加
+tasks.withType(Checkstyle) {
+    configFile = file("${project.rootDir}/checkstyle.xml")
+    configProperties = ["checkstyle.cache.file": file("${project.buildDir}/checkstyle.cache")]
+    classpath = configurations.checkstyle
 }
