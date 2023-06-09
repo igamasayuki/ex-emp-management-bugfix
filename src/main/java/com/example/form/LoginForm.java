@@ -12,11 +12,8 @@ import jakarta.validation.constraints.NotBlank;
 public class LoginForm {
 
 	/** メールアドレス */
-	@NotBlank(message="メールアドレスを入力してください")
-	@Email(message="Eメールの形式が不正です")
 	private String mailAddress;
 	/** パスワード */
-	@NotBlank(message="パスワードを入力してください。")
 	private String password;
 
 	public String getMailAddress() {
