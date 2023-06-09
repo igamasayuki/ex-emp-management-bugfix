@@ -81,8 +81,8 @@
 								th:href="@{'/employee/showDetail?id=' + ${employee.id}}">
 									<span th:text="${employee.name}">山田太郎</span>
 							</a></td>
-							<td><span
-								th:text="${#dates.format(employee.hireDate, 'yyyy年MM月dd日')}">2016/12/1</span>
+							<td>
+								<span th:text="${#dates.format(employee.hireDate, 'yyyy年MM月dd日')}">2016/12/1</span>
 							</td>
 							<td><span th:text="${employee.dependentsCount} + '人'">3人</span>
 							</td>
