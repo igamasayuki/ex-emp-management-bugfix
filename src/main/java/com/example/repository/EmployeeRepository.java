@@ -83,4 +83,18 @@ public class EmployeeRepository {
 		String updateSql = "UPDATE employees SET dependents_count=:dependentsCount WHERE id=:id";
 		template.update(updateSql, param);
 	}
+
+	/**
+	 * 従業員名の部分一致で従業員情報を検索します.<br>
+	 * 検索結果が0件の場合、サイズ0の従業員リストが返ります。
+	 * 
+	 * @param partOfName 検索したい従業員名の一部
+	 * @return 検索された従業員一覧情報
+	 */
+	public List<Employee> fuzzySearchOfName(String partOfName) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees WHERE name LIKE :name ORDER BY hire_date;";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + partOfName + "%");
+		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+		return employeeList;
+	}
 }

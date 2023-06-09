@@ -92,4 +92,27 @@ public class EmployeeController {
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
 	}
+
+	/////////////////////////////////////////////////////
+	// ユースケース：従業員名であいまい検索する
+	/////////////////////////////////////////////////////
+	/**
+	 * 従業員名で従業員をあいまい検索します.<br>
+	 * 空文字を検索した場合、全員が検索されます。<br>
+	 * 一致する従業員がいなかった場合、メッセージとともに全員が表示されます。
+	 * 
+	 * @param partOfName 検索したい従業員名
+	 * @param model      モデル
+	 * @return 従業員一覧画面
+	 */
+	@PostMapping("/search")
+	public String search(String partOfName, Model model) {
+		List<Employee> employeeList = employeeService.search(partOfName);
+		if (employeeList.size() == 0) {
+			employeeList = employeeService.showList();
+			model.addAttribute("notFound", "１件もありませんでした");
+		}
+		model.addAttribute("employeeList", employeeList);
+		return "employee/list";
+	}
 }

@@ -89,6 +89,27 @@
         </li>
       </ol>
 
+      <form th:action="@{/employee/search}" method="post">
+        <div class="row">
+          <div class="col-3">
+            <label for="partOfName" class="col-form-label">従業員名</label>
+          </div>
+          <div class="col-xs-3">
+            <input
+              type="text"
+              name="partOfName"
+              class="form-control"
+              id="partOfName"
+            />
+          </div>
+          <div class="col-3">
+            <button type="submit" class="btn btn-primary">検索</button>
+          </div>
+        </div>
+      </form>
+
+      <p th:text="${notFound}"></p>
+
       <!-- table -->
       <div class="row">
         <div
