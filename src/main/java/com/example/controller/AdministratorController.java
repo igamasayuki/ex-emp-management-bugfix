@@ -16,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.domain.Administrator;
 import com.example.form.InsertAdministratorForm;
 import com.example.form.LoginForm;
-import com.example.repository.AdministratorRepository;
 import com.example.service.AdministratorService;
 
 import jakarta.servlet.http.HttpSession;
@@ -33,9 +32,6 @@ public class AdministratorController {
 
 	@Autowired
 	private AdministratorService administratorService;
-
-	@Autowired
-	private AdministratorRepository administratorRepository;
 
 	@Autowired
 	private HttpSession session;
@@ -81,18 +77,17 @@ public class AdministratorController {
 	 */
 	@PostMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
+
+		if (administratorService.existsMailAdress(form.getMailAddress())) {
+			FieldError fieldError = new FieldError(result.getObjectName(), "mailAddress", "このメールアドレスは既に登録されています");
+			result.addError(fieldError);
+		}
 		if (result.hasErrors()) {
 			return toInsert();
 		}
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-
-		if (administratorRepository.findByMailAddress(administrator.getMailAddress()) != null) {
-			FieldError fieldError = new FieldError(result.getObjectName(), "mailAddress", "このメールアドレスは既に登録されています");
-			result.addError(fieldError);
-			return "administrator/insert";
-		}
 		administratorService.insert(administrator);
 		return "redirect:/";
 	}
