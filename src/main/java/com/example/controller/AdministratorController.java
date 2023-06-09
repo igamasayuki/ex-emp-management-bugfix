@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.domain.Administrator;
 import com.example.form.InsertAdministratorForm;
 import com.example.form.LoginForm;
+import com.example.repository.AdministratorRepository;
 import com.example.service.AdministratorService;
 
 import jakarta.servlet.http.HttpSession;
@@ -31,6 +32,9 @@ public class AdministratorController {
 
 	@Autowired
 	private AdministratorService administratorService;
+
+	@Autowired
+	private AdministratorRepository administratorRepository;
 
 	@Autowired
 	private HttpSession session;
@@ -82,13 +86,13 @@ public class AdministratorController {
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		Administrator resultAdministrator = administratorService.insert(administrator);
 
-		if (resultAdministrator != null) {
-			return "redirect:/";
-		} else {
+		if (administratorRepository.findByMailAddress(administrator.getMailAddress()) != null) {
 			model.addAttribute("duplicate", true);
 			return "administrator/insert";
+		} else {
+			administratorService.insert(administrator);
+			return "redirect:/";
 		}
 	}
 
