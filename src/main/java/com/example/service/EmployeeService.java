@@ -60,7 +60,7 @@ public class EmployeeService {
 	 * @param partOfName 検索したい従業員名
 	 * @return 検索された従業員一覧情報
 	 */
-	public List<Employee> search(String partOfName) {
+	public List<Employee> searchByName(String partOfName) {
 		if (partOfName.equals(""))
 			return employeeRepository.findAll();
 		else {

@@ -107,7 +107,7 @@ public class EmployeeController {
 	 */
 	@PostMapping("/search")
 	public String search(String partOfName, Model model) {
-		List<Employee> employeeList = employeeService.search(partOfName);
+		List<Employee> employeeList = employeeService.searchByName(partOfName);
 		if (employeeList.size() == 0) {
 			employeeList = employeeService.showList();
 			model.addAttribute("notFound", "１件もありませんでした");
