@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,14 +44,27 @@ public class EmployeeController {
 	// ユースケース：従業員一覧を表示する
 	/////////////////////////////////////////////////////
 	/**
-	 * 従業員一覧画面を出力します.
+	 * 従業員一覧画面を出力します. <br>
+	 * 従業員名で従業員をあいまい検索もします.<br>
+	 * 空文字を検索した場合、全員が検索されます。<br>
+	 * 一致する従業員がいなかった場合、メッセージとともに全員が表示されます。
 	 * 
 	 * @param model モデル
 	 * @return 従業員一覧画面
 	 */
 	@GetMapping("/showList")
-	public String showList(Model model) {
-		List<Employee> employeeList = employeeService.showList();
+	public String showListAndSearch(Model model, String partOfName) {
+
+		List<Employee> employeeList = new ArrayList<>();
+		if (partOfName != null)
+			employeeList = employeeService.searchByName(partOfName);
+		else
+			employeeList = employeeService.showList();
+
+		if (employeeList.size() == 0) {
+			employeeList = employeeService.showList();
+			model.addAttribute("notFound", "１件もありませんでした");
+		}
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}
