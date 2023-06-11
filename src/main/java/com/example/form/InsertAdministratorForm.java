@@ -22,7 +22,6 @@ public class InsertAdministratorForm {
 	@NotBlank(message = "パスワードを入力してください。")
 	@Size(min = 1, max = 127, message = "パスワードは一文字以上127文字以内で記載してください")
 	private String password;
-	@NotBlank(message = "パスワードを入力してください。")
 	private String passwordCheck;
 
 	public String getPasswordCheck() {

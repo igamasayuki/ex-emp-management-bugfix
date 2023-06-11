@@ -114,8 +114,8 @@
                       />
 
                       <label for="password"> パスワード(確認用): </label>
-                      <label th:text="${passwordCheck}" class="error-messages">
-                        上のパスワードと一致しません
+                      <label th:errors="*{passwordCheck}" class="error-messages">
+                        パスワードと一致しません
                       </label>
                       <input
                         type="password"

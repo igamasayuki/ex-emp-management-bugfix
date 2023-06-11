@@ -76,15 +76,14 @@ public class AdministratorController {
 	 */
 	@PostMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
+		//rejectValue(String field, errorcode, message)
+		if (!form.getPassword().equals(form.getPasswordCheck())) {
+			result.rejectValue("passwordCheck", null, "パスワードが一致しません！！！");
+		}
+
 		if (result.hasErrors()) {
 			return toInsert(form, model);
 		}
-
-		if (!form.getPassword().equals(form.getPasswordCheck())) {
-			model.addAttribute("passwordCheck", "上のパスワードと一致しません");
-			return toInsert(form, model);
-		}
-
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
