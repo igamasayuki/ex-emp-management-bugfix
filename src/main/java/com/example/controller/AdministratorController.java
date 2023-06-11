@@ -76,7 +76,7 @@ public class AdministratorController {
 	 */
 	@PostMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
-		//rejectValue(String field, errorcode, message)
+		// rejectValue(String field, errorcode, message)
 		if (!form.getPassword().equals(form.getPasswordCheck())) {
 			result.rejectValue("passwordCheck", null, "パスワードが一致しません！！！");
 		}
