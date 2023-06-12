@@ -57,10 +57,7 @@
                   <div class="row">
                     <div class="col-sm-12">
                       <label for="name"> 氏名: </label>
-                      <label
-                        th:errors="*{name}"
-                        class="error-messages"
-                      >
+                      <label th:errors="*{name}" class="error-messages">
                         氏名を入力してください
                       </label>
                       <input
@@ -81,10 +78,7 @@
                   <div class="row">
                     <div class="col-sm-12">
                       <label for="mailAddress"> メールアドレス: </label>
-                      <label
-                        th:errors="*{mailAddress}"
-                        class="error-messages"
-                      >
+                      <label th:errors="*{mailAddress}" class="error-messages">
                         メールアドレスを入力してください
                       </label>
                       <input
@@ -105,10 +99,7 @@
                   <div class="row">
                     <div class="col-sm-12">
                       <label for="password"> パスワード: </label>
-                      <label
-                        th:errors="*{password}"
-                        class="error-messages"
-                      >
+                      <label th:errors="*{password}" class="error-messages">
                         パスワードを入力してください
                       </label>
                       <input
@@ -118,6 +109,21 @@
                         class="form-control"
                         placeholder="password"
                         th:field="*{password}"
+                        th:errorclass="error-input"
+                        value="xxxxxxxx"
+                      />
+
+                      <label for="password"> パスワード(確認用): </label>
+                      <label th:errors="*{passwordCheck}" class="error-messages">
+                        パスワードと一致しません
+                      </label>
+                      <input
+                        type="password"
+                        name="passwordCheck"
+                        id="password"
+                        class="form-control"
+                        placeholder="確認のためにもう一度入力してださい"
+                        th:field="*{passwordCheck}"
                         th:errorclass="error-input"
                         value="xxxxxxxx"
                       />
