@@ -9,3 +9,37 @@
 .error-messages {
   color: #ff0000;
 }
+
+.searchForm {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.searchForm h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.searchForm #searchByName {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.searchForm button {
+  padding: 10px 20px;
+  background-color: grey;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.searchForm button[type="submit"] {
+  margin-right: 10px;
+}
+
+.searchForm button:hover {
+  opacity: 0.8;
+}
