@@ -75,6 +75,20 @@ public class EmployeeRepository {
 	}
 
 	/**
+	 * 名前で従業員を曖昧検索する.
+	 * 
+	 * @param name 従業員の名前
+	 * @return 検索された従業員のリスト
+	 */
+	public List<Employee> searchByName(String name) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees WHERE name LIKE :name ORDER BY hire_date DESC;";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
+
+		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+		return employeeList;
+	}
+
+	/**
 	 * 従業員情報を変更します.
 	 */
 	public void update(Employee employee) {
