@@ -1,8 +1,12 @@
 package com.example.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,6 +66,10 @@ public class AdministratorController {
 	 */
 	@GetMapping("/toInsert")
 	public String toInsert() {
+		//tokenの生成
+		String token = UUID.randomUUID().toString();
+		//生成したトークンをセッションに格納する
+		session.setAttribute("token", token);
 		return "administrator/insert";
 	}
 
@@ -72,11 +80,25 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@PostMapping("/")
-	public String insert(InsertAdministratorForm form) {
+	public String insert(@Validated InsertAdministratorForm form,BindingResult result) {
+		if(result.hasErrors()) {
+			return toInsert();
+		}
+		//tokenを取得する(ここで、サーバーはセッションに保存されているトークンと一致するかを確認。)
+		String token = (String) session.getAttribute("token");
+		//tokenが存在しない場合はダブルサブミットエラーを出す。
+		//(tokenが一致する場合は、サーバーはフォームを処理。トークンが一致しない場合はサーバーがダブルサブミットエラーを出す。)
+		if(token == null) {
+			return "administrator/insert";
+		}
+		//tokenを削除する
+		session.removeAttribute("token");
+		//管理者情報を登録する
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
 		administratorService.insert(administrator);
+		//ログイン画面にリダイレクトする
 		return "redirect:/";
 	}
 
