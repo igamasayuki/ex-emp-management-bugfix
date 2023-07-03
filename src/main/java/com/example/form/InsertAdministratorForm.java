@@ -1,5 +1,7 @@
 package com.example.form;
 
+import com.example.annotation.EmailValidation;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -12,16 +14,29 @@ import jakarta.validation.constraints.Pattern;
  */
 public class InsertAdministratorForm {
 	/** 名前 */
-	@NotBlank
+	@NotBlank(message="名前を入力してください。")
 	private String name;
 	/** メールアドレス */
-	@NotBlank
+	@NotBlank(message="メールアドレスを入力してください。")
 	@Email(message="入力したメールアドレスの形式が不正です。")
+	/**既にDBに存在している場合はエラーが出る独自のバリデーション*/
+	@EmailValidation
 	private String mailAddress;
 	/** パスワード */
-	@NotBlank
+	@NotBlank(message="パスワードを入力してください。")
 	@Pattern(regexp="^[a-zA-Z0-9]{8,16}$", message="半角英数字で8文字以上16文字以内で入力してください。")
 	private String password;
+	/**確認用パスワード*/
+	@NotBlank(message="確認用パスワードを入力してください。")
+	public String confirmedPassword;
+
+	public String getConfirmedPassword() {
+		return confirmedPassword;
+	}
+
+	public void setConfirmedPassword(String confirmedPassword) {
+		this.confirmedPassword = confirmedPassword;
+	}
 
 	public String getName() {
 		return name;
@@ -50,7 +65,7 @@ public class InsertAdministratorForm {
 	@Override
 	public String toString() {
 		return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
-				+ "]";
+				+ ", confirmedPassword=" + confirmedPassword + "]";
 	}
 
 }

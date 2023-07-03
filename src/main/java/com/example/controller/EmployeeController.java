@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.domain.Administrator;
 import com.example.domain.Employee;
 import com.example.form.UpdateEmployeeForm;
 import com.example.service.EmployeeService;
+
+import jakarta.servlet.http.HttpSession;
 
 /**
  * 従業員情報を操作するコントローラー.
@@ -28,6 +31,8 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
+	@Autowired
+	private HttpSession session;
 
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
@@ -49,9 +54,14 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@GetMapping("/showList")
-	public String showList(Model model) {
+	public String showList(Model model,HttpSession session) {
 		List<Employee> employeeList = employeeService.showList();
 		model.addAttribute("employeeList", employeeList);
+		
+		Administrator administrator = (Administrator) session.getAttribute("administrator");
+		if (administrator == null) {
+			return "redirect:/login";
+		}model.addAttribute("administratorName", administrator.getName());
 		return "employee/list";
 	}
 
@@ -69,6 +79,10 @@ public class EmployeeController {
 	public String showDetail(String id, Model model) {
 		Employee employee = employeeService.showDetail(Integer.parseInt(id));
 		model.addAttribute("employee", employee);
+		Administrator administrator = (Administrator) session.getAttribute("administrator");
+		if (administrator == null) {
+			return "redirect:/login";
+		}model.addAttribute("administratorName", administrator.getName());
 		return "employee/detail";
 	}
 
