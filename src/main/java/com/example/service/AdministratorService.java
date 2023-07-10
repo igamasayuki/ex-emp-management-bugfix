@@ -10,7 +10,7 @@ import com.example.repository.AdministratorRepository;
 /**
  * 管理者情報を操作するサービス.
  * 
- * @author igamasayuki
+ * @author nagahashirisa
  *
  */
 @Service

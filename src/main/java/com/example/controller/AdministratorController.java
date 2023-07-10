@@ -1,8 +1,13 @@
 package com.example.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * 管理者情報を操作するコントローラー.
  * 
- * @author igamasayuki
+ * @author nagahashirisa
  *
  */
 @Controller
@@ -61,7 +66,11 @@ public class AdministratorController {
 	 * @return 管理者登録画面
 	 */
 	@GetMapping("/toInsert")
-	public String toInsert() {
+	public String toInsert(Model model, InsertAdministratorForm form) {
+		//tokenの生成
+		String token = UUID.randomUUID().toString();
+		//生成したトークンをセッションに格納する
+		session.setAttribute("token", token);
 		return "administrator/insert";
 	}
 
@@ -71,13 +80,38 @@ public class AdministratorController {
 	 * @param form 管理者情報用フォーム
 	 * @return ログイン画面へリダイレクト
 	 */
-	@PostMapping("/insert")
-	public String insert(InsertAdministratorForm form) {
+	@PostMapping("/")
+	public String insert(
+			@Validated InsertAdministratorForm form,BindingResult result,Model model
+			) {
+		if(result.hasErrors()) {
+			return toInsert(model, form);
+		}
+		//確認用パスワード
+		//formから得たパスワードの確認用パスワードが同じではない場合。error文が表示される
+		if(!(form.getConfirmedPassword().equals(form.getPassword()))) {
+			//errorがキー、””内がキーに基づく文章
+			model.addAttribute("error", "確認用パスワードが不一致です。");
+			//登録画面にerror文を入れて返す
+			return toInsert(model,form);
+		}
+		//tokenを取得する(ここで、サーバーはセッションに保存されているトークンと一致するかを確認。)
+		String token = (String) session.getAttribute("token");
+		//tokenが存在しない場合はダブルサブミットエラーを出す。
+		//(tokenが一致する場合は、サーバーはフォームを処理。トークンが一致しない場合はサーバーがダブルサブミットエラーを出す。)
+		if(token == null) {
+			return "administrator/insert";
+		}
+		//tokenを削除する
+		session.removeAttribute("token");
+		
+		//管理者情報を登録する
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
 		administratorService.insert(administrator);
-		return "employee/list";
+		//ログイン画面にリダイレクトする
+		return "redirect:/";
 	}
 
 	/////////////////////////////////////////////////////
@@ -106,6 +140,8 @@ public class AdministratorController {
 			redirectAttributes.addFlashAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return "redirect:/";
 		}
+		//管理者情報を格納する（従業員一覧画面と詳細画面へ）
+		session.setAttribute("administrator", administrator);
 		return "redirect:/employee/showList";
 	}
 

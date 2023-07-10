@@ -15,7 +15,7 @@ import com.example.domain.Employee;
 /**
  * employeesテーブルを操作するリポジトリ.
  * 
- * @author igamasayuki
+ * @author nagahashirisa
  * 
  */
 @Repository
@@ -50,11 +50,23 @@ public class EmployeeRepository {
 	 * @return 全従業員一覧 従業員が存在しない場合はサイズ0件の従業員一覧を返します
 	 */
 	public List<Employee> findAll() {
-		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees";
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees ORDER BY hire_date";
 
 		List<Employee> developmentList = template.query(sql, EMPLOYEE_ROW_MAPPER);
 
 		return developmentList;
+	}
+	/**
+	 * 従業員一覧から曖昧検索
+	 */
+	public List<Employee> findAmbiguous(String name){
+		String sql = "SELECT id,name,image,gender,hire_date,"
+				+ "mail_address,zip_code,address,telephone,salary,"
+				+ "characteristics,dependents_count FROM employees "
+				+ "WHERE name LIKE :name ORDER BY hire_date;";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
+		List<Employee> ambiguousList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+		return ambiguousList;
 	}
 
 	/**
