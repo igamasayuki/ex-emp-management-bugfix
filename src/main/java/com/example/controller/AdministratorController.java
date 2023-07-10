@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * 管理者情報を操作するコントローラー.
  * 
- * @author igamasayuki
+ * @author nagahashirisa
  *
  */
 @Controller
@@ -87,8 +87,12 @@ public class AdministratorController {
 		if(result.hasErrors()) {
 			return toInsert(model, form);
 		}
+		//確認用パスワード
+		//formから得たパスワードの確認用パスワードが同じではない場合。error文が表示される
 		if(!(form.getConfirmedPassword().equals(form.getPassword()))) {
+			//errorがキー、””内がキーに基づく文章
 			model.addAttribute("error", "確認用パスワードが不一致です。");
+			//登録画面にerror文を入れて返す
 			return toInsert(model,form);
 		}
 		//tokenを取得する(ここで、サーバーはセッションに保存されているトークンと一致するかを確認。)
@@ -136,6 +140,7 @@ public class AdministratorController {
 			redirectAttributes.addFlashAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return "redirect:/";
 		}
+		//管理者情報を格納する（従業員一覧画面と詳細画面へ）
 		session.setAttribute("administrator", administrator);
 		return "redirect:/employee/showList";
 	}

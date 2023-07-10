@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Pattern;
 /**
  * 管理者情報登録時に使用するフォーム.
  * 
- * @author igamasayuki
+ * @author nagahashirisa
  * 
  */
 public class InsertAdministratorForm {

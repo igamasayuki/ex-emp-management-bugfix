@@ -40,7 +40,7 @@
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
-                    <label for="name"> 氏名: </label>
+                    <label for="name"> 氏名&colon;&nbsp;</label>
                     <div th:errors="*{name}" class="error-messages">
                     </div>
                     <input type="text" name="name" id="name" class="form-control" placeholder="山田太郎" th:field="*{name}"
@@ -52,7 +52,7 @@
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
-                    <label for="mailAddress"> メールアドレス: </label>
+                    <label for="mailAddress"> メールアドレス&colon;&nbsp;</label>
                     <div th:errors="*{mailAddress}" class="error-messages">
                     </div>
                     <input type="text" name="mailAddress" id="mailAddress" class="form-control"
@@ -65,7 +65,7 @@
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
-                    <label for="password"> パスワード: &lpar;半角英数字で8文字以上16文字以内&rpar;</label>
+                    <label for="password"> パスワード&colon;&nbsp;&lpar;半角英数字で8文字以上16文字以内&rpar;</label>
                     <div th:errors="*{password}" class="error-messages">エラー1
                     </div>
                     <input type="password" name="password" id="password" class="form-control" placeholder="password"
@@ -76,7 +76,7 @@
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-12">
-                    <label for="confirmedPassword"> 確認のためもう一度パスワードを入力してください: </label>
+                    <label for="confirmedPassword"> 確認のためもう一度パスワードを入力してください&colon;&nbsp;</label>
                     <div th:errors="*{confirmedPassword}" class="error-messages">
                     </div>
                     <div th:text="${error}" class="error-messages">

@@ -62,8 +62,7 @@
             <ul class="nav navbar-nav">
               <li class="active">
                 <a href="list.html" th:href="@{/employee/showList}"
-                  >従業員管理</a
-                >
+                  >従業員管理</a>
               </li>
             </ul>
             <p class="navbar-text navbar-right">
@@ -97,7 +96,11 @@
           <!-- ここから上を編集する必要はありません -->
 
           <!-- ここにモックのtable要素を貼り付けます -->
-
+          <form action="list.html" th:action="@{/employee/list}" method="get">
+            <label for="name">従業員を検索する</label>
+            <input type="text" name="name" id="name" placeholder="名前を入力してください。">
+            <button type="submit">検索</button>
+          </form><div class="no-employee" th:text="${noEmployee}"></div>
           <table class="table table-striped">
             <thead>
               <tr>

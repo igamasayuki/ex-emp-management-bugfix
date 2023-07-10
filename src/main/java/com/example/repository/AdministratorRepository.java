@@ -15,7 +15,7 @@ import com.example.domain.Administrator;
 /**
  * administratorsテーブルを操作するリポジトリ.
  * 
- * @author igamasayuki
+ * @author nagahashirisa
  * 
  */
 @Repository

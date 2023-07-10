@@ -12,7 +12,7 @@ import com.example.repository.EmployeeRepository;
 /**
  * 従業員情報を操作するサービス.
  * 
- * @author igamasayuki
+ * @author nagahashirisa
  *
  */
 @Service
@@ -31,7 +31,14 @@ public class EmployeeService {
 		List<Employee> employeeList = employeeRepository.findAll();
 		return employeeList;
 	}
-
+	/**
+	 * 従業員の曖昧検索
+	 * @return ambiguousList
+	 */
+	public List<Employee> findAmbiguousList(String name){
+		List<Employee> ambiguousList = employeeRepository.findAmbiguous(name);
+		return ambiguousList;
+	}
 	/**
 	 * 従業員情報を取得します.
 	 * 
