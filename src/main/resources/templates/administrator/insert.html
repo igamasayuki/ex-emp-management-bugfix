@@ -87,6 +87,7 @@
                       >
                         メールアドレスを入力してください
                       </label>
+                      <span th:text="${existError}" style="color: red;"></span>
                       <input
                         type="text"
                         name="mailAddress"
@@ -111,6 +112,7 @@
                       >
                         パスワードを入力してください
                       </label>
+                      
                       <input
                         type="password"
                         name="password"
