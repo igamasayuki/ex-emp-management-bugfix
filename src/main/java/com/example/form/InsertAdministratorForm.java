@@ -23,6 +23,9 @@ public class InsertAdministratorForm {
 	@NotBlank(message = "パスワードは必須入力です")
 	@Size(min = 8, message = "パスワードは8文字以上で入力してください")
 	private String password;
+	/** 確認用パスワード */
+	@NotBlank(message = "確認用パスワードは必須入力です")
+	private String confirmationPassword;
 
 	public String getName() {
 		return name;
@@ -48,10 +51,21 @@ public class InsertAdministratorForm {
 		this.password = password;
 	}
 
-	@Override
-	public String toString() {
-		return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
-				+ "]";
+	public String getConfirmationPassword() {
+		return confirmationPassword;
 	}
 
+	public void setConfirmationPassword(String confirmationPassword) {
+		this.confirmationPassword = confirmationPassword;
+	}
+
+	@Override
+	public String toString() {
+		return "InsertAdministratorForm{" +
+				"name='" + name + '\'' +
+				", mailAddress='" + mailAddress + '\'' +
+				", password='" + password + '\'' +
+				", confirmationPassword='" + confirmationPassword + '\'' +
+				'}';
+	}
 }
