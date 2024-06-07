@@ -2,7 +2,11 @@ package com.example.controller;
 
 import java.util.List;
 
+import com.example.domain.Administrator;
+import com.example.domain.LoginAdministrator;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +33,9 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 
+	@Autowired
+	private HttpSession session;
+
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
 	 * 
@@ -49,7 +56,9 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@GetMapping("/showList")
-	public String showList(Model model) {
+	public String showList(Model model, @AuthenticationPrincipal LoginAdministrator loginAdministrator) {
+		Administrator administrator = loginAdministrator.getAdministrator();
+		session.setAttribute("administratorName", administrator.getName());
 		List<Employee> employeeList = employeeService.showList();
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
