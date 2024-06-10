@@ -120,7 +120,7 @@
                 <th>扶養人数</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="paging">
               <tr th:each="employee : ${employeeList}">
                 <td>
                   <a
@@ -149,6 +149,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
     <script src="../../static/js/bootstrap.min.js"></script>
-    <script th:src="@{/js/autocomplete.js}"></script>
+    <script th:src="@{/js/paginathing.min.js}"></script>
+    <script th:src="@{/js/paging.js}"></script>
   </body>
 </html>
