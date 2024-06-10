@@ -89,7 +89,19 @@
         </li>
       </ol>
 
+      <!-- 従業員検索ボックス -->
+      <form action="list.html" th:action="@{/employee/search}" method="post">
+        <div class="input-group">
+          <input type="text" name="name" class="form-control" placeholder="従業員検索">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary">検索</button>
+          </span>
+        </div>
+      </form>
+      
       <!-- table -->
+      <div th:if="${employeeList.isEmpty()}" class="alert alert-info">１件もありませんでした</div>
+
       <div class="row">
         <div
           class="table-responsive col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12"
