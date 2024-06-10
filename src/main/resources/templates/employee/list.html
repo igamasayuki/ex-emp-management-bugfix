@@ -90,7 +90,7 @@
       </ol>
 
       <!-- 従業員検索ボックス -->
-      <form action="list.html" th:action="@{/employee/search}" method="post">
+      <form action="list.html" th:action="@{/employee/showList}" method="get">
         <div class="input-group">
           <input type="text" name="name" class="form-control" placeholder="従業員検索">
           <span class="input-group-btn">
@@ -100,7 +100,7 @@
       </form>
       
       <!-- table -->
-      <div th:if="${employeeList.isEmpty()}" class="alert alert-info">１件もありませんでした</div>
+      <div th:if="${notFound}" class="alert alert-info"><span th:text="${notFound}"></span></div>
 
       <div class="row">
         <div
