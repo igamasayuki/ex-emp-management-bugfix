@@ -54,6 +54,10 @@ public class EmployeeController {
 			name = "";
 		}
 		List<Employee> employeeList = employeeService.showListByName(name);
+		if(employeeList.isEmpty()){
+			model.addAttribute("notFound", "１件もありませんでした");
+			employeeList = employeeService.showList();
+		}
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}

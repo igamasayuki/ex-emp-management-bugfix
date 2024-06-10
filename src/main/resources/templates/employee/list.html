@@ -100,7 +100,7 @@
       </form>
       
       <!-- table -->
-      <div th:if="${employeeList.isEmpty()}" class="alert alert-info">１件もありませんでした</div>
+      <div th:if="${notFound}" class="alert alert-info"><span th:text="${notFound}"></span></div>
 
       <div class="row">
         <div
