@@ -109,8 +109,15 @@ public class EmployeeController {
 		return "redirect:/employee/showList";
 	}
 
+	/**
+	 * 従業員登録画面の表示
+	 *
+	 * @param form 従業員情報の入力
+	 * @param model 性別情報の格納
+	 * @return 従業員登録画面
+	 */
 	@GetMapping("/insert")
-	public String post(InsertEmployeeForm form, Model model){
+	public String insert(InsertEmployeeForm form, Model model){
 		model.addAttribute("genders", Gender.getMap());
 		return "/employee/insert";
 	}

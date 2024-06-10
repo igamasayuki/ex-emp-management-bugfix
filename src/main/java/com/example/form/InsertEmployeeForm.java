@@ -20,6 +20,10 @@ public class InsertEmployeeForm {
     private Date hireDate;
     /** メールアドレス */
     private String mailAddress;
+    /** 郵便番号 */
+    private String zipCode;
+    /** 住所 */
+    private String address;
     /** 電話番号 */
     private String telephone;
     /** 給料 */
@@ -37,6 +41,8 @@ public class InsertEmployeeForm {
                 ", gender='" + gender + '\'' +
                 ", hireDate=" + hireDate +
                 ", mailAddress='" + mailAddress + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", address='" + address + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", salary=" + salary +
                 ", characteristics='" + characteristics + '\'' +
@@ -82,6 +88,22 @@ public class InsertEmployeeForm {
 
     public void setMailAddress(String mailAddress) {
         this.mailAddress = mailAddress;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getTelephone() {
