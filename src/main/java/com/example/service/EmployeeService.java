@@ -62,4 +62,10 @@ public class EmployeeService {
 	public List<Employee> showListByName(String name){
 		return employeeRepository.findByName(name);
 	}
+
+	public void insert(Employee employee){
+		Integer id = employeeRepository.maxId();
+		employee.setId(id + 1);
+		employeeRepository.insert(employee);
+	}
 }

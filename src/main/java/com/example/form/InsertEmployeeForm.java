@@ -15,9 +15,9 @@ public class InsertEmployeeForm {
     /** 画像 */
     private MultipartFile image;
     /** 性別 */
-    private String gender;
+    private Integer gender;
     /** 入社日 */
-    private Date hireDate;
+    private String hireDate;
     /** メールアドレス */
     private String mailAddress;
     /** 郵便番号 */
@@ -66,19 +66,19 @@ public class InsertEmployeeForm {
         this.image = image;
     }
 
-    public String getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
-    public Date getHireDate() {
+    public String getHireDate() {
         return hireDate;
     }
 
-    public void setHireDate(Date hireDate) {
+    public void setHireDate(String hireDate) {
         this.hireDate = hireDate;
     }
 
