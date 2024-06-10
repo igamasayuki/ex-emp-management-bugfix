@@ -136,7 +136,11 @@ public class EmployeeController {
 
 		try {
 			String base64Image = Base64.getEncoder().encodeToString(insertEmployeeForm.getImage().getBytes());
-			employee.setImage(base64Image);
+			if("image/png".equals(insertEmployeeForm.getImage().getContentType())){
+				employee.setImage("data:image/png;base64," + base64Image);
+			} else if ("image/jpeg".equals(insertEmployeeForm.getImage().getContentType())) {
+				employee.setImage("data:image/jpeg;base64," + base64Image);
+			}
 		}catch (IOException e){
 			e.printStackTrace();
 		}
