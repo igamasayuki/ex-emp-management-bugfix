@@ -35,9 +35,6 @@ public class AdministratorController {
 	@Autowired
 	private HttpSession session;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
 	 * 
@@ -95,8 +92,6 @@ public class AdministratorController {
 		if(result.hasErrors()) {
 			return toInsert(form);
 		}
-
-		administrator.setPassword(passwordEncoder.encode(administrator.getPassword()));
 
 		administratorService.insert(administrator);
 		return "redirect:/";
