@@ -2,8 +2,10 @@ package com.example.controller;
 
 import java.util.List;
 
+import com.example.common.Gender;
 import com.example.domain.Administrator;
 import com.example.domain.LoginAdministrator;
+import com.example.form.InsertEmployeeForm;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -107,4 +109,9 @@ public class EmployeeController {
 		return "redirect:/employee/showList";
 	}
 
+	@GetMapping("/insert")
+	public String post(InsertEmployeeForm form, Model model){
+		model.addAttribute("genders", Gender.getMap());
+		return "/employee/insert";
+	}
 }
