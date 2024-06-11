@@ -127,7 +127,15 @@ public class EmployeeController {
 	}
 
 	@PostMapping("save")
-	public String save(InsertEmployeeForm insertEmployeeForm, String address2){
+	public synchronized String save(@Validated InsertEmployeeForm insertEmployeeForm, BindingResult result, String address2, Model model){
+		if(!insertEmployeeForm.getImage().getContentType().contains("png") && !insertEmployeeForm.getImage().getContentType().contains("jpg")){
+			result.rejectValue("image", "", "画像はjpg形式かpng形式のみです");
+		}
+
+		if(result.hasErrors()){
+			return insert(insertEmployeeForm, model);
+		}
+
 		Employee employee = new Employee();
 		BeanUtils.copyProperties(insertEmployeeForm, employee);
 		employee.setGender(Gender.of(insertEmployeeForm.getGender()).getValue());
@@ -138,8 +146,8 @@ public class EmployeeController {
 			String base64Image = Base64.getEncoder().encodeToString(insertEmployeeForm.getImage().getBytes());
 			if("image/png".equals(insertEmployeeForm.getImage().getContentType())){
 				employee.setImage("data:image/png;base64," + base64Image);
-			} else if ("image/jpeg".equals(insertEmployeeForm.getImage().getContentType())) {
-				employee.setImage("data:image/jpeg;base64," + base64Image);
+			} else if ("image/jpg".equals(insertEmployeeForm.getImage().getContentType())) {
+				employee.setImage("data:image/jpg;base64," + base64Image);
 			}
 		}catch (IOException e){
 			e.printStackTrace();
