@@ -105,4 +105,32 @@ public class EmployeeRepository {
 		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
 		return employeeList;
 	}
+
+	/**
+	 * employeesテーブルのidの最大値を取得.
+	 *
+	 * @return idの最大値
+	 */
+	public Integer maxId(){
+		String sql = "SELECT max(id) FROM employees;";
+		SqlParameterSource param = new MapSqlParameterSource();
+		Integer id = template.queryForObject(sql, param, Integer.class);
+		return id;
+	}
+
+	/**
+	 * 従業員情報のinsert.
+	 *
+	 * @param employee insertする従業員情報
+	 */
+	public void insert(Employee employee){
+		String sql = """
+				INSERT INTO
+					employees(id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count)
+				VALUES(:id, :name, :image, :gender, :hireDate, :mailAddress, :zipCode, :address, :telephone, :salary, :characteristics, :dependentsCount)
+				;
+				""";
+		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+		template.update(sql, param);
+	}
 }

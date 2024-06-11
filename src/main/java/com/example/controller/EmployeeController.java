@@ -1,10 +1,16 @@
 package com.example.controller;
 
+import java.io.IOException;
+import java.sql.Date;
+import java.util.Base64;
 import java.util.List;
 
+import com.example.common.Gender;
 import com.example.domain.Administrator;
 import com.example.domain.LoginAdministrator;
+import com.example.form.InsertEmployeeForm;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -107,4 +113,56 @@ public class EmployeeController {
 		return "redirect:/employee/showList";
 	}
 
+	/**
+	 * 従業員登録画面の表示
+	 *
+	 * @param form 従業員情報の入力
+	 * @param model 性別情報の格納
+	 * @return 従業員登録画面
+	 */
+	@GetMapping("/insert")
+	public String insert(InsertEmployeeForm form, Model model){
+		model.addAttribute("genders", Gender.getMap());
+		return "/employee/insert";
+	}
+
+	/**
+	 * 従業員情報の保存処理.
+	 *
+	 * @param insertEmployeeForm 従業員情報の入力
+	 * @param result バリデーションチェック
+	 * @param address2 結合する住所
+	 * @param model insertメソッドに渡すモデル
+	 * @return 従業員一覧画面
+	 */
+	@PostMapping("save")
+	public String save(@Validated InsertEmployeeForm insertEmployeeForm, BindingResult result, String address2, Model model){
+		if(!insertEmployeeForm.getImage().getContentType().contains("png") && !insertEmployeeForm.getImage().getContentType().contains("jpg")){
+			result.rejectValue("image", "", "画像はjpg形式かpng形式のみです");
+		}
+
+		if(result.hasErrors()){
+			return insert(insertEmployeeForm, model);
+		}
+
+		Employee employee = new Employee();
+		BeanUtils.copyProperties(insertEmployeeForm, employee);
+		employee.setGender(Gender.of(insertEmployeeForm.getGender()).getValue());
+		employee.setHireDate(Date.valueOf(insertEmployeeForm.getHireDate()));
+		employee.setAddress(employee.getAddress() + address2);
+
+		try {
+			String base64Image = Base64.getEncoder().encodeToString(insertEmployeeForm.getImage().getBytes());
+			if("image/png".equals(insertEmployeeForm.getImage().getContentType())){
+				employee.setImage("data:image/png;base64," + base64Image);
+			} else if ("image/jpg".equals(insertEmployeeForm.getImage().getContentType())) {
+				employee.setImage("data:image/jpg;base64," + base64Image);
+			}
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+
+		employeeService.insert(employee);
+		return "redirect:/employee/showList";
+	}
 }
