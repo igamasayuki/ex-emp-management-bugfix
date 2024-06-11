@@ -126,8 +126,17 @@ public class EmployeeController {
 		return "/employee/insert";
 	}
 
+	/**
+	 * 従業員情報の保存処理.
+	 *
+	 * @param insertEmployeeForm 従業員情報の入力
+	 * @param result バリデーションチェック
+	 * @param address2 結合する住所
+	 * @param model insertメソッドに渡すモデル
+	 * @return 従業員一覧画面
+	 */
 	@PostMapping("save")
-	public synchronized String save(@Validated InsertEmployeeForm insertEmployeeForm, BindingResult result, String address2, Model model){
+	public String save(@Validated InsertEmployeeForm insertEmployeeForm, BindingResult result, String address2, Model model){
 		if(!insertEmployeeForm.getImage().getContentType().contains("png") && !insertEmployeeForm.getImage().getContentType().contains("jpg")){
 			result.rejectValue("image", "", "画像はjpg形式かpng形式のみです");
 		}

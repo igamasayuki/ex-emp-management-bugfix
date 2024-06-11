@@ -63,7 +63,12 @@ public class EmployeeService {
 		return employeeRepository.findByName(name);
 	}
 
-	public void insert(Employee employee){
+	/**
+	 * 従業員情報の保存.
+	 *
+	 * @param employee 保存する従業員情報
+	 */
+	public synchronized void insert(Employee employee){
 		Integer id = employeeRepository.maxId();
 		employee.setId(id + 1);
 		employeeRepository.insert(employee);
