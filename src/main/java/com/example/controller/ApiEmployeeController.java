@@ -32,7 +32,7 @@ public class ApiEmployeeController {
     @PostMapping("/nameList")
     public Map<String, List<Employee>> nameList(String employeeName){
         Map<String, List<Employee>> map = new HashMap<>();
-        List<Employee> employeeList = employeeService.showListByName(employeeName);
+        List<Employee> employeeList = employeeService.showListByNameEveryTen(employeeName, 1);
         map.put("employeeList", employeeList);
         return map;
     }

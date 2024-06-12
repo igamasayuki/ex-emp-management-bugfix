@@ -57,10 +57,11 @@ public class EmployeeService {
 	 * 名前検索による従業員情報の一覧取得.
 	 *
 	 * @param name 検索したい名前
+	 * @param page ページ番号
 	 * @return 該当の従業員情報の一覧
 	 */
-	public List<Employee> showListByName(String name){
-		return employeeRepository.findByName(name);
+	public List<Employee> showListByNameEveryTen(String name, Integer page){
+		return employeeRepository.findByNameEveryTen(name, (page - 1) * 10);
 	}
 
 	/**
@@ -72,5 +73,15 @@ public class EmployeeService {
 		Integer id = employeeRepository.maxId();
 		employee.setId(id + 1);
 		employeeRepository.insert(employee);
+	}
+
+	/**
+	 * 名前検索による従業員情報の一覧取得.
+	 *
+	 * @param name 検索したい名前
+	 * @return 該当の従業員情報の一覧
+	 */
+	public List<Employee> showListByName(String name){
+		return employeeRepository.findByName(name);
 	}
 }

@@ -99,13 +99,20 @@
       <!-- 従業員検索ボックス -->
       <form action="list.html" th:action="@{/employee/showList}" method="get">
         <div class="input-group">
-          <input id="employeeName" type="text" name="name" class="form-control" placeholder="従業員検索">
+          <input id="employeeName" type="text" name="name" class="form-control" th:value="${searchName}" placeholder="従業員検索">
           <span class="input-group-btn">
             <button type="submit" class="btn btn-primary">検索</button>
           </span>
         </div>
       </form>
-      
+
+      <!-- ページング -->
+      <div class="text-center">
+        <span th:each="page: ${pageNum}">
+          <a th:href="@{/employee/showList?page=} + ${page + 1} + '&name=' + ${searchName}" th:text="${page + 1}"></a>
+        </span>
+      </div>
+
       <!-- table -->
       <div th:if="${notFound}" class="alert alert-info"><span th:text="${notFound}"></span></div>
 
@@ -154,7 +161,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
     <script src="../../static/js/bootstrap.min.js"></script>
-    <script th:src="@{/js/paginathing.min.js}"></script>
-    <script th:src="@{/js/paging.js}"></script>
+<!--    <script th:src="@{/js/paginathing.min.js}"></script>-->
+<!--    <script th:src="@{/js/paging.js}"></script>-->
   </body>
 </html>

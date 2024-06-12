@@ -85,12 +85,13 @@ public class EmployeeRepository {
 	}
 
 	/**
-	 * 名前の曖昧検索.
+	 * 10件ごとの名前の曖昧検索.
 	 *
 	 * @param name 検索したい名前
+	 * @param page 取得するページ数
 	 * @return 該当の従業員情報の一覧
 	 */
-	public List<Employee> findByName(String name){
+	public List<Employee> findByNameEveryTen(String name, Integer page){
 		String sql = """
 					SELECT
 						id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count
@@ -99,9 +100,13 @@ public class EmployeeRepository {
 						name LIKE :name
 					ORDER
 						BY hire_date
+					LIMIT
+						10
+					OFFSET
+						:page
 					;
 				""";
-		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%").addValue("page", page);
 		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
 		return employeeList;
 	}
@@ -133,4 +138,27 @@ public class EmployeeRepository {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
 		template.update(sql, param);
 	}
+
+	/**
+	 * 名前の曖昧検索.
+	 *
+	 * @param name 検索したい名前
+	 * @return 該当の従業員情報の一覧
+	 */
+	public List<Employee> findByName(String name){
+		String sql = """
+					SELECT
+						id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count
+					FROM employees
+					WHERE
+						name LIKE :name
+					ORDER
+						BY hire_date
+					;
+				""";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
+		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+		return employeeList;
+	}
+
 }

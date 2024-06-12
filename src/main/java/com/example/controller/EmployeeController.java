@@ -6,13 +6,10 @@ import java.util.Base64;
 import java.util.List;
 
 import com.example.common.Gender;
-import com.example.domain.Administrator;
-import com.example.domain.LoginAdministrator;
 import com.example.form.InsertEmployeeForm;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -62,16 +59,33 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@GetMapping("/showList")
-	public String showList(Model model, String name) {
+	public String showList(Model model, String name, Integer page) {
+		Integer employeeNum;
 		if(name == null){
 			name = "";
+			employeeNum = employeeService.showList().size();
+		}else {
+			employeeNum = employeeService.showListByName(name).size();
 		}
-		List<Employee> employeeList = employeeService.showListByName(name);
+		if(page == null){
+			page = 1;
+		}
+		List<Employee> employeeList = employeeService.showListByNameEveryTen(name, page);
+
 		if(employeeList.isEmpty()){
 			model.addAttribute("notFound", "１件もありませんでした");
-			employeeList = employeeService.showList();
+			employeeList = employeeService.showListByNameEveryTen(name, 1);
 		}
+
+
+		Integer[] pageNum = new Integer[employeeNum / 10 + 1];
+		for (int i = 0; i < employeeNum / 10 + 1; i++){
+			pageNum[i] = i;
+		}
+
 		model.addAttribute("employeeList", employeeList);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("searchName", name);
 		return "employee/list";
 	}
 
