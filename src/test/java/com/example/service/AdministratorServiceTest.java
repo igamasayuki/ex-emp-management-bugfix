@@ -51,7 +51,7 @@ class AdministratorServiceTest {
         mockAdministrator.setMailAddress(mockMailAddress);
         mockAdministrator.setPassword(mockPassword);
 
-        when(administratorRepository.findByMailAddressAndPassward(mockMailAddress,mockPassword )).thenReturn(mockAdministrator);
+        when(administratorRepository.findByMailAddressAndPassword(mockMailAddress,mockPassword )).thenReturn(mockAdministrator);
 
         Administrator administrator = administratorService.login(mockMailAddress,mockPassword);
         assertNotNull(administrator);
@@ -74,9 +74,9 @@ class AdministratorServiceTest {
         mockAdministrator.setMailAddress(mockMailAddress);
         mockAdministrator.setPassword(mockActualPassword);
 
-        when(administratorRepository.findByMailAddressAndPassward(mockMailAddress,mockActualPassword)).thenReturn(mockAdministrator);
+        when(administratorRepository.findByMailAddressAndPassword(mockMailAddress,mockActualPassword)).thenReturn(mockAdministrator);
 
-        when(administratorRepository.findByMailAddressAndPassward(mockMailAddress,mockWrongPassword)).thenReturn(null);
+        when(administratorRepository.findByMailAddressAndPassword(mockMailAddress,mockWrongPassword)).thenReturn(null);
 
         Administrator actualAdministrator = administratorService.login(mockMailAddress, mockActualPassword);
 
