@@ -64,7 +64,7 @@ public class AdministratorController {
 	 */
 	@GetMapping("/toInsert")
 	public String toInsert() {
-		return "administrator/insert";
+		return "administrator/login";
 	}
 
 	/**
