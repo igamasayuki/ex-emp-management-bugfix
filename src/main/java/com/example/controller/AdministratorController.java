@@ -3,6 +3,7 @@ package com.example.controller;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -100,12 +101,13 @@ public class AdministratorController {
 	 * @return ログイン後の従業員一覧画面
 	 */
 	@PostMapping("/login")
-	public String login(LoginForm form, RedirectAttributes redirectAttributes) {
+	public String login(LoginForm form, Model model, RedirectAttributes redirectAttributes) {
 		Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
 		if (administrator == null) {
 			redirectAttributes.addFlashAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return "redirect:/";
 		}
+		session.setAttribute("administratorName", administrator.getName());
 		return "redirect:/employee/showList";
 	}
 
