@@ -64,7 +64,7 @@ public class AdministratorController {
 	 * @return 管理者登録画面
 	 */
 	@GetMapping("/toInsert")
-	public String toInsert(Model model, InsertAdministratorForm form) {
+	public String toInsert() {
 		return "administrator/insert";
 	}
 
@@ -78,7 +78,7 @@ public class AdministratorController {
 	public String insert(Model model, @Validated InsertAdministratorForm form, BindingResult result) {
 
 		if (result.hasErrors()) {
-			return toInsert(model, form);
+			return "administrator/insert";
 		}
 
 		Administrator administrator = new Administrator();
