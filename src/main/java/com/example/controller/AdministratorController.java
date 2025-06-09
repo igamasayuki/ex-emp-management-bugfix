@@ -78,13 +78,8 @@ public class AdministratorController {
 	public String insert(Model model, @Validated InsertAdministratorForm form, BindingResult result) {
 		Administrator administrator = new Administrator();
 
-		if((form.getMailAddress()).equals(administratorService.findByMailAddress(form.getMailAddress()))){
+		if(administratorService.findByMailAddress(form.getMailAddress()) != null){
 			result.rejectValue("mailAddress", "", "メールアドレスが既に登録されています");
-			return "administrator/insert";
-		};
-
-		if(!(form.getPassword()).equals(form.getConfirmpassword())){
-			result.rejectValue("confirmpassword", "", "一致するパスワードを入力してください");
 			return "administrator/insert";
 		};
 
