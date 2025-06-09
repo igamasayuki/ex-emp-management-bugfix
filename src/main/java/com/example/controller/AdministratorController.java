@@ -81,10 +81,16 @@ public class AdministratorController {
 			return toInsert(model, form);
 		}
 
+		if(!(form.getMailAddress()).equals((administratorService.findByMailAddress(form.getMailAddress())))){
+			result.rejectValue("mailAddress", "", "メールアドレスが既に登録されています");
+			return "administrator/insert";
+		};
+
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
 		administratorService.insert(administrator);
+
 		return "redirect:/";
 	}
 
