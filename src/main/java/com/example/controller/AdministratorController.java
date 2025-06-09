@@ -82,8 +82,8 @@ public class AdministratorController {
 			return "administrator/insert";
 		};
 
-		if(result.hasErrors()){
-			return "administrator/insert";
+		if (result.hasErrors()) {
+			return toInsert();
 		}
 
 		Administrator administrator = new Administrator();

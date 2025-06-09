@@ -2,7 +2,6 @@ package com.example.form;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 /**
@@ -26,6 +25,10 @@ public class InsertAdministratorForm {
 	/** パスワード */
 	@NotEmpty(message="値を入れてください")
 	private String password;
+
+	/**確認用パスワード */
+	@NotBlank(message="パスワードと同じ値を入力してください")
+	private String confirmpassword;
 
 	public String getName() {
 		return name;
@@ -51,10 +54,21 @@ public class InsertAdministratorForm {
 		this.password = password;
 	}
 
-	@Override
-	public String toString() {
-		return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
-				+ "]";
+	public String getConfirmpassword() {
+		return confirmpassword;
 	}
 
+	public void setConfirmpassword(String confirmpassword) {
+		this.confirmpassword = confirmpassword;
+	}
+
+	@Override
+	public String toString() {
+		return "InsertAdministratorForm{" +
+				"name='" + name + '\'' +
+				", mailAddress='" + mailAddress + '\'' +
+				", password='" + password + '\'' +
+				", confirmpassword='" + confirmpassword + '\'' +
+				'}';
+	}
 }
