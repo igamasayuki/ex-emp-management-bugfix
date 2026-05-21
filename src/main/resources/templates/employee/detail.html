@@ -167,7 +167,8 @@
                             <tr>
                                 <th nowrap>給料</th>
                                 <td>
-                                    <span th:utext="${employee.salary + '円'}">400000円</span>
+	                                    <!-- 金額は表示時に3桁区切りにする。数値は計算できる状態のまま保持する。 -->
+	                                    <span th:text="${#numbers.formatInteger(employee.salary, 3, 'COMMA') + '円'}">400,000円</span>
                                 </td>
                             </tr>
                             <tr>
