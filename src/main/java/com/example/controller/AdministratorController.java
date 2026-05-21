@@ -74,7 +74,8 @@ public class AdministratorController {
         // フォームからドメインにプロパティ値をコピー
         BeanUtils.copyProperties(form, administrator);
         administratorService.insert(administrator);
-        return "employee/list";
+        // POST後はredirectでGETに切り替える。ブラウザ更新による二重登録を防ぐPRGパターン。
+        return "redirect:/";
     }
 
     /////////////////////////////////////////////////////
