@@ -52,6 +52,12 @@
                         <legend>
                             管理者登録<br/>(システムにログインできる管理者を登録します)
                         </legend>
+                        <!-- パスワード不一致など、項目単体ではないエラーをフォーム上部に表示する。 -->
+                        <div th:if="${errorMessage}" class="alert alert-danger">
+                            <p th:text="${errorMessage}">
+                                パスワードと確認用パスワードが一致しません。
+                            </p>
+                        </div>
                         <!-- 氏名 -->
                         <div class="form-group">
                             <div class="row">
@@ -119,6 +125,23 @@
                                             placeholder="password"
                                             th:field="*{password}"
                                             th:errorclass="error-input"
+                                            value="xxxxxxxx"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 登録ボタン -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label for="confirmationPassword"> 確認用パスワード: </label>
+                                    <input
+                                            type="password"
+                                            name="confirmationPassword"
+                                            id="confirmationPassword"
+                                            class="form-control"
+                                            placeholder="password"
+                                            th:field="*{confirmationPassword}"
                                             value="xxxxxxxx"
                                     />
                                 </div>
