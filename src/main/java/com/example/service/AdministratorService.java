@@ -28,6 +28,17 @@ public class AdministratorService {
     }
 
     /**
+     * 指定されたメールアドレスが登録済みか確認します.
+     *
+     * @param mailAddress メールアドレス
+     * @return 登録済みの場合true
+     */
+    public boolean existsByMailAddress(String mailAddress) {
+        // DBの一意制約エラーに任せると500エラーになるため、登録前に業務エラーとして判定する。
+        return administratorRepository.findByMailAddress(mailAddress) != null;
+    }
+
+    /**
      * ログインをします.
      *
      * @param mailAddress メールアドレス

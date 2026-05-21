@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,7 +70,12 @@ public class AdministratorController {
      * @return ログイン画面へリダイレクト
      */
     @PostMapping("/insert")
-    public String insert(InsertAdministratorForm form) {
+    public String insert(InsertAdministratorForm form, Model model) {
+        // 登録前に重複を確認し、DB例外ではなく入力画面で分かるエラーとして扱う。
+        if (administratorService.existsByMailAddress(form.getMailAddress())) {
+            model.addAttribute("errorMessage", "入力されたメールアドレスは既に登録されています。");
+            return "administrator/insert";
+        }
         Administrator administrator = new Administrator();
         // フォームからドメインにプロパティ値をコピー
         BeanUtils.copyProperties(form, administrator);
