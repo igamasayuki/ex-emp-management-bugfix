@@ -82,8 +82,9 @@
     </nav>
 
     <!-- パンくずリスト -->
-    <ol class="breadcrumb">
-        <li>従業員リスト</li>
+	    <ol class="breadcrumb">
+	        <!-- パンくずは文字だけでなく、戻り先のURLを明示して一覧へ戻れるようにする。 -->
+	        <li><a href="list.html" th:href="@{/employee/showList}">従業員リスト</a></li>
         <li class="active">従業員詳細</li>
     </ol>
 
