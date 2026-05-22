@@ -50,6 +50,8 @@ public class EmployeeController {
     public String showList(Model model) {
         List<Employee> employeeList = employeeService.showList();
         model.addAttribute("employeeList", employeeList);
+        // datalistの候補として、現在登録されている従業員名を画面へ渡す。
+        model.addAttribute("employeeNameList", employeeList.stream().map(Employee::getName).toList());
         return "employee/list";
     }
 

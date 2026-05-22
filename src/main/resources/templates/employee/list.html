@@ -96,6 +96,16 @@
             <!-- ここから上を編集する必要はありません -->
 
             <!-- ここにモックのtable要素を貼り付けます -->
+            <!-- datalistを使うと、JavaScriptなしでブラウザ標準の候補表示を利用できる。 -->
+            <form method="get" th:action="@{/employee/showList}" class="form-inline">
+                <div class="form-group">
+                    <input type="text" name="name" class="form-control" placeholder="従業員名" list="employeeNameOptions"/>
+                    <datalist id="employeeNameOptions">
+                        <option th:each="employeeName : ${employeeNameList}" th:value="${employeeName}"></option>
+                    </datalist>
+                </div>
+                <button type="submit" class="btn btn-primary">検索</button>
+            </form>
 
             <table class="table table-striped">
                 <thead>
