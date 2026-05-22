@@ -81,4 +81,18 @@ public class EmployeeRepository {
         String updateSql = "UPDATE employees SET dependents_count=:dependentsCount WHERE id=:id";
         template.update(updateSql, param);
     }
+
+    /**
+     * 従業員情報を登録します.
+     */
+    public synchronized void insert(Employee employee) {
+        // idが自動採番ではないため、同時登録で同じIDにならないようsynchronizedで囲む。
+        Integer nextId = template.queryForObject("SELECT COALESCE(MAX(id), 0) + 1 FROM employees",
+                new MapSqlParameterSource(), Integer.class);
+        employee.setId(nextId);
+        SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+        String sql = "INSERT INTO employees(id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count) "
+                + "VALUES(:id,:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount)";
+        template.update(sql, param);
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.domain.Employee;
+import com.example.form.InsertEmployeeForm;
 import com.example.form.UpdateEmployeeForm;
 import com.example.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -35,6 +41,11 @@ public class EmployeeController {
     @ModelAttribute
     public UpdateEmployeeForm setUpForm() {
         return new UpdateEmployeeForm();
+    }
+
+    @ModelAttribute
+    public InsertEmployeeForm setUpInsertEmployeeForm() {
+        return new InsertEmployeeForm();
     }
 
     /////////////////////////////////////////////////////
@@ -68,6 +79,50 @@ public class EmployeeController {
         Employee employee = employeeService.showDetail(Integer.parseInt(id));
         model.addAttribute("employee", employee);
         return "employee/detail";
+    }
+
+    /**
+     * 従業員登録画面を表示します.
+     */
+    @GetMapping("/toInsert")
+    public String toInsert() {
+        return "employee/insert";
+    }
+
+    /**
+     * 従業員情報を登録します.
+     */
+    @PostMapping("/insert")
+    public String insert(InsertEmployeeForm form, Model model) throws IOException {
+        MultipartFile imageFile = form.getImageFile();
+        String imageName = "e1.png";
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String originalName = imageFile.getOriginalFilename();
+            String lowerName = originalName == null ? "" : originalName.toLowerCase();
+            // 画像はjpg/pngだけ許可し、その他のファイルを保存しない。
+            if (!lowerName.endsWith(".jpg") && !lowerName.endsWith(".jpeg") && !lowerName.endsWith(".png")) {
+                model.addAttribute("errorMessage", "画像はjpgまたはpngを選択してください。");
+                return "employee/insert";
+            }
+            imageName = System.currentTimeMillis() + "_" + originalName;
+            Path imagePath = Path.of("src/main/resources/static/img", imageName);
+            Files.copy(imageFile.getInputStream(), imagePath);
+        }
+
+        Employee employee = new Employee();
+        employee.setName(form.getName());
+        employee.setImage(imageName);
+        employee.setGender(form.getGender());
+        employee.setHireDate(Date.valueOf(form.getHireDate()));
+        employee.setMailAddress(form.getMailAddress());
+        employee.setZipCode(form.getZipCode());
+        employee.setAddress(form.getAddress());
+        employee.setTelephone(form.getTelephone());
+        employee.setSalary(Integer.parseInt(form.getSalary()));
+        employee.setCharacteristics(form.getCharacteristics());
+        employee.setDependentsCount(Integer.parseInt(form.getDependentsCount()));
+        employeeService.insert(employee);
+        return "redirect:/employee/showList";
     }
 
     /////////////////////////////////////////////////////
