@@ -96,6 +96,16 @@
             <!-- ここから上を編集する必要はありません -->
 
             <!-- ここにモックのtable要素を貼り付けます -->
+            <!-- GET検索にすると、検索条件がURLに残り再表示や共有がしやすい。 -->
+            <form method="get" th:action="@{/employee/showList}" class="form-inline">
+                <div class="form-group">
+                    <input type="text" name="name" class="form-control" placeholder="従業員名" th:value="${name}"/>
+                </div>
+                <button type="submit" class="btn btn-primary">検索</button>
+            </form>
+            <div th:if="${message}" class="alert alert-info" style="margin-top: 15px;">
+                <p th:text="${message}">1件もありませんでした</p>
+            </div>
 
             <table class="table table-striped">
                 <thead>

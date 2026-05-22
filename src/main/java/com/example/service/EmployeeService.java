@@ -31,6 +31,19 @@ public class EmployeeService {
     }
 
     /**
+     * 従業員名で曖昧検索します.
+     *
+     * @param name 検索文字列
+     * @return 検索結果
+     */
+    public List<Employee> searchByName(String name) {
+        if (name == null || name.isBlank()) {
+            return employeeRepository.findAll();
+        }
+        return employeeRepository.findByNameContaining(name);
+    }
+
+    /**
      * 従業員情報を取得します.
      *
      * @param id ID
