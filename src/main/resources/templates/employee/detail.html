@@ -134,16 +134,23 @@
                                     <span th:utext="${employee.hireDate}">2012/11/29</span>
                                 </td>
                             </tr>
-                            <tr>
-                                <th nowrap>メールアドレス</th>
-                                <td>
+	                            <tr>
+	                                <th nowrap>メールアドレス</th>
+	                                <td>
                       <span th:utext="${employee.mailAddress}"
                       >yamada@sample.com</span
                       >
-                                </td>
-                            </tr>
-                            <tr>
-                                <th nowrap>郵便番号</th>
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <th nowrap>勤続年数</th>
+	                                <td>
+	                                    <!-- ドメインの計算プロパティを表示し、DB項目を増やさず便利な情報を出す。 -->
+	                                    <span th:text="${employee.yearsOfService + '年'}">5年</span>
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <th nowrap>郵便番号</th>
                                 <td>
                                     <span th:utext="${employee.zipCode}">111-1111</span>
                                 </td>

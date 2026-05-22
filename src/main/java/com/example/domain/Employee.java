@@ -1,5 +1,8 @@
 package com.example.domain;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 
 /**
@@ -191,6 +194,20 @@ public class Employee {
 
     public void setDependentsCount(Integer dependentsCount) {
         this.dependentsCount = dependentsCount;
+    }
+
+    /**
+     * 勤続年数を返します.
+     *
+     * @return 勤続年数
+     */
+    public Integer getYearsOfService() {
+        if (hireDate == null) {
+            return 0;
+        }
+        // 入社日から今日までの経過年数を計算し、一覧で経験年数を把握しやすくする。
+        LocalDate hireLocalDate = hireDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return Period.between(hireLocalDate, LocalDate.now()).getYears();
     }
 
     @Override
