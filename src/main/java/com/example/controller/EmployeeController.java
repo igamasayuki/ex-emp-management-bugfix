@@ -47,9 +47,17 @@ public class EmployeeController {
      * @return 従業員一覧画面
      */
     @GetMapping("/showList")
-    public String showList(Model model) {
+    public String showList(Integer page, Model model) {
+        final int pageSize = 10;
+        int currentPage = page == null || page < 1 ? 1 : page;
         List<Employee> employeeList = employeeService.showList();
-        model.addAttribute("employeeList", employeeList);
+        int totalPages = (int) Math.ceil((double) employeeList.size() / pageSize);
+        int fromIndex = Math.min((currentPage - 1) * pageSize, employeeList.size());
+        int toIndex = Math.min(fromIndex + pageSize, employeeList.size());
+        // 全件取得後に画面用の10件へ切り出す。まずページングの考え方を学ぶための素直な実装。
+        model.addAttribute("employeeList", employeeList.subList(fromIndex, toIndex));
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPages", totalPages);
         return "employee/list";
     }
 

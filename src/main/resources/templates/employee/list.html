@@ -124,6 +124,21 @@
                 </tr>
                 </tbody>
             </table>
+            <!-- ページ番号はGETパラメータで渡すと、戻る・再読み込みでも同じページを開ける。 -->
+            <nav th:if="${totalPages > 1}">
+                <ul class="pagination">
+                    <li th:classappend="${currentPage == 1} ? 'disabled'">
+                        <a th:href="@{/employee/showList(page=${currentPage - 1})}">&laquo;</a>
+                    </li>
+                    <li th:each="pageNumber : ${#numbers.sequence(1, totalPages)}"
+                        th:classappend="${pageNumber == currentPage} ? 'active'">
+                        <a th:href="@{/employee/showList(page=${pageNumber})}" th:text="${pageNumber}">1</a>
+                    </li>
+                    <li th:classappend="${currentPage == totalPages} ? 'disabled'">
+                        <a th:href="@{/employee/showList(page=${currentPage + 1})}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
 
             <!-- ここから下を編集する必要はありません -->
         </div>
