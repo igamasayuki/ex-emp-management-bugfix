@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html
+        lang="ja"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>従業員管理システム</title>
+    <link
+            rel="stylesheet"
+            href="../../../static/css/bootstrap.css"
+            th:href="@{/css/bootstrap.css}"
+    />
+    <link
+            rel="stylesheet"
+            href="../../../static/css/style.css"
+            th:href="@{/css/style.css}"
+    />
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{step2_intermediate/common/header :: header}"></div>
+
+    <ol class="breadcrumb">
+        <li class="active">従業員リスト</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12">
+            <div class="well">
+                <form method="get" th:action="@{/advanceEmployee/search}" class="form-inline">
+                    <div class="form-group">
+                        <label for="name">従業員名：</label>
+                        <input type="text" name="name" id="name" list="employeeNames" class="form-control input-sm" placeholder="名前を入力">
+                        <datalist id="employeeNames">
+                            <option th:each="emp : ${allEmployees}" th:value="${emp.name}"></option>
+                        </datalist>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">検索</button>
+                    <a th:href="@{/advanceEmployee/showList}" class="btn btn-default btn-sm">クリア</a>
+                </form>
+            </div>
+            <div th:if="${message}" class="alert alert-warning" role="alert">
+                <span th:text="${message}">検索結果メッセージ</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-12 text-right">
+            <a th:href="@{/advanceEmployee/toInsert}" class="btn btn-success">新規従業員登録</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="table-responsive col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>従業員名</th>
+                    <th>入社日</th>
+                    <th>扶養人数</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="employee : ${employeeList}">
+                    <td>
+                        <a
+                                href="detail.html"
+                                th:href="@{'/advanceEmployee/showDetail?id=' + ${employee.id}}"
+                        >
+                            <span th:text="${employee.name}">山田太郎</span>
+                        </a>
+                    </td>
+                    <td>
+                        <span th:text="${#dates.format(employee.hireDate, 'yyyy年MM月dd日')}">2016/12/1</span>
+                    </td>
+                    <td>
+                        <span th:text="${employee.dependentsCount} + '人'">3人</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            
+            <!-- (6-5) ページング UI -->
+            <nav class="text-center">
+                <ul class="pagination">
+                    <li th:class="${currentPage == 1} ? 'disabled'">
+                        <a th:href="${currentPage == 1} ? '#' : @{/advanceEmployee/showList(page=${currentPage - 1})}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:each="p : ${pageNumbers}" th:class="${p == currentPage} ? 'active'">
+                        <a th:href="@{/advanceEmployee/showList(page=${p})}" th:text="${p}">1</a>
+                    </li>
+                    <li th:class="${currentPage == totalPages} ? 'disabled'">
+                        <a th:href="${currentPage == totalPages} ? '#' : @{/advanceEmployee/showList(page=${currentPage + 1})}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html
+        lang="ja"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>従業員管理システム - 詳細</title>
+    <link
+            rel="stylesheet"
+            href="../../../static/css/bootstrap.css"
+            th:href="@{/css/bootstrap.css}"
+    />
+    <link
+            rel="stylesheet"
+            href="../../../static/css/style.css"
+            th:href="@{/css/style.css}"
+    />
+</head>
+<body>
+<div class="container">
+    <!-- 共通ヘッダー読み込み -->
+    <div th:replace="~{step2_intermediate/common/header :: header}"></div>
+
+    <!-- パンくずリスト：上級用のパスに修正 -->
+    <ol class="breadcrumb">
+        <li><a th:href="@{/advanceEmployee/showList}">従業員リスト</a></li>
+        <li class="active">従業員詳細</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12">
+            <div class="well">
+                <form method="post" th:action="@{/advanceEmployee/update}" th:object="${updateEmployeeForm}">
+                    <fieldset>
+                        <legend>従業員情報（上級版）</legend>
+                        <table class="table table-striped">
+                            <tr>
+                                <th nowrap>従業員名</th>
+                                <td>
+                                    <!-- (5-2) XSS対策済みの表示 -->
+                                    <span th:text="${employee.name}">山田花子</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th nowrap>写真</th>
+                                <td>
+                                    <img src="../../../static/img/e2.png" th:src="@{'/img/' + ${employee.image}}" style="max-width: 200px;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th nowrap>性別</th>
+                                <td>
+                                    <span th:text="${employee.gender}">女性</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th nowrap>入社日</th>
+                                <td>
+                                    <!-- (4-1) 日付フォーマット適用 -->
+                                    <span th:text="${#dates.format(employee.hireDate, 'yyyy年MM月dd日')}">2012/11/29</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th nowrap>メールアドレス</th>
+                                <td>
+                                    <span th:text="${employee.mailAddress}">yamada@sample.com</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th nowrap>郵便番号</th>
+                                <td>
+                                    <span th:text="${employee.zipCode}">111-1111</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th nowrap>住所</th>
+                                <td>
+                                    <span th:text="${employee.address}">東京都新宿区1-1-1</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th nowrap>電話番号</th>
+                                <td>
+                                    <span th:text="${employee.telephone}">090-0000-0000</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th nowrap>給料</th>
+                                <td>
+                                    <!-- (4-2) 価格フォーマット適用 -->
+                                    <span th:text="${#numbers.formatInteger(employee.salary, 3, 'COMMA')} + '円'">400,000円</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th nowrap>特性</th>
+                                <td>
+                                    <span th:text="${employee.characteristics}">特性説明</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th nowrap>扶養人数</th>
+                                <td>
+                                    <label th:errors="*{dependentsCount}" class="error-messages">扶養人数エラー</label>
+                                    <input type="hidden" name="id" th:value="${employee.id}"/>
+                                    <input type="text" name="dependentsCount" id="dependentsCount" class="form-control" th:field="*{dependentsCount}" th:errorclass="error-input"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <button type="submit" class="btn btn-primary">更新</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>従業員管理システム</title>
+    <link rel="stylesheet" href="../../../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" href="../../../static/css/style.css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-offset-0 col-lg-6 col-md-8 col-sm-10 col-xs-12">
+            <img src="../../../static/img/header_logo.png" th:src="@{/img/header_logo.png}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
+            <div class="well">
+                <!-- (6-3) 上級：送信先を /advance/insert に設定 -->
+                <form method="post" th:action="@{/advance/insert}" th:object="${advanceInsertAdministratorForm}" onsubmit="document.getElementById('registerBtn').disabled=true;">
+                    <fieldset>
+                        <legend>
+                            管理者登録（上級・暗号化対応版）<br/>
+                            <small>※この画面から登録したユーザーのみログイン可能です</small>
+                        </legend>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label for="name"> 氏名: </label>
+                                    <label th:errors="*{name}" class="error-messages">氏名エラー</label>
+                                    <input type="text" th:field="*{name}" id="name" class="form-control" placeholder="山田太郎" th:errorclass="error-input"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label for="mailAddress"> メールアドレス: </label>
+                                    <label th:errors="*{mailAddress}" class="error-messages">メールアドレスエラー</label>
+                                    <input type="text" th:field="*{mailAddress}" id="mailAddress" class="form-control" placeholder="yamada@mail.com" th:errorclass="error-input"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label for="password"> パスワード: </label>
+                                    <label th:errors="*{password}" class="error-messages">パスワードエラー</label>
+                                    <input type="password" th:field="*{password}" id="password" class="form-control" placeholder="password" th:errorclass="error-input"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label for="passwordConfirm"> パスワード（確認用）: </label>
+                                    <label th:errors="*{passwordConfirm}" class="error-messages">確認用パスワードエラー</label>
+                                    <input type="password" th:field="*{passwordConfirm}" id="passwordConfirm" class="form-control" placeholder="password" th:errorclass="error-input"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <button type="submit" id="registerBtn" class="btn btn-primary">登録</button>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>
