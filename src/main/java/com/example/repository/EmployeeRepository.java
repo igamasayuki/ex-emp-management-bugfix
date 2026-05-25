@@ -13,15 +13,10 @@ import java.util.List;
 
 /**
  * employeesテーブルを操作するリポジトリ.
- *
- * @author igamasayuki
  */
 @Repository
 public class EmployeeRepository {
 
-    /**
-     * Employeeオブジェクトを生成するローマッパー.
-     */
     private static final RowMapper<Employee> EMPLOYEE_ROW_MAPPER = (rs, i) -> {
         Employee employee = new Employee();
         employee.setId(rs.getInt("id"));
@@ -42,43 +37,55 @@ public class EmployeeRepository {
     @Autowired
     private NamedParameterJdbcTemplate template;
 
+    public Integer getMaxId() {
+        String sql = "SELECT MAX(id) FROM employees";
+        return template.queryForObject(sql, new MapSqlParameterSource(), Integer.class);
+    }
+
+    public void insert(Employee employee) {
+        String sql = "INSERT INTO employees(id, name, image, gender, hire_date, mail_address, zip_code, address, telephone, salary, characteristics, dependents_count) "
+                + "VALUES(:id, :name, :image, :gender, :hireDate, :mailAddress, :zipCode, :address, :telephone, :salary, :characteristics, :dependentsCount)";
+        SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+        template.update(sql, param);
+    }
+
     /**
-     * 従業員一覧情報を入社日順で取得します.
-     *
-     * @return 全従業員一覧 従業員が存在しない場合はサイズ0件の従業員一覧を返します
+     * 従業員一覧を入社日降順で取得します（3-1）.
      */
     public List<Employee> findAll() {
-        String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees";
+        String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees ORDER BY hire_date DESC";
+        return template.query(sql, EMPLOYEE_ROW_MAPPER);
+    }
 
-        List<Employee> developmentList = template.query(sql, EMPLOYEE_ROW_MAPPER);
+    public Integer count() {
+        String sql = "SELECT COUNT(*) FROM employees";
+        return template.queryForObject(sql, new MapSqlParameterSource(), Integer.class);
+    }
 
-        return developmentList;
+    public List<Employee> findAll(int limit, int offset) {
+        String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees ORDER BY hire_date DESC LIMIT :limit OFFSET :offset";
+        SqlParameterSource param = new MapSqlParameterSource().addValue("limit", limit).addValue("offset", offset);
+        return template.query(sql, param, EMPLOYEE_ROW_MAPPER);
     }
 
     /**
-     * 主キーから従業員情報を取得します.
-     *
-     * @param id 検索したい従業員ID
-     * @return 検索された従業員情報
-     * @throws org.springframework.dao.DataAccessException 従業員が存在しない場合は例外を発生します
+     * 名前で曖昧検索します（6-2）.
      */
+    public List<Employee> findByName(String name) {
+        String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees WHERE name LIKE :name ORDER BY hire_date DESC";
+        SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
+        return template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+    }
+
     public Employee load(Integer id) {
         String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees WHERE id=:id";
-
         SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
-
-        Employee development = template.queryForObject(sql, param, EMPLOYEE_ROW_MAPPER);
-
-        return development;
+        return template.queryForObject(sql, param, EMPLOYEE_ROW_MAPPER);
     }
 
-    /**
-     * 従業員情報を変更します.
-     */
     public void update(Employee employee) {
-        SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
-
         String updateSql = "UPDATE employees SET dependents_count=:dependentsCount WHERE id=:id";
+        SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
         template.update(updateSql, param);
     }
 }

@@ -60,13 +60,13 @@ public class JuniorAdministratorController {
         // (1-1) 登録完了のフラッシュメッセージを設定
         redirectAttributes.addFlashAttribute("infoMessage", "管理者の登録が完了しました。ログインしてください。");
 
-        // 登録後、ログイン画面へリダイレクト
-        return "redirect:/";
+        // 登録後、初級専用ログイン画面へリダイレクト（フラッシュメッセージ表示用）
+        return "redirect:/junior/";
     }
 
     @GetMapping("/")
     public String toLogin() {
-        return "administrator/login";
+        return "step1_beginner/administrator/login";
     }
 
     @PostMapping("/login")

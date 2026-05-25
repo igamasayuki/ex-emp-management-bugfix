@@ -3,49 +3,48 @@ package com.example.service;
 import com.example.domain.Administrator;
 import com.example.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 管理者情報を操作するサービス.
- *
- * @author igamasayuki
  */
 @Service
 @Transactional
 public class AdministratorService {
-	
+
     @Autowired
     private AdministratorRepository administratorRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     /**
-     * 管理者情報を登録します.
-     *
-     * @param administrator 管理者情報
+     * 管理者情報を登録します（5-3: パスワードはBCryptでハッシュ化）.
      */
     public void insert(Administrator administrator) {
+        String encodedPassword = passwordEncoder.encode(administrator.getPassword());
+        administrator.setPassword(encodedPassword);
         administratorRepository.insert(administrator);
     }
 
-    /**
-     * メールアドレスから管理者情報を取得します.
-     *
-     * @param mailAddress メールアドレス
-     * @return 管理者情報 存在しない場合はnullが返ります
-     */
     public Administrator findByMailAddress(String mailAddress) {
         return administratorRepository.findByMailAddress(mailAddress);
     }
 
     /**
-     * ログインをします.
-     *
-     * @param mailAddress メールアドレス
-     * @param password    パスワード
-     * @return 管理者情報 存在しない場合はnullが返ります
+     * ログイン照合（演習用パス・レガシー呼び出し向け）.
+     * 本番ログインは Spring Security が担当します.
      */
     public Administrator login(String mailAddress, String password) {
-        Administrator administrator = administratorRepository.findByMailAddressAndPassword(mailAddress, password);
-        return administrator;
+        Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
+        if (administrator == null) {
+            return null;
+        }
+        if (passwordEncoder.matches(password, administrator.getPassword())) {
+            return administrator;
+        }
+        return null;
     }
 }

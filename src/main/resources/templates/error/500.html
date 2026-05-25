@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>500 Internal Server Error - 従業員管理システム</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <div class="row" style="margin-top: 50px;">
+        <div class="col-md-12 text-center">
+            <img src="../../static/img/header_logo.png" th:src="@{/img/header_logo.png}" style="margin-bottom: 20px;"/>
+            <div class="jumbotron">
+                <h1 style="color: #d9534f;">500</h1>
+                <h2>システムエラーが発生しました</h2>
+                <p>申し訳ございません。サーバー内部で問題が発生しました。<br/>現在メンテナンス中か、一時的にアクセスできない状態です。</p>
+                <div style="margin-top: 30px;">
+                    <a th:href="@{/}" class="btn btn-danger btn-lg">ログイン画面へ戻る</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

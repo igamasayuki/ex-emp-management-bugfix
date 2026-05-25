@@ -10,8 +10,6 @@ import java.util.List;
 
 /**
  * 従業員情報を操作するサービス.
- *
- * @author igamasayuki
  */
 @Service
 @Transactional
@@ -19,34 +17,44 @@ public class EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
-	
+
     /**
-     * 従業員情報を全件取得します.
-     *
-     * @return 従業員情報一覧
+     * 従業員を登録します（6-3: synchronized によるID採番）.
      */
+    public synchronized void insert(Employee employee) {
+        Integer maxId = employeeRepository.getMaxId();
+        if (maxId == null) {
+            employee.setId(1);
+        } else {
+            employee.setId(maxId + 1);
+        }
+        employeeRepository.insert(employee);
+    }
+
     public List<Employee> showList() {
-        List<Employee> employeeList = employeeRepository.findAll();
-        return employeeList;
+        return employeeRepository.findAll();
     }
 
-    /**
-     * 従業員情報を取得します.
-     *
-     * @param id ID
-     * @return 従業員情報
-     * @throws org.springframework.dao.DataAccessException 検索されない場合は例外が発生します
-     */
+    public Integer getCount() {
+        return employeeRepository.count();
+    }
+
+    public List<Employee> showList(int page, int size) {
+        int offset = (page - 1) * size;
+        return employeeRepository.findAll(size, offset);
+    }
+
+    public List<Employee> findByName(String name) {
+        if (name == null || name.isEmpty()) {
+            return employeeRepository.findAll();
+        }
+        return employeeRepository.findByName(name);
+    }
+
     public Employee showDetail(Integer id) {
-        Employee employee = employeeRepository.load(id);
-        return employee;
+        return employeeRepository.load(id);
     }
 
-    /**
-     * 従業員情報を更新します.
-     *
-     * @param employee 更新した従業員情報
-     */
     public void update(Employee employee) {
         employeeRepository.update(employee);
     }

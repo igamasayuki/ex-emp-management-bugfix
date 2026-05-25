@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+    <nav th:fragment="header" class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{/employee/showList}">
+                    <img th:src="@{/img/header_logo_small.png}" alt="ロゴ"/>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a th:href="@{/employee/showList}">従業員管理</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/employee/toInsert}">従業員登録</a>
+                    </li>
+                </ul>
+                <p class="navbar-text navbar-right">
+                    <span th:if="${session.administratorName != null}">
+                        <span th:text="${session.administratorName} + 'さん　こんにちは！'"></span>
+                    </span>
+                    <span th:if="${session.administratorName == null}">ゲストさん　こんにちは！</span>
+                    &nbsp;&nbsp;
+                    <a th:href="@{/logout}" class="navbar-link">ログアウト</a>
+                </p>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

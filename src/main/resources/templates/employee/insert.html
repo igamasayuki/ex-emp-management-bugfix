@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>従業員管理システム</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+    <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{common/header :: header}"></div>
+
+    <ol class="breadcrumb">
+        <li><a th:href="@{/employee/showList}">従業員リスト</a></li>
+        <li class="active">従業員登録</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12">
+            <div class="well">
+                <form method="post" th:action="@{/employee/insert}" th:object="${insertEmployeeForm}" enctype="multipart/form-data">
+                    <fieldset>
+                        <legend>従業員登録</legend>
+                        <div class="form-group">
+                            <label for="name">名前:</label>
+                            <label th:errors="*{name}" class="error-messages"></label>
+                            <input type="text" th:field="*{name}" id="name" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">写真:</label>
+                            <label th:errors="*{image}" class="error-messages"></label>
+                            <input type="file" th:field="*{image}" id="image" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label>性別:</label>
+                            <label th:errors="*{gender}" class="error-messages"></label>
+                            <div class="radio-inline">
+                                <input type="radio" th:field="*{gender}" value="男性" id="male"/>
+                                <label for="male">男性</label>
+                            </div>
+                            <div class="radio-inline">
+                                <input type="radio" th:field="*{gender}" value="女性" id="female"/>
+                                <label for="female">女性</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="hireDate">入社日:</label>
+                            <label th:errors="*{hireDate}" class="error-messages"></label>
+                            <input type="date" th:field="*{hireDate}" id="hireDate" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="mailAddress">メールアドレス:</label>
+                            <label th:errors="*{mailAddress}" class="error-messages"></label>
+                            <input type="email" th:field="*{mailAddress}" id="mailAddress" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="zipCode">郵便番号（ハイフンなし）:</label>
+                            <label th:errors="*{zipCode}" class="error-messages"></label>
+                            <input type="text" th:field="*{zipCode}" id="zipCode" class="form-control"
+                                   onkeyup="AjaxZip3.zip2addr('zipCode','','address','address');"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">住所:</label>
+                            <label th:errors="*{address}" class="error-messages"></label>
+                            <input type="text" th:field="*{address}" id="address" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="telephone">電話番号:</label>
+                            <label th:errors="*{telephone}" class="error-messages"></label>
+                            <input type="text" th:field="*{telephone}" id="telephone" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="salary">給料:</label>
+                            <label th:errors="*{salary}" class="error-messages"></label>
+                            <input type="number" th:field="*{salary}" id="salary" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="characteristics">特性:</label>
+                            <label th:errors="*{characteristics}" class="error-messages"></label>
+                            <textarea th:field="*{characteristics}" id="characteristics" class="form-control" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">登録</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+</body>
+</html>
