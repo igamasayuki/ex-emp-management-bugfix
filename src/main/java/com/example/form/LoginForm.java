@@ -12,12 +12,12 @@ public class LoginForm {
     /**
      * メールアドレス
      */
-    @NotBlank
+    @NotBlank(message = "入力は必須です。")
     private String mailAddress;
     /**
      * パスワード
      */
-    @NotBlank
+    @NotBlank(message = "入力は必須です。")
     private String password;
 
     public String getMailAddress() {
