@@ -1,19 +1,23 @@
 package com.example.form;
 
+import jakarta.validation.constraints.NotBlank;
+
 /**
  * ログイン時に使用するフォーム.
  *
  * @author igamasayuki
  */
 public class LoginForm {
-	
+
     /**
      * メールアドレス
      */
+    @NotBlank(message = "入力は必須です。")
     private String mailAddress;
     /**
      * パスワード
      */
+    @NotBlank(message = "入力は必須です。")
     private String password;
 
     public String getMailAddress() {
