@@ -78,7 +78,7 @@ public class AdministratorController {
             administratorService.insert(administrator);
             return "redirect:/";
         } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
+            redirectAttributes.addFlashAttribute("errorMessage", "メールアドレスは既に存在します");
             return "redirect:/toInsert";
         }
     }
