@@ -68,8 +68,10 @@ public class AdministratorController {
     /**
      * 管理者情報を登録します.
      *
-     * @param form 管理者情報用フォーム
-     * @return ログイン画面へリダイレクト
+     * @param form   フォーム
+     * @param result エラー保持用
+     * @param model  モデル
+     * @return ログイン画面
      */
     @PostMapping("/insert")
     public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
