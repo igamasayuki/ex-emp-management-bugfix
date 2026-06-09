@@ -6,7 +6,6 @@ package com.example.form;
  * @author igamasayuki
  */
 public class LoginForm {
-	
     /**
      * メールアドレス
      */
