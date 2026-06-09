@@ -1,6 +1,7 @@
 package com.example.form;
 
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * 従業員情報更新時に使用するフォーム.
@@ -15,6 +16,7 @@ public class UpdateEmployeeForm {
     /**
      * 扶養人数
      */
+    @NotBlank(message = "扶煙人数を入力してください")
     @Pattern(regexp = "^[0-9]+$", message = "扶養人数は数値で入力してください")
     private String dependentsCount;
 	

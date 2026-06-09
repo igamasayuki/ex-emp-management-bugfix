@@ -67,6 +67,13 @@ public class EmployeeController {
     public String showDetail(String id, Model model) {
         Employee employee = employeeService.showDetail(Integer.parseInt(id));
         model.addAttribute("employee", employee);
+
+        // 初期表示時、フォームオブジェクトに値をセットしてモデルに追加
+        UpdateEmployeeForm form = new UpdateEmployeeForm();
+        form.setId(id);
+        form.setDependentsCount(String.valueOf(employee.getDependentsCount()));
+        model.addAttribute("updateEmployeeForm", form);
+
         return "employee/detail";
     }
 
@@ -82,8 +89,12 @@ public class EmployeeController {
     @PostMapping("/update")
     public String update(@Validated UpdateEmployeeForm form, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return showDetail(form.getId(), model);
+            // エラー時、表示に必要な既存の従業員情報を再取得してモデルにセット
+            Employee employee = employeeService.showDetail(form.getIntId());
+            model.addAttribute("employee", employee);
+            return "employee/detail";
         }
+
         Employee employee = new Employee();
         employee.setId(form.getIntId());
         employee.setDependentsCount(form.getIntDependentsCount());
