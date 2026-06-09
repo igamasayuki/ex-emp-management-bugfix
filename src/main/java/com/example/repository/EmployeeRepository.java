@@ -44,11 +44,12 @@ public class EmployeeRepository {
 
     /**
      * 従業員一覧情報を入社日順で取得します.
+     * 入社日、扶養人数でのソートの意義を見つけられなかったため、一般的な名前の降順での並び替えを行います。
      *
      * @return 全従業員一覧 従業員が存在しない場合はサイズ0件の従業員一覧を返します
      */
     public List<Employee> findAll() {
-        String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees";
+        String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees ORDER BY name";
 
         List<Employee> developmentList = template.query(sql, EMPLOYEE_ROW_MAPPER);
 
