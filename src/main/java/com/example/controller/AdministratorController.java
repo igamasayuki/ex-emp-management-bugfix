@@ -118,11 +118,15 @@ public class AdministratorController {
         if (result.hasErrors()) {
             return toLogin();
         }
-        Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
+        String mailAddress = form.getMailAddress();
+        String password = form.getPassword();
+        Administrator administrator = administratorService.login(mailAddress, password);
         if (administrator == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
             return "redirect:/";
         }
+        String administratorName = administrator.getName();
+        session.setAttribute("administratorName", administratorName);
         return "redirect:/employee/showList";
     }
 
