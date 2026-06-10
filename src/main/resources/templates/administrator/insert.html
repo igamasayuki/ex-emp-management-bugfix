@@ -52,13 +52,13 @@
                 <legend>
                   管理者登録<br />(システムにログインできる管理者を登録します)
                 </legend>
-                <div th:if="${errorMessage}" class="alert alert-danger">
-                  <p th:text="${errorMessage}">
+                <div th:if="${mailErrorMessage}" class="alert alert-danger">
+                  <p th:text="${mailErrorMessage}">
                     メールアドレスは既に存在します
                   </p>
                 </div>
-                <div th:if="${errorMessage2}" class="alert alert-danger">
-                  <p th:text="${errorMessage2}">
+                <div th:if="${passErrorMessage}" class="alert alert-danger">
+                  <p th:text="${passErrorMessage}">
                     パスワードと確認用パスワードが一致しません
                   </p>
                 </div>

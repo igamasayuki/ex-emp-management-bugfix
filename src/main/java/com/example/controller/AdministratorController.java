@@ -75,18 +75,25 @@ public class AdministratorController {
      */
     @PostMapping("/insert")
     public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return toInsert(form, model);
+        boolean isEmailAlreadyUsed = false;
+        boolean isPasswordConfirmed = true;
+
+        Administrator administrator = new Administrator();
+        BeanUtils.copyProperties(form, administrator);
+
+        if (administratorService.findByMailAddress(administrator.getMailAddress()) != null) {
+            model.addAttribute("mailErrorMessage", "メールアドレスは既に存在します");
+            isEmailAlreadyUsed = true;
         }
 
         if (!Objects.equals(form.getPassword(), form.getConfirmation())) {
-            model.addAttribute("errorMessage2", "パスワードと確認用パスワードが一致しません。");
-            return toInsert(form, model);
+            model.addAttribute("passErrorMessage", "パスワードと確認用パスワードが一致しません。");
+            isPasswordConfirmed = false;
         }
 
-        Administrator administrator = new Administrator();
-        // フォームからドメインにプロパティ値をコピー
-        BeanUtils.copyProperties(form, administrator);
+        if (result.hasErrors() || isEmailAlreadyUsed || !isPasswordConfirmed) {
+            return toInsert(form, model);
+        }
         administratorService.insert(administrator);
         return "redirect:/";
     }

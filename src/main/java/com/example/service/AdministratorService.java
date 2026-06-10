@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class AdministratorService {
-	
+
     @Autowired
     private AdministratorRepository administratorRepository;
 
@@ -35,7 +35,17 @@ public class AdministratorService {
      * @return 管理者情報 存在しない場合はnullが返ります
      */
     public Administrator login(String mailAddress, String password) {
-        Administrator administrator = administratorRepository.findByMailAddressAndPassword(mailAddress, password);
+        return administratorRepository.findByMailAddressAndPassword(mailAddress, password);
+    }
+
+    /**
+     * メールアドレスで管理者を検索する.
+     *
+     * @param mailAddress メールアドレス
+     * @return 管理者情報 存在しない場合はnullが返ります
+     */
+    public Administrator findByMailAddress(String mailAddress) {
+        Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
         return administrator;
     }
 }
