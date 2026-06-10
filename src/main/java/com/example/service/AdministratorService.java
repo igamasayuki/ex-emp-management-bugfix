@@ -45,8 +45,19 @@ public class AdministratorService {
      * @param mailAddress メールアドレス
      * @return 管理者情報 存在しない場合はnullが返ります
      */
-    public Administrator findByMailAddress(String mailAddress){
+    public Administrator findByMailAddress(String mailAddress) {
         return administratorRepository.findByMailAddress(mailAddress);
 
+    }
+
+    /**
+     * メールアドレスとパスワードから管理者情報を取得します.
+     *
+     * @param mailAddress メールアドレス
+     * @param password    パスワード
+     * @return 管理者情報 存在しない場合はnullを返します
+     */
+    public Administrator findByMailAddressAndPassword(String mailAddress, String password) {
+        return administratorRepository.findByMailAddressAndPassword(mailAddress, password);
     }
 }
