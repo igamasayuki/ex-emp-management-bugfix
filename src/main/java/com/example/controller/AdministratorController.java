@@ -72,6 +72,13 @@ public class AdministratorController {
      */
     @PostMapping("/insert")
     public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
+
+        if (form.getPassword().isEmpty() && form.getConfirmPassword().isEmpty()) {
+            if (!form.getPassword().equals(form.getConfirmPassword())) {
+                result.rejectValue("confirmPassword", "", "パスワードと確認用パスワードが一致しません");
+            }
+        }
+
         if (result.hasErrors()) {
             return "administrator/insert";
         }
@@ -85,7 +92,7 @@ public class AdministratorController {
             result.rejectValue("mailAddress", "", "そのメールアドレスは既に登録されています");
             return "administrator/insert";
         }
-        
+
         return "redirect:/";
     }
 
