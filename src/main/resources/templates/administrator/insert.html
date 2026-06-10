@@ -52,6 +52,11 @@
                 <legend>
                   管理者登録<br />(システムにログインできる管理者を登録します)
                 </legend>
+                <div th:if="${errorMessage}" class="alert alert-danger">
+                  <p th:text="${errorMessage}">
+                    メールアドレスは既に存在します
+                  </p>
+                </div>
                 <!-- 氏名 -->
                 <div class="form-group">
                   <div class="row">
