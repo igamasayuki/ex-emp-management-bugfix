@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public class EmployeeRepository {
         employee.setName(rs.getString("name"));
         employee.setImage(rs.getString("image"));
         employee.setGender(rs.getString("gender"));
-        employee.setHireDate(rs.getDate("hire_date"));
+        employee.setHireDate(rs.getObject("hire_date", LocalDate.class));
         employee.setMailAddress(rs.getString("mail_address"));
         employee.setZipCode(rs.getString("zip_code"));
         employee.setAddress(rs.getString("address"));
