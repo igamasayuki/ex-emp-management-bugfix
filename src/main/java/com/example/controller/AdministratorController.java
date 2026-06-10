@@ -8,8 +8,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -61,7 +61,7 @@ public class AdministratorController {
      * @return 管理者登録画面
      */
     @GetMapping("/toInsert")
-    public String toInsert(InsertAdministratorForm form, Model model) {
+    public String toInsert(InsertAdministratorForm form) {
         return "administrator/insert";
     }
 
@@ -72,20 +72,26 @@ public class AdministratorController {
      * @return ログイン画面へリダイレクト
      */
     @PostMapping("/insert")
-    public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return toInsert(form, model);
-        }
+    public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
         Administrator administrator = new Administrator();
         // フォームからドメインにプロパティ値をコピー
         BeanUtils.copyProperties(form, administrator);
 
         // 存在するメールアドレスか確認
         String mailAddress = administrator.getMailAddress();
-        if (administratorService.existMailAddress(mailAddress)) {
-            model.addAttribute("existMailAddressMessage", "そのメールアドレスは既に存在しています");
-            return toInsert(form, model);
+        boolean existMailAddress = !result.hasFieldErrors("mailAddress") && administratorService.existMailAddress(mailAddress);
+        if (existMailAddress) {
+            result.addError(new FieldError(
+                    "insertAdministratorForm",
+                    "mailAddress",
+                    "既にそのメールアドレスは登録されています。"
+            ));
         }
+
+        if (result.hasErrors()) {
+            return toInsert(form);
+        }
+
         administratorService.insert(administrator);
         return "redirect:/";
     }
