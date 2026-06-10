@@ -75,21 +75,32 @@ public class AdministratorController {
      */
     @PostMapping("/insert")
     public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
-        if (result.hasErrors()) {
-            return toInsert(form);
-        }
         if (!Objects.equals(form.getPassword(), form.getConfirmPassword())) {
             result.addError(new FieldError(
                     "insertAdministratorForm",
                     "confirmPassword",
                     "パスワードと確認用パスワードが一致しません"
             ));
-            
-            return toInsert(form);
         }
+        
         Administrator administrator = new Administrator();
         // フォームからドメインにプロパティ値をコピー
         BeanUtils.copyProperties(form, administrator);
+        // 存在するメールアドレスか確認
+        String mailAddress = administrator.getMailAddress();
+        boolean existMailAddress = !result.hasFieldErrors("mailAddress") && administratorService.existMailAddress(mailAddress);
+        if (existMailAddress) {
+            result.addError(new FieldError(
+                    "insertAdministratorForm",
+                    "mailAddress",
+                    "既にそのメールアドレスは登録されています。"
+            ));
+        }
+
+        if (result.hasErrors()) {
+            return toInsert(form);
+        }
+
         administratorService.insert(administrator);
         return "redirect:/";
     }
