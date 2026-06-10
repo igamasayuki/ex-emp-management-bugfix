@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class AdministratorService {
-	
+
     @Autowired
     private AdministratorRepository administratorRepository;
 
@@ -23,8 +23,16 @@ public class AdministratorService {
      *
      * @param administrator 管理者情報
      */
-    public void insert(Administrator administrator) {
+    public boolean insert(Administrator administrator) {
+        Administrator existMail =
+                administratorRepository.findByMailAddress(administrator.getMailAddress());
+
+        if (existMail != null){
+            return false;
+        }
+
         administratorRepository.insert(administrator);
+        return true;
     }
 
     /**
