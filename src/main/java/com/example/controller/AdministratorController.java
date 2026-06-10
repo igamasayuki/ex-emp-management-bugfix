@@ -73,15 +73,22 @@ public class AdministratorController {
      */
     @PostMapping("/insert")
     public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
+        boolean validationFlag = false;
+        boolean mailFlag = false;
+
         if (result.hasErrors()) {
-            return toInsert(form, model);
+            validationFlag = true;
         }
+
         Administrator administrator = new Administrator();
-        // フォームからドメインにプロパティ値をコピー
         BeanUtils.copyProperties(form, administrator);
 
         if (administratorService.findByMailAddress(administrator.getMailAddress()) != null) {
             model.addAttribute("errorMessage", "メールアドレスは既に存在します");
+            mailFlag = true;
+        }
+
+        if (validationFlag || mailFlag) {
             return toInsert(form, model);
         }
         administratorService.insert(administrator);
