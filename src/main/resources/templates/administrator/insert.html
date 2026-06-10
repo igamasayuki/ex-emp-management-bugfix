@@ -57,6 +57,11 @@
                     メールアドレスは既に存在します
                   </p>
                 </div>
+                <div th:if="${errorMessage2}" class="alert alert-danger">
+                  <p th:text="${errorMessage2}">
+                    パスワードと確認用パスワードが一致しません
+                  </p>
+                </div>
                 <!-- 氏名 -->
                 <div class="form-group">
                   <div class="row">
