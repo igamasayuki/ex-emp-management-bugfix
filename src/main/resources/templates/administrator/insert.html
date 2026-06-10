@@ -132,7 +132,7 @@
                                     >
                                         パスワードを入力してください
                                     </label>
-                                    <span th:if="${confirmationPasswordError}" th:text="${confirmationPasswordError}"
+                                    <span th:errors="*{confirmationPassword}"
                                           style="color: red"></span>
                                     <input
                                             type="password"

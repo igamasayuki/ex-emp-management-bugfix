@@ -73,27 +73,24 @@ public class AdministratorController {
      */
     @PostMapping("/insert")
     public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return toInsert();
-        }
         Administrator administrator = new Administrator();
-        System.out.println("フォーム" + form);
 
         // フォームからドメインにプロパティ値をコピー
         BeanUtils.copyProperties(form, administrator);
 
+        //パスワード再確認の処理
+        if (!(form.getPassword().equals(form.getConfirmationPassword()))) {
+            result.rejectValue("confirmationPassword", "code", "パスワードが一致しません");
+        }
+
         //存在するメールアドレスの確認処理
         Administrator exsitingAdministrator = administratorService.findByMailAddress(administrator.getMailAddress());
         if (exsitingAdministrator != null) {
-            model.addAttribute("error", "存在するメールアドレスです");
-            System.out.println(model);
-            return "administrator/insert";
+            result.rejectValue("mailAddress", "error.duplicateMailAddress", "存在するメールアドレスです");
         }
 
-        //パスワード再確認の処理
-        if (!(form.getPassword().equals(form.getConfirmationPassword()))) {
-            model.addAttribute("confirmationPasswordError", "パスワードが一致しません");
-            return "administrator/insert";
+        if (result.hasErrors()) {
+            return toInsert();
         }
 
         administratorService.insert(administrator);
