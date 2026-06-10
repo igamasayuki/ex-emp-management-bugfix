@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Objects;
+
 /**
  * 管理者情報を操作するコントローラー.
  *
@@ -71,10 +73,17 @@ public class AdministratorController {
      * @return ログイン画面へリダイレクト
      */
     @PostMapping("/insert")
-    public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
+    public String insert(@Validated InsertAdministratorForm form, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return toInsert(form);
         }
+
+        if (!Objects.equals(form.getPassword(), form.getConfirmation())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "パスワードと確認用パスワードが一致しません。");
+            System.out.println("パスワードと確認用パスワードが一致しません");
+            return "redirect:/toInsert";
+        }
+
         Administrator administrator = new Administrator();
         // フォームからドメインにプロパティ値をコピー
         BeanUtils.copyProperties(form, administrator);

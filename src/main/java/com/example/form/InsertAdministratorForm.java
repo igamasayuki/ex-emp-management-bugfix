@@ -26,6 +26,12 @@ public class InsertAdministratorForm {
     @NotBlank(message = "パスワードは必須です")
     private String password;
 
+    /**
+     * 確認用パスワード
+     */
+    @NotBlank(message = "確認用パスワードは必須です")
+    private String confirmation;
+
     public String getName() {
         return name;
     }
@@ -50,10 +56,21 @@ public class InsertAdministratorForm {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "InsertAdministratorForm [name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
-                + "]";
+    public String getConfirmation() {
+        return confirmation;
     }
 
+    public void setConfirmation(String confirmation) {
+        this.confirmation = confirmation;
+    }
+
+    @Override
+    public String toString() {
+        return "InsertAdministratorForm{" +
+                "name='" + name + '\'' +
+                ", mailAddress='" + mailAddress + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmation='" + confirmation + '\'' +
+                '}';
+    }
 }
