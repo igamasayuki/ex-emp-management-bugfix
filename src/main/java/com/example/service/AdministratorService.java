@@ -3,6 +3,7 @@ package com.example.service;
 import com.example.domain.Administrator;
 import com.example.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,9 @@ public class AdministratorService {
 
     @Autowired
     private AdministratorRepository administratorRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 管理者情報を登録します.
@@ -35,7 +39,14 @@ public class AdministratorService {
      * @return 管理者情報 存在しない場合はnullが返ります
      */
     public Administrator login(String mailAddress, String password) {
-        Administrator administrator = administratorRepository.findByMailAddressAndPassword(mailAddress, password);
+        Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
+
+        //パスワードが一致しているか判定
+        boolean isCorrectPassword = passwordEncoder.matches(password, administrator.getPassword());
+        if(!isCorrectPassword){
+            return null;
+        }
+
         return administrator;
     }
 
@@ -50,5 +61,15 @@ public class AdministratorService {
         Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
 
         return administrator != null;
+    }
+
+    /**
+     * パスワードをハッシュ化して返します.
+     *
+     * @param password パスワード
+     * @return ハッシュ化されたパスワード
+     */
+    public String passwordHashing(String password) {
+        return passwordEncoder.encode(password);
     }
 }

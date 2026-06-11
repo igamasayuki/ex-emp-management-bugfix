@@ -82,7 +82,7 @@ public class AdministratorController {
                     "パスワードと確認用パスワードが一致しません"
             ));
         }
-        
+
         Administrator administrator = new Administrator();
         // フォームからドメインにプロパティ値をコピー
         BeanUtils.copyProperties(form, administrator);
@@ -101,7 +101,12 @@ public class AdministratorController {
             return toInsert(form);
         }
 
+        //パスワードをハッシュ化
+        String hashedPassword = administratorService.passwordHashing(administrator.getPassword());
+        administrator.setPassword(hashedPassword);
+
         administratorService.insert(administrator);
+
         return "redirect:/";
     }
 
