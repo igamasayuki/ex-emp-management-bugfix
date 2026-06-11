@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Objects;
+
 /**
  * 管理者情報を操作するコントローラー.
  *
@@ -73,10 +75,17 @@ public class AdministratorController {
      */
     @PostMapping("/insert")
     public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
+        if (!Objects.equals(form.getPassword(), form.getConfirmPassword())) {
+            result.addError(new FieldError(
+                    "insertAdministratorForm",
+                    "confirmPassword",
+                    "パスワードと確認用パスワードが一致しません"
+            ));
+        }
+        
         Administrator administrator = new Administrator();
         // フォームからドメインにプロパティ値をコピー
         BeanUtils.copyProperties(form, administrator);
-
         // 存在するメールアドレスか確認
         String mailAddress = administrator.getMailAddress();
         boolean existMailAddress = !result.hasFieldErrors("mailAddress") && administratorService.existMailAddress(mailAddress);
