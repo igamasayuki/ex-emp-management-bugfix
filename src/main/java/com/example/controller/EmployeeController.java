@@ -55,7 +55,9 @@ public class EmployeeController {
 
     @GetMapping("/showList")
     public String showList(Integer page, Model model) {
-        page = (page == null) ? 1 : page;
+        if (page == null) {
+            page = 1;
+        }
 
         List<Employee> employeeList = employeeService.showList(page, PAGE_SIZE);
         int totalCount = employeeService.getCount();

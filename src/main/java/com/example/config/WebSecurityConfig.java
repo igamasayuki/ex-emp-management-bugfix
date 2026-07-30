@@ -31,7 +31,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/css/**", "/img/**", "/js/**").permitAll()
                 .requestMatchers("/", "/insert", "/toInsert", "/login").permitAll()
                 // 講師自用の演習パス（本番完成形とは別系統）
-                .requestMatchers("/junior/**", "/middle/**", "/middleEmployee/**", "/advance/**", "/advanceEmployee/**").permitAll()
+                .requestMatchers("/junior/**", "/middle/**", "/middleEmployee/**", "/advance/**", "/advanceEmployee/**", "/beyond/**", "/beyondEmployee/**").permitAll()
                 .requestMatchers("/employee/**").authenticated()
                 .anyRequest().authenticated()
             )

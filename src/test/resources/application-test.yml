@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=../../../.vscode/schemas/any.json
+# 17-1 講師配布用（接続先は環境に合わせて変更）
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: taku
+    password: postgres

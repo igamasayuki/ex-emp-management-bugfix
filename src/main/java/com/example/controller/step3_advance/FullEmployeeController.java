@@ -88,9 +88,15 @@ public class FullEmployeeController {
      */
     @GetMapping("/showListWithEnum")
     public String showListWithEnum(Integer page, DisplaySize size, EmployeeSortKey sort, Model model) {
-        page = (page == null) ? 1 : page;
-        size = (size == null) ? DisplaySize.SMALL : size;
-        sort = (sort == null) ? EmployeeSortKey.HIRE_DATE_DESC : sort;
+        if (page == null) {
+            page = 1;
+        }
+        if (size == null) {
+            size = DisplaySize.SMALL;
+        }
+        if (sort == null) {
+            sort = EmployeeSortKey.HIRE_DATE_DESC;
+        }
 
         List<Employee> employeeList = employeeService.showListWithEnum(page, size, sort);
         int totalPages = (int) Math.ceil((double) employeeService.getCount() / size.getCount());

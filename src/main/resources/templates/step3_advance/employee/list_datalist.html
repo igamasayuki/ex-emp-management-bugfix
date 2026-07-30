@@ -87,16 +87,27 @@
             <!-- (6-5) ページング UI -->
             <nav class="text-center">
                 <ul class="pagination">
-                    <li th:class="${currentPage == 1} ? 'disabled'">
-                        <a th:href="${currentPage == 1} ? '#' : @{/advanceEmployee/showList(page=${currentPage - 1})}" aria-label="Previous">
+                    <li th:if="${currentPage == 1}" class="disabled">
+                        <a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+                    </li>
+                    <li th:if="${currentPage != 1}">
+                        <a th:href="@{/advanceEmployee/showList(page=${currentPage - 1})}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li th:each="p : ${pageNumbers}" th:class="${p == currentPage} ? 'active'">
-                        <a th:href="@{/advanceEmployee/showList(page=${p})}" th:text="${p}">1</a>
+                    <th:block th:each="p : ${pageNumbers}">
+                        <li th:if="${p == currentPage}" class="active">
+                            <a th:href="@{/advanceEmployee/showList(page=${p})}" th:text="${p}">1</a>
+                        </li>
+                        <li th:if="${p != currentPage}">
+                            <a th:href="@{/advanceEmployee/showList(page=${p})}" th:text="${p}">1</a>
+                        </li>
+                    </th:block>
+                    <li th:if="${currentPage == totalPages}" class="disabled">
+                        <a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
                     </li>
-                    <li th:class="${currentPage == totalPages} ? 'disabled'">
-                        <a th:href="${currentPage == totalPages} ? '#' : @{/advanceEmployee/showList(page=${currentPage + 1})}" aria-label="Next">
+                    <li th:if="${currentPage != totalPages}">
+                        <a th:href="@{/advanceEmployee/showList(page=${currentPage + 1})}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

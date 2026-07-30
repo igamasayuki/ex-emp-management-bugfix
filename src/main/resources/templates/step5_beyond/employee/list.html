@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>従業員管理システム（追加課題）</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{step5_beyond/common/header :: header}"></div>
+
+    <ol class="breadcrumb">
+        <li class="active">従業員リスト（step5 追加課題）</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-12 col-xs-12">
+            <div th:if="${successMessage}" class="alert alert-success">
+                <span th:text="#{${successMessage}}">完了</span>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <span th:text="${errorMessage}">エラー</span>
+            </div>
+            <div th:if="${message}" class="alert alert-warning">
+                <span th:text="${message}"></span>
+            </div>
+            <div class="well">
+                <form method="get" th:action="@{/beyondEmployee/showList}" class="form-inline">
+                    <input type="hidden" name="sort" th:value="${sort}"/>
+                    <input type="hidden" name="order" th:value="${order}"/>
+                    <div class="form-group">
+                        <label for="name">名前：</label>
+                        <input type="text" name="name" id="name" class="form-control input-sm"
+                               th:value="${searchName}" list="employeeNames" placeholder="部分一致"/>
+                        <datalist id="employeeNames">
+                            <option th:each="n : ${employeeNames}" th:value="${n}"></option>
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="mail">メール：</label>
+                        <input type="text" name="mail" id="mail" class="form-control input-sm" th:value="${searchMail}"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone">電話：</label>
+                        <input type="text" name="telephone" id="telephone" class="form-control input-sm" th:value="${searchTelephone}"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">検索</button>
+                    <a th:href="@{/beyondEmployee/showList}" class="btn btn-default btn-sm">クリア</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="col-lg-offset-2 col-lg-8">
+            <button type="button" id="selectAll" class="btn btn-default btn-sm">全選択</button>
+            <button type="button" id="clearAll" class="btn btn-default btn-sm">選択解除</button>
+            <span id="selectedCount" class="text-muted">選択中: 0 件</span>
+            <span class="text-muted">（現在ページのみ）</span>
+            <a th:href="@{/beyondEmployee/toInsert}" class="btn btn-success btn-sm pull-right">新規登録</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="table-responsive col-lg-offset-2 col-lg-8">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        <a th:href="@{/beyondEmployee/showList(page=1, sort='name', order=${T(com.example.service.step5_beyond.BeyondEmployeeSort).toggleOrder('name', sort, order)}, name=${searchName}, mail=${searchMail}, telephone=${searchTelephone})}">従業員名</a>
+                    </th>
+                    <th>
+                        <a th:href="@{/beyondEmployee/showList(page=1, sort='hireDate', order=${T(com.example.service.step5_beyond.BeyondEmployeeSort).toggleOrder('hireDate', sort, order)}, name=${searchName}, mail=${searchMail}, telephone=${searchTelephone})}">入社日</a>
+                    </th>
+                    <th>
+                        <a th:href="@{/beyondEmployee/showList(page=1, sort='salary', order=${T(com.example.service.step5_beyond.BeyondEmployeeSort).toggleOrder('salary', sort, order)}, name=${searchName}, mail=${searchMail}, telephone=${searchTelephone})}">給料</a>
+                    </th>
+                    <th>扶養人数</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="employee : ${employeeList}">
+                    <td><input type="checkbox" class="emp-check" th:value="${employee.id}"/></td>
+                    <td>
+                        <a th:href="@{/beyondEmployee/showDetail(id=${employee.id})}">
+                            <span th:text="${employee.name}">名前</span>
+                        </a>
+                    </td>
+                    <td><span th:text="${#dates.format(employee.hireDate, 'yyyy年MM月dd日')}">入社日</span></td>
+                    <td><span th:text="${#numbers.formatInteger(employee.salary, 3, 'COMMA')} + '円'">給料</span></td>
+                    <td><span th:text="${employee.dependentsCount} + '人'">0人</span></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <nav class="text-center" th:if="${totalPages > 0}">
+                <ul class="pagination">
+                    <li th:if="${currentPage == 1}" class="disabled">
+                        <a href="#">&laquo;</a>
+                    </li>
+                    <li th:if="${currentPage != 1}">
+                        <a th:href="@{/beyondEmployee/showList(page=${currentPage - 1}, sort=${sort}, order=${order}, name=${searchName}, mail=${searchMail}, telephone=${searchTelephone})}">&laquo;</a>
+                    </li>
+                    <th:block th:each="p : ${pageNumbers}">
+                        <li th:if="${p == currentPage}" class="active">
+                            <a th:href="@{/beyondEmployee/showList(page=${p}, sort=${sort}, order=${order}, name=${searchName}, mail=${searchMail}, telephone=${searchTelephone})}" th:text="${p}">1</a>
+                        </li>
+                        <li th:if="${p != currentPage}">
+                            <a th:href="@{/beyondEmployee/showList(page=${p}, sort=${sort}, order=${order}, name=${searchName}, mail=${searchMail}, telephone=${searchTelephone})}" th:text="${p}">1</a>
+                        </li>
+                    </th:block>
+                    <li th:if="${currentPage == totalPages}" class="disabled">
+                        <a href="#">&raquo;</a>
+                    </li>
+                    <li th:if="${currentPage != totalPages}">
+                        <a th:href="@{/beyondEmployee/showList(page=${currentPage + 1}, sort=${sort}, order=${order}, name=${searchName}, mail=${searchMail}, telephone=${searchTelephone})}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script>
+    function updateCount() {
+        var n = document.querySelectorAll('.emp-check:checked').length;
+        document.getElementById('selectedCount').textContent = '選択中: ' + n + ' 件';
+    }
+    document.getElementById('selectAll').addEventListener('click', function () {
+        document.querySelectorAll('.emp-check').forEach(function (cb) { cb.checked = true; });
+        updateCount();
+    });
+    document.getElementById('clearAll').addEventListener('click', function () {
+        document.querySelectorAll('.emp-check').forEach(function (cb) { cb.checked = false; });
+        updateCount();
+    });
+    document.querySelectorAll('.emp-check').forEach(function (cb) {
+        cb.addEventListener('change', updateCount);
+    });
+</script>
+</body>
+</html>

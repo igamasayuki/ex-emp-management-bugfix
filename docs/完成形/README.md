@@ -35,6 +35,22 @@
 
 **未含む**: (7-1) JUnit、(6-6) 独自機能
 
+## 追加課題完成形（step5_beyond・講師比較用）
+
+本番パス（`/employee`）は **本編 6-5 まで**。追加課題 8-1〜33-1 の完成例は **独立系統** の `step5_beyond` に実装しています。
+
+| 項目 | 値 |
+|------|-----|
+| ログイン | `http://localhost:8080/beyond/` |
+| 従業員一覧 | `http://localhost:8080/beyondEmployee/showList` |
+| Java | `controller/service/repository/step5_beyond` |
+| 11-1 ソート（Enum 別解） | `domain/BeyondEmployeeSortKey.java`（if 別解は `BeyondEmployeeSort.java`） |
+| HTML | `templates/step5_beyond/` |
+| 17-1 テスト | `src/test/java/.../step5_beyond/` + `application-test.yml` |
+| 33-1 手順書 | `docs/deploy/デプロイ手順書.md`（テンプレート） |
+
+対応課題: 8-1, 9-1, 11-1, 12-1, 13-3, 17-1, 18-1/30-1（`messages.properties`）, 22-1, 23-1, 27-1, 29-1, 33-1（手順書）
+
 ## 注意（既存DBデータ）
 
 5-3 適用後はパスワードが **BCrypt ハッシュ** になります。既存の平文パスワード管理者ではログインできないため、**新規管理者登録** するか、DB の password 列を更新してください。

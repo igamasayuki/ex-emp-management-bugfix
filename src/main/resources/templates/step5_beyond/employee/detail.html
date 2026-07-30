@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>従業員詳細（追加課題）</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <div th:replace="~{step5_beyond/common/header :: header}"></div>
+
+    <ol class="breadcrumb">
+        <li><a th:href="@{/beyondEmployee/showList}">従業員リスト</a></li>
+        <li class="active">従業員詳細</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8">
+            <div th:if="${successMessage}" class="alert alert-success">
+                <span th:text="#{${successMessage}}">完了</span>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <span th:text="${errorMessage}">エラー</span>
+            </div>
+            <div class="well">
+                <form method="post" th:action="@{/beyondEmployee/update}" th:object="${beyondUpdateEmployeeForm}">
+                    <fieldset>
+                        <legend>従業員情報（8-1 更新拡張）</legend>
+                        <table class="table table-striped">
+                            <tr>
+                                <th>写真</th>
+                                <td><img th:src="@{'/img/' + ${employee.image}}" style="max-width:200px;" alt="写真"/></td>
+                            </tr>
+                            <tr>
+                                <th>性別</th>
+                                <td><span th:text="${employee.gender}">性別</span></td>
+                            </tr>
+                            <tr>
+                                <th>入社日</th>
+                                <td><span th:text="${#dates.format(employee.hireDate, 'yyyy年MM月dd日')}">入社日</span></td>
+                            </tr>
+                            <tr>
+                                <th>郵便番号</th>
+                                <td><span th:text="${employee.zipCode}">郵便番号</span></td>
+                            </tr>
+                            <tr>
+                                <th>特性</th>
+                                <td><span th:text="${employee.characteristics}">特性</span></td>
+                            </tr>
+                            <tr>
+                                <th>従業員名</th>
+                                <td>
+                                    <label th:errors="*{name}" class="error-messages"></label>
+                                    <input type="hidden" th:field="*{id}"/>
+                                    <input type="text" th:field="*{name}" class="form-control" th:errorclass="error-input"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>メールアドレス</th>
+                                <td>
+                                    <label th:errors="*{mailAddress}" class="error-messages"></label>
+                                    <input type="text" th:field="*{mailAddress}" class="form-control" th:errorclass="error-input"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>住所</th>
+                                <td>
+                                    <label th:errors="*{address}" class="error-messages"></label>
+                                    <input type="text" th:field="*{address}" class="form-control" th:errorclass="error-input"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>電話番号</th>
+                                <td>
+                                    <label th:errors="*{telephone}" class="error-messages"></label>
+                                    <input type="text" th:field="*{telephone}" class="form-control" th:errorclass="error-input"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>給料</th>
+                                <td>
+                                    <label th:errors="*{salary}" class="error-messages"></label>
+                                    <input type="number" th:field="*{salary}" class="form-control" th:errorclass="error-input"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>扶養人数</th>
+                                <td>
+                                    <label th:errors="*{dependentsCount}" class="error-messages"></label>
+                                    <input type="text" th:field="*{dependentsCount}" class="form-control" th:errorclass="error-input"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <button type="submit" class="btn btn-primary">更新</button>
+                    </fieldset>
+                </form>
+                <form method="post" th:action="@{/beyondEmployee/delete}" style="margin-top:10px;"
+                      onsubmit="return confirm('本当に削除しますか？');">
+                    <input type="hidden" name="id" th:value="${employee.id}"/>
+                    <button type="submit" class="btn btn-danger">削除</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>
